@@ -222,7 +222,7 @@
                             </li>
                             <li class="dropdown hidden-xs">
                                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                    <button type="button" class="btn btn-warning">Nạp tiền</button>
+                                    <button onclick="ff()" type="button" class="btn btn-warning">Nạp tiền</button>
                                 </a>
 
                             </li>

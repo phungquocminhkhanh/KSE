@@ -14,14 +14,14 @@ am4core.ready(function() {
 
     var data = [];
     var data2 = [];
-    var visits = 10;
-    var g = 10;
+    var visits = 22533;
+    var g = 22533;
     var i = 0;
     var flag = 0;
     var dateG = 0;
 
     for (i = 0; i <= 30; i++) {
-        visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 2);
+        visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
         data.push({ date1: new Date().setSeconds(i - 30), date2: new Date().setSeconds(i - 30), value1: visits, value2: g, value3: visits });
     }
 
@@ -51,33 +51,25 @@ am4core.ready(function() {
     //         }
     //     });
     // });
-    async function get_data() {
-        await $.ajax({
-            type: "post",
-            url: urlapi,
-            data: { detect: 'get_coordinate' },
-            dataType: "json",
-            success: function(response) {
-                // if (response.success == 'false') {
+    // $.ajax({
+    //     type: "post",
+    //     url: urlapi,
+    //     data: { detect: 'get_coordinate' },
+    //     dataType: "json",
+    //     success: function(response) {
+    //         if (response.success == 'false') {
 
-                // } else {
-                //     arr = JSON.parse(response.data[response.data.length - 1].coordinate_xy);
-                //     console.log(arr);
-                //     for (let i = 0; i < arr.length; i++) {
-                //         data.push({ date: new Date().setSeconds(i - 30), value: arr[i].y })
-                //     }
-                // }
-                // chart.data = data;
+    //         } else {
+    //             arr = JSON.parse(response.data[response.data.length - 1].coordinate_xy);
+    //             console.log(arr);
+    //             for (let i = 0; i < arr.length; i++) {
+    //                 data.push({ date: new Date().setSeconds(i - 30), value: arr[i].y })
+    //             }
+    //         }
+    //         chart.data = data;
 
-            }
-        });
-        start_socket();
-    }
-
-
-
-
-
+    //     }
+    // });
     chart.data = data
     chart.background.fill = 'rgb(0,0,0)'
     chart.background.opacity = 0.5
@@ -145,7 +137,17 @@ am4core.ready(function() {
     dateAxis.interpolationDuration = 500;
     dateAxis.rangeChangeDuration = 500;
 
+    document.addEventListener("visibilitychange", function() {
+        if (document.hidden) {
+            if (interval) {
+                clearInterval(interval);
 
+            }
+        } else {
+            startInterval();
+
+        }
+    }, false);
 
     // add data
     var interval;
@@ -191,44 +193,41 @@ am4core.ready(function() {
     //     }, 1000);
     // }
 
-    function start_socket() {
-        io.on('toa-do', async function(res) {
-            console.log(1);
-        })
-    }
-    get_data();
 
-    // function start_chart() {
-    //     io.on('toa-do', resutl => {
-    //         data = JSON.parse(resutl);
-    //         var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-    //         console.log(data.x)
-    //         if (flag_update == 3) {
-    //             chart.addData({ date1: new Date(data.x * 1000), date2: new Date((data.x * 1000) + 10000), value1: data.y, value2: g, value3: data.y }, 0);
-    //             for (let i = 0; i < series3.dataItems.length; i++) {
-    //                 series3.dataItems.getIndex(i).valueY = data.y;
-    //             }
-    //             if (data.y < g)
-    //                 series3.stroke = am4core.color("#EC5565"); //red
-    //             else
-    //                 series3.stroke = am4core.color("#2C6E49"); //green
-    //             flag_update = 0;
-    //         } else {
-    //             lastdataItem.valueY = data.y;
-    //             flag_update++;
-    //             for (let i = 0; i < series3.dataItems.length; i++) {
-    //                 series3.dataItems.getIndex(i).valueY = data.y;
-    //             }
-    //             if (lastdataItem.valueY < g)
-    //                 series3.stroke = am4core.color("#EC5565"); //red
-    //             else
-    //                 series3.stroke = am4core.color("#2C6E49"); //blue
-    //         }
-    //     });
-    // }
-    // setTimeout(function() {
-    //     start_chart();
-    // }, 3000)
+    // startInterval();
+
+    function startInterval() {
+        io.on('toa-do', data => {
+            console.log(data);
+            // var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+            // if (flag_update == 3) {
+            //     chart.addData({ date1: new Date(lastdataItem.dateX.getTime() + 3000), date2: new Date(lastdataItem.dateX.getTime() + 30000), value1: data.y, value2: g, value3: data.y },
+            //         0
+            //     );
+            //     for (let i = 0; i < series3.dataItems.length; i++) {
+            //         series3.dataItems.getIndex(i).valueY = visits;
+            //     }
+            //     if (data.y < g)
+            //         series3.stroke = am4core.color("#EC5565"); //red
+            //     else
+            //         series3.stroke = am4core.color("#2C6E49"); //green
+            //     flag_update = 0;
+            // } else {
+            //     lastdataItem.valueY = data.y;
+            //     flag_update++;
+            //     for (let i = 0; i < series3.dataItems.length; i++) {
+            //         series3.dataItems.getIndex(i).valueY = lastdataItem.valueY;
+            //     }
+            //     if (lastdataItem.valueY < g)
+            //         series3.stroke = am4core.color("#EC5565"); //red
+            //     else
+            //         series3.stroke = am4core.color("#2C6E49"); //blue
+            // }
+        });
+    }
+    setTimeout(function() {
+        startInterval();
+    }, 1000)
 
 
     // all the below is optional, makes some fancy effects
@@ -283,16 +282,20 @@ am4core.ready(function() {
 
     });
 
-    // chart.cursor = new am4charts.XYCursor();
-    // chart.cursor.lineY.stroke = am4core.color("#8F3985");
-    // chart.cursor.lineY.strokeWidth = 5;
-    // chart.cursor.lineY.strokeOpacity = 0.2;
-    // chart.cursor.lineY.strokeDasharray = "";
+    chart.cursor = new am4charts.XYCursor();
+    chart.cursor.lineY.stroke = am4core.color("#8F3985");
+    chart.cursor.lineY.strokeWidth = 5;
+    chart.cursor.lineY.strokeOpacity = 0.2;
+    chart.cursor.lineY.strokeDasharray = "";
 
-    // chart.cursor.lineX.stroke = am4core.color("#8F3985");
-    // chart.cursor.lineX.strokeWidth = 5;
-    // chart.cursor.lineX.strokeOpacity = 0.2;
-    // chart.cursor.lineX.strokeDasharray = "";
+    chart.cursor.lineX.stroke = am4core.color("#8F3985");
+    chart.cursor.lineX.strokeWidth = 5;
+    chart.cursor.lineX.strokeOpacity = 0.2;
+    chart.cursor.lineX.strokeDasharray = "";
 
 
 });
+
+function ff() {
+    console.log(1);
+}
