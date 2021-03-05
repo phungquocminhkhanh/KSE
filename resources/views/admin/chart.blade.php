@@ -5,6 +5,7 @@
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="//cdn.amcharts.com/lib/4/plugins/rangeSelector.js"></script>
 
 
 {{-- <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> --}}
@@ -107,6 +108,10 @@ button {
 #check {
     display: none !important
 }
+#selectordiv {
+  width: 100%;
+  height: 30px;
+}
  </style>
 <body>
     {{-- <?php $idbussin = Auth::user()->id_business;
@@ -118,6 +123,7 @@ button {
 
             <div class="col-sm-10">
                 <div id="chartdiv" style="width: 100%;height: 570px;"></div>
+                <div id="selectordiv"></div>
             </div>
             <div class="col-sm-2">
                 <div class="inqbox " style="background-color: #2A2B30;height:500px;">

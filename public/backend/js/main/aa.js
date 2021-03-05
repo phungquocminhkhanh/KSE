@@ -14,67 +14,51 @@ am4core.ready(function() {
 
     var data = [];
     var data2 = [];
-    var visits = 22533;
-    var g = 22533;
+    var visits = 10;
+    var g = 10;
     var i = 0;
     var flag = 0;
     var dateG = 0;
-
-    for (i = 0; i <= 30; i++) {
-        visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-        data.push({ date1: new Date().setSeconds(i - 30), date2: new Date().setSeconds(i - 30), value1: visits, value2: g, value3: visits });
-    }
-
+    var datefinal = new Date().setSeconds(10);
     // for (i = 0; i <= 30; i++) {
     //     visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-    //     data.push({ date1: new Date().setSeconds(i - 30), date2: new Date().setSeconds(i - 30), value1: visits, value2: g, value3: visits });
+    //     data.push({ date1: new Date().setSeconds(i - 30), date2: new Date().setSeconds(i - 30), date3: datefinal, value1: visits, value2: g, value3: visits, value4: visits * 2 }); //1:line,2:duongG,3:focus,4:ket qua
     // }
 
     // window.addEventListener('online', () => {
-    //     $.ajax({
-    //         type: "post",
-    //         url: urlapi,
-    //         data: { detect: 'get_coordinate' },
-    //         dataType: "json",
-    //         success: function(response) {
-    //             if (response.success == 'false') {
 
-    //             } else {
-    //                 arr = JSON.parse(response.data[response.data.length - 1].coordinate_xy);
-    //                 console.log(arr);
-    //                 for (let i = 0; i < arr.length; i++) {
-    //                     data.push({ date: new Date().setSeconds(i - 30), value: arr[i].y })
-    //                 }
-    //             }
-    //             chart.data = data;
-
-    //         }
-    //     });
     // });
-    // $.ajax({
-    //     type: "post",
-    //     url: urlapi,
-    //     data: { detect: 'get_coordinate' },
-    //     dataType: "json",
-    //     success: function(response) {
-    //         if (response.success == 'false') {
 
-    //         } else {
-    //             arr = JSON.parse(response.data[response.data.length - 1].coordinate_xy);
-    //             console.log(arr);
-    //             for (let i = 0; i < arr.length; i++) {
-    //                 data.push({ date: new Date().setSeconds(i - 30), value: arr[i].y })
-    //             }
-    //         }
-    //         chart.data = data;
+    async function get_data() {
+        await $.ajax({
+            type: "post",
+            url: urlapi,
+            data: { detect: 'get_coordinate' },
+            dataType: "json",
+            success: function(response) {
+                if (response.success == 'false') {
+                    data.push({ date1: new Date().setSeconds(0), date2: new Date().setSeconds(0), value1: 0, value2: 0, value3: 0 });
+                } else {
+                    arr = JSON.parse(response.data[response.data.length - 1].coordinate_xy);
+                    gg = JSON.parse(response.data[response.data.length - 1].coordinate_g);
+                    g = gg.y;
+                    console.log(gg);
+                    for (let i = 0; i < arr.length; i++) {
+                        datex = new Date(arr[i].x * 1000);
+                        data.push({ date1: datex, date2: datex, value1: arr[i].y, value2: g, value3: arr[i].y });
+                    }
+                }
 
-    //     }
-    // });
+                chart.data = data;
+
+
+            }
+        });
+        start_socket();
+    }
     chart.data = data
     chart.background.fill = 'rgb(0,0,0)'
     chart.background.opacity = 0.5
-
-
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.grid.template.location = 0;
@@ -103,6 +87,8 @@ am4core.ready(function() {
     series.interpolationDuration = 500;
     series.defaultState.transitionDuration = 0;
     series.tensionX = 0.8;
+    series.showOnInit = false;
+
 
     var series2 = chart.series.push(new am4charts.LineSeries());
     series2.dataFields.valueY = "value2";
@@ -116,11 +102,15 @@ am4core.ready(function() {
     var series3 = chart.series.push(new am4charts.LineSeries());
     series3.dataFields.valueY = "value3";
     series3.dataFields.dateX = "date2";
-    series3.strokeWidth = 0.5;
-
+    series3.strokeWidth = 0.3;
     series3.stroke = series.stroke;
 
-
+    // var series4 = chart.series.push(new am4charts.LineSeries());
+    // series4.dataFields.valueY = "value4";
+    // series4.dataFields.dateX = "date3";
+    // series4.strokeWidth = 0.5;
+    // series4.stroke = series.stroke;
+    // series4.stroke = am4core.color("#EC5565");
 
 
     chart.scrollbarX = new am4charts.XYChartScrollbar();
@@ -137,17 +127,7 @@ am4core.ready(function() {
     dateAxis.interpolationDuration = 500;
     dateAxis.rangeChangeDuration = 500;
 
-    document.addEventListener("visibilitychange", function() {
-        if (document.hidden) {
-            if (interval) {
-                clearInterval(interval);
 
-            }
-        } else {
-            startInterval();
-
-        }
-    }, false);
 
     // add data
     var interval;
@@ -155,79 +135,45 @@ am4core.ready(function() {
     // interval = setInterval(function() {
     //     var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
     //     g = lastdataItem.valueY;
+
+    //     var datefinal = new Date().setSeconds(10);
+
+    //     console.log(datefinal)
     //     for (let i = 0; i < series2.dataItems.length; i++) {
     //         series2.dataItems.getIndex(i).valueY = lastdataItem.valueY;
+    //         //series4.dataItems.getIndex(i).dateX = lastdataItem.valueY;
     //     }
     // }, 10000); // ham ay de reset lai dien G, diem G la diem de xem biet win hay thua
-
-    // function startInterval() {
-    //     interval = setInterval(function() {
-    //         var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-    //         if (flag_update == 3) {
-    //             visits = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-
-    //             chart.addData({ date1: new Date(lastdataItem.dateX.getTime() + 3000), date2: new Date(lastdataItem.dateX.getTime() + 30000), value1: visits, value2: g, value3: visits },
-    //                 0
-    //             );
-    //             for (let i = 0; i < series3.dataItems.length; i++) {
-    //                 series3.dataItems.getIndex(i).valueY = visits;
-    //             }
-    //             if (visits < g)
-    //                 series3.stroke = am4core.color("#EC5565"); //red
-    //             else
-    //                 series3.stroke = am4core.color("#2C6E49"); //green
-
-    //             flag_update = 0;
-    //         } else {
-    //             lastdataItem.valueY = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-    //             flag_update++;
-    //             for (let i = 0; i < series3.dataItems.length; i++) {
-    //                 series3.dataItems.getIndex(i).valueY = lastdataItem.valueY;
-    //             }
-    //             if (lastdataItem.valueY < g)
-    //                 series3.stroke = am4core.color("#EC5565"); //red
-    //             else
-    //                 series3.stroke = am4core.color("#2C6E49"); //blue
-    //         }
-    //         // dateAxis.zoom({ start: 1 / 15, end: 2.0 }, false, true);
-    //     }, 1000);
-    // }
-
-
-    // startInterval();
-
-    function startInterval() {
-        io.on('toa-do', data => {
-            console.log(data);
-            // var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-            // if (flag_update == 3) {
-            //     chart.addData({ date1: new Date(lastdataItem.dateX.getTime() + 3000), date2: new Date(lastdataItem.dateX.getTime() + 30000), value1: data.y, value2: g, value3: data.y },
-            //         0
-            //     );
-            //     for (let i = 0; i < series3.dataItems.length; i++) {
-            //         series3.dataItems.getIndex(i).valueY = visits;
-            //     }
-            //     if (data.y < g)
-            //         series3.stroke = am4core.color("#EC5565"); //red
-            //     else
-            //         series3.stroke = am4core.color("#2C6E49"); //green
-            //     flag_update = 0;
-            // } else {
-            //     lastdataItem.valueY = data.y;
-            //     flag_update++;
-            //     for (let i = 0; i < series3.dataItems.length; i++) {
-            //         series3.dataItems.getIndex(i).valueY = lastdataItem.valueY;
-            //     }
-            //     if (lastdataItem.valueY < g)
-            //         series3.stroke = am4core.color("#EC5565"); //red
-            //     else
-            //         series3.stroke = am4core.color("#2C6E49"); //blue
-            // }
-        });
+    function start_socket() {
+        io.on('toa-do', async function(res) {
+            data = JSON.parse(res);
+            var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+            console.log(data.x)
+            if (flag_update == 3) {
+                chart.addData({ date1: new Date(data.x * 1000), date2: new Date((data.x * 1000) + 10000), value1: data.y, value2: g, value3: data.y }, 0);
+                for (let i = 0; i < series3.dataItems.length; i++) {
+                    series3.dataItems.getIndex(i).valueY = data.y;
+                }
+                if (data.y < g)
+                    series3.stroke = am4core.color("#EC5565"); //red
+                else
+                    series3.stroke = am4core.color("#2C6E49"); //green
+                flag_update = 0;
+            } else {
+                lastdataItem.valueY = data.y;
+                flag_update++;
+                for (let i = 0; i < series3.dataItems.length; i++) {
+                    series3.dataItems.getIndex(i).valueY = data.y;
+                }
+                if (lastdataItem.valueY < g)
+                    series3.stroke = am4core.color("#EC5565"); //red
+                else
+                    series3.stroke = am4core.color("#2C6E49"); //blue
+            }
+        })
     }
-    setTimeout(function() {
-        startInterval();
-    }, 1000)
+    get_data();
+
 
 
     // all the below is optional, makes some fancy effects
@@ -295,7 +241,4 @@ am4core.ready(function() {
 
 
 });
-
-function ff() {
-    console.log(1);
-}
+01
