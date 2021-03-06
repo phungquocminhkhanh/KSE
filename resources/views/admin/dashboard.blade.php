@@ -47,7 +47,7 @@
                                     @if($type[0]->type_account=='admin')
                                                 @foreach ($permission as $k=>$v)
 
-                                                @if($v->permission=="module_employee")
+                                                @if($v->permission=="module_account")
                                                 <li class="nav-parent">
 
                                                     <a href="#"><img src="{{asset('/images/2.png')}}" width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý Tài Khoản</span></a>
@@ -57,13 +57,13 @@
 
                                                     </ul>
                                                 </li>
-                                                @elseif ($v->permission=="module_deal")
+                                                @elseif ($v->permission=="module_exchange")
                                                 <li class="nav-parent">
 
-                                                    <a href="#"><img src="{{asset('images/5.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý giao dịch</span></a>
+                                                    <a href="#"><img src="{{asset('images/5.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý sàn</span></a>
                                                     <ul class="children nav">
                                                         <li><a href="{{ URL::to('admin/manage-admin-deal') }}">Sàn giao dịch</a></li>
-                                                        <li><a href="{{ URL::to('admin/manage-admin-request-deal') }}">Yêu cầu giao dịch</a></li>
+
 
                                                     </ul>
                                                 </li>
@@ -81,8 +81,14 @@
 
                                                 @elseif ($v->permission=="module_force")
 
-                                                @elseif ($v->permission=="module_setting")
-
+                                                @elseif ($v->permission=="module_request")
+                                                <li class="nav-parent">
+                                                    <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý giao dịch</span></a>
+                                                    <ul class="children nav">
+                                                        <li><a href="{{ URL::to('admin/manage-admin-load-money') }}">Yêu cầu nạp tiền</a></li>
+                                                        <li><a href="{{ URL::to('admin/manage-admin-sent-money') }}">Yêu cầu rút tiền</a></li>
+                                                    </ul>
+                                                </li>
                                                 @else()
                                                 <li class="nav-parent">
                                                     <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý khách hàng</span></a>
@@ -319,10 +325,10 @@
                             </li>
                             <li class="dropdown pull-right">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt=""><?php $ten = Auth::user()->account_username;if($ten) echo $ten?></span>
+                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt=""><?php $ten =Session::get('account_name'); echo $ten ?></span>
                                     <span class="caret caret-tp"></span>
-                                    <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">
-                                    <input type="hidden" id="id_ac" value="{{ Auth::user()->id }}">
+                                    {{-- <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">
+                                    <input type="hidden" id="id_ac" value="{{ Auth::user()->id }}"> --}}
                                 </a>
                                 <ul class="dropdown-menu animated m-t-xs">
                                     <li><a  class="animated animated-short fadeInUp" onclick="clear_data_pass()" data-toggle="modal" data-target="#change_password_dashboard_account_Modal">Đổi mật khẩu</a></li>

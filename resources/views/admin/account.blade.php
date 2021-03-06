@@ -1,8 +1,6 @@
 @extends('admin.dashboard')
 @section('admin_content')
    <body>
-    {{-- <?php $idbussin = Auth::user()->id_business;
-    ?> --}}
     <div style="clear: both; height: 61px;"></div>
     <div class="wrapper wrapper-content animated fadeInRight">
 
@@ -70,7 +68,6 @@
               <div class="modal-body">
                 <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
                <form method="post" id="insert_account_form">
-                <input type="hidden" name="id_business" id="" value="{{Auth::user()->id_business}}">
                 <label>Username (<font style="color: red">*</font>)</label>
                 <input type="text" name="account_username" id="username" class="form-control" />
                 <small id="erusername" class="text-danger"></small>

@@ -8,9 +8,10 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\NhanVien;
 use GuzzleHttp\Middleware;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Http;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,18 +66,18 @@ Route::get('/clear-cache', function() {
     return 'DONE'; //tra ve gia tri
 });
 Route::get('/dashboard', function () {
-    $check=isset(Auth::user()->id)?Auth::user()->id:"";
-    if($check)
+    //$check=isset(Auth::user()->id)?Auth::user()->id:"";
+    if(true)
     {
+        $id=Session::get('account_id');
         $r=DB::table('tbl_account_authorize')
         ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
         ->select('tbl_account_permission.permission')
-        ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-        ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
+        ->where('tbl_account_authorize.id_admin',$id)
         ->get();
         $type=DB::table('tbl_account_type')
         ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',Auth::user()->id)
+        ->where('tbl_account_account.id',$id)
         ->get();
         return view('admin.dashboard')->with("permission",$r)->with("type",$type);
     }
@@ -91,88 +92,85 @@ Route::group(['prefix' => 'page'], function () {
 
 Route::group(['prefix' => 'admin'], function () {
 
-    Route::get('manage-account',['middleware' => 'auth.roles:module_employee', function () {
+    Route::get('manage-account',function () {
+        // $response = Http::get('http://192.168.100.11/QTC_banhangnhanh/git/KSE/public/admin/floor');
+        // $a=$response->getBody();
+        // $b=json_decode($a);
+        // return view('admin.text')->with('text',$b);
         $r=DB::table('tbl_account_authorize')
                 ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
                 ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
+                ->where('tbl_account_authorize.id_admin',1)
                 ->get();
                 $type=DB::table('tbl_account_type')
                 ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-                ->where('tbl_account_account.id',Auth::user()->id)
+                ->where('tbl_account_account.id',1)
                 ->get();
         return view('admin.account')->with("permission",$r)->with("type",$type);
-    }]);
-    Route::get('call-api','admin_board\viewController@call_api');
-    Route::get('login','admin_board\viewController@login');
-    Route::get('me','admin_board\viewController@logout');
+    });
 
 
-    Route::get('manage-permission-type',['middleware' => 'auth.roles:module_employee', function () {
+    Route::get('manage-permission-type',function () {
         $r=DB::table('tbl_account_authorize')
                 ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
                 ->select('tbl_account_permission.permission')
                 ->where('tbl_account_authorize.id_admin',Auth::user()->id)
                 ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
                 ->get();
-                $type=DB::table('tbl_account_type')
+        $type=DB::table('tbl_account_type')
                 ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
                 ->where('tbl_account_account.id',Auth::user()->id)
                 ->get();
         return view('admin.account_permission_type')->with("permission",$r)->with("type",$type);
-    }]);
+    });
 
-    Route::get('manage-account',['middleware' => 'auth.roles:module_employee', function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
-                ->get();
-                $type=DB::table('tbl_account_type')
-                ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-                ->where('tbl_account_account.id',Auth::user()->id)
-                ->get();
-        return view('admin.account')->with("permission",$r)->with("type",$type);
-    }]);
     Route::get('manage-admin-deal',function () {
         $r=DB::table('tbl_account_authorize')
                 ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
                 ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
+                ->where('tbl_account_authorize.id_admin',1)
                 ->get();
         $type=DB::table('tbl_account_type')
         ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',Auth::user()->id)
+        ->where('tbl_account_account.id',1)
         ->get();
         return view('admin.admin_deal')->with("permission",$r)->with("type",$type);
     });
-    Route::get('manage-admin-request-deal',function () {
+
+    Route::get('manage-admin-load-money',function () {
         $r=DB::table('tbl_account_authorize')
                 ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
                 ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
+                ->where('tbl_account_authorize.id_admin',1)
                 ->get();
         $type=DB::table('tbl_account_type')
         ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',Auth::user()->id)
+        ->where('tbl_account_account.id',1)
         ->get();
-        return view('admin.admin_request_deal')->with("permission",$r)->with("type",$type);
+        return view('admin.admin_load_money')->with("permission",$r)->with("type",$type);
+    });
+    Route::get('manage-admin-sent-money',function () {
+        $r=DB::table('tbl_account_authorize')
+                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
+                ->select('tbl_account_permission.permission')
+                ->where('tbl_account_authorize.id_admin',1)
+                ->get();
+        $type=DB::table('tbl_account_type')
+        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
+        ->where('tbl_account_account.id',1)
+        ->get();
+        return view('admin.admin_sent_money')->with("permission",$r)->with("type",$type);
     });
     Route::get('manage-admin-customer',function () {
         $r=DB::table('tbl_account_authorize')
                 ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
                 ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
+                ->where('tbl_account_authorize.id_admin',1)
                 ->get();
-        $type=DB::table('tbl_account_type')
-        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',Auth::user()->id)
-        ->get();
+                $type=DB::table('tbl_account_type')
+                ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
+                ->where('tbl_account_account.id',1)
+                ->get();
         return view('admin.admin_customer')->with("permission",$r)->with("type",$type);
     });
 
@@ -245,34 +243,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('account-account-change-password-dashboard', 'admin_board\account_accountController@account_change_password_dashboard');
     Route::post('account-account-get-permission', 'admin_board\account_accountController@get_permission');
 
-    Route::resource('product-category', 'admin_board\product_categoryController');
-    Route::post('product-category-update', 'admin_board\product_categoryController@product_category_update');
-
-    Route::resource('product-unit', 'admin_board\product_unitController');
-
-
-    // dua vao ham put update thi nos co bug
-    Route::resource('product-product', 'admin_board\product_productController');
-    Route::post('product-product-update', 'admin_board\product_productController@product_update');
-    Route::get('product-product-unit', 'admin_board\product_productController@get_unit');
-    Route::post('product-product-extra', 'admin_board\product_productController@insert_product_extra');
-    Route::post('product-product-seach', 'admin_board\product_productController@product_seach');
-    Route::post('product-product-seach-auto', 'admin_board\product_productController@product_seach_auto');
-    Route::post('product-product-delete-extra', 'admin_board\product_productController@detele_extra');
-    Route::post('product-product-sold-out', 'admin_board\product_productController@product_sold_out');
-    Route::post('product-product-disable', 'admin_board\product_productController@product_disable');
-
-    Route::resource('floor', 'admin_board\floorController');
-
-    Route::resource('table', 'admin_board\tableController');
-    Route::post('get-table', 'admin_board\tableController@get_table');//lay table theo điều kiện
-    Route::resource('product-product', 'admin_board\product_productController');
-
-    Route::get('product-product-unit', 'admin_board\product_productController@get_unit');
-    Route::post('product-product-extra', 'admin_board\product_productController@insert_product_extra');
-    Route::post('product-product-seach', 'admin_board\product_productController@product_seach');
-    Route::post('product-product-seach-auto', 'admin_board\product_productController@product_seach_auto');
-    Route::post('product-product-delete-extra', 'admin_board\product_productController@detele_extra');
 
 
     Route::resource('customer-customer', 'admin_board\customer_customerController');
@@ -284,9 +254,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('customer-point-customer', 'admin_board\customer_pointController@point_customer');//ds customer theo point
 
 
-    Route::resource('order-order', 'admin_board\order_orderController');
-    Route::post('order-order-detail', 'admin_board\order_orderController@order_order_detail');
-    Route::post('get-order-order', 'admin_board\order_orderController@get_order_order');
-    Route::post('order-order-seach-code', 'admin_board\order_orderController@order_seach_code');
+    Route::get('floor', function(){
+        $type=DB::table('tbl_account_permission')->get();
+        return response()->json($type);
+    });
 });
 

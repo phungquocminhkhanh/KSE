@@ -21,23 +21,23 @@ class AcessPermission
     {
 
 
-         foreach ($roles as $role) {
-            try {
-                // foreach($quyenuser as $k=>$q)
-                // {
-                    if (Auth::user()->getrole($role)) {
-                        Session::put("message_per","");
-                        return $next($request);
-                //}
+        //  foreach ($roles as $role) {
+        //     try {
+        //         // foreach($quyenuser as $k=>$q)
+        //         // {
+        //             if (Auth::user()->getrole($role)) {
+        //                 Session::put("message_per","");
+        //                 return $next($request);
+        //         //}
 
-            }
+        //     }
 
-            } catch (Exception $x) {
-                abort(403);
-            }
-        }
-        Session::put("message_per","Bạn không có quyền vào trang này");
-        return redirect('/dashboard');
+        //     } catch (Exception $x) {
+        //         abort(403);
+        //     }
+        // }
+        // Session::put("message_per","Bạn không có quyền vào trang này");
+        // return redirect('/dashboard');
     }
 
 }

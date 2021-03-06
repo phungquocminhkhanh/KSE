@@ -44,12 +44,14 @@
                                                 <td>Thời gian bắt đầu</td>
                                                 <td>Thời gian kết thúc</td>
                                                 <td>Thời gian mỗi phiên</td>
+                                                <td>Tổng phiên</td>
                                             </tr>
                                              <tbody id="content-customer">
                                                 <tr>
                                                     <td>4/05/2021</td>
                                                     <td>24/05/2021</td>
                                                     <td>4/05/2021</td>
+                                                    <td>100</td>
                                                 </tr>
                                              </tbody>
                                           </table>
@@ -118,25 +120,28 @@
          <div class="modal-content">
           <div class="modal-header">
            <button type="button" class="close" data-dismiss="modal">&times;</button>
-           <h4 class="modal-title">Thêm Nhân Viên</h4>
+           <h4 class="modal-title">Cập nhật sàn</h4>
           </div>
           <div class="modal-body">
             <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
            <form method="post" id="insert_account_form">
 
             <label>Thời gian bắt đầu (<font style="color: red">*</font>)</label>
-            <input type="datetime-local" id="date_start" class="form-control">
+            <input type="datetime-local" id="exchange_open" class="form-control">
             <small id="erusername" class="text-danger"></small>
             <br />
             <br />
             <label>Thời gian kết thúc (<font style="color: red">*</font>)</label>
-            <input type="datetime-local" id="date_end" class="form-control">
+            <input type="datetime-local" id="exchange_close" class="form-control">
             <small id="erusername" class="text-danger"></small>
             <br />
             <br />
             <label>Thời gian mỗi phiên (<font style="color: red">*</font>)</label>
-            <input type="number" id="date_round" min="5">phút
-            <small id="erusername" class="text-danger"></small>
+            <input type="number" id="exchange_period" min="5">phút
+            <br />
+            <br />
+            <label>Tổng phiên</label>
+            <input type="number" id="total_period">phút
             <br />
             <br />
             <input type="submit" name="insert" id="insert_account" value="Thêm" class="btn btn-success" />

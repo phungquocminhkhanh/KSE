@@ -15,38 +15,29 @@
                <div class="inqbox">
                   <div class="inqbox-content">
                            <span class="text-muted small pull-right"><i class="fa fa-clock-o"></i></span>
-                           <h2>Yêu cầu giao dịch</h2>
+                           <h2>Yêu cầu nạp tiền</h2>
                            <div class="input-group">
-                            <input type="text" placeholder="Nhập mã đơn hàng" id="key_seach_code" value="" class="input form-control">
+                            <input type="text" placeholder="Nhập tên khách hàng, mã lệnh" id="key_seach_code" value="" class="input form-control">
                             <span class="input-group-btn">
                             <button type="button" class="btn btn btn-primary" onclick="seach_code_deal()"> <i class="fa fa-search"></i>Tìm kiếm</button>
                             </span>
                          </div>
                            <div class="clients-list">
                               <ul class="nav nav-tabs tab-border-top-danger">
-                                <li class="active"><a onclick="show_deal_type('all')">All</a></li>
-                                <li class="active"><a onclick="show_deal_type('eat-in')">Nạp tiền</a></li>
-                                <li class="active"><a onclick="show_deal_type('carry-out')">Rút tiền</a></li>
-                                <div class="form-group col-md-8">
-                                    <label for="inputState">Trạng thái</label>
-                                    <select id="inputStatee" class="form-control" onchange="seach_order()">
-                                        <option selected value="0">Tất cả</option>
-                                        <option value="1">Tạo lệnh</option>
-                                        <option value="2">Chờ xác nhận</option>
-                                        <option value="3">Hoàn tất</option>
-                                        <option value="4">Hủy lệnh</option>
-                                    </select>
-                                  </div>
-                                  <div class="form-group col-md-4" id="start_date">
+                                    <li class="active"><a data-toggle="tab" href="#tab-account"><i class="fa fa-user"></i>Tạo lệnh</a></li>
+                                    <li class="active"> <button type="button" onclick="clear_data()" name="x" id="x" data-toggle="modal" data-target="#add_load_money" class="btn btn-warning">+</button></li>
+                                  <div class="form-group col-md-2" id="start_date">
+
                                     <label for="inputState">ngày bắt đầu</label>
                                     <input type="date"  id="ngaybatdau" onchange="seach_order()">
 
                                   </div>
 
-                                  <div class="form-group col-md-4" id="end_date">
+                                  <div class="form-group col-md-2" id="end_date">
                                     <label for="inputState"> ngày kết thúc</label>
                                     <input type="date" id="ngayketthuc" onchange="seach_order()">
                                   </div>
+
                               </ul>
 
                               <div class="tab-content" >
@@ -57,25 +48,24 @@
                                           <table class="table table-striped table-hover">
                                             <td>STT</td>
                                             <td>Mã lệnh</td>
-                                            <td>Trạng thái</td>
                                             <td>Tên</td>
-                                            <td>Loại</td>
+                                            <td>Nạp tiền</td>
                                             <td>Ngày tháng</td>
                                              <tbody id="content-order">
                                                  <tr>
                                                     <td>1</td>
                                                     <td>KSE01201548</td>
-                                                    <td>Hoàn thành</td>
+
                                                     <td>Nguyen Van A</td>
-                                                    <td style="color: green">+4500000</td>
+                                                    <td style="color: green">4500000</td>
                                                     <td>20:48 25/12/2021</td>
                                                  </tr>
                                                  <tr>
                                                     <td>1</td>
                                                     <td>KSE01201548</td>
-                                                    <td>Hoàn thành</td>
+
                                                     <td>Nguyen Van Aaaaaaaaaaa</td>
-                                                    <td style="color: red">-4500000</td>
+                                                    <td style="color: green">4500000</td>
                                                     <td>20:48 25/12/2021</td>
                                                  </tr>
                                              </tbody>
@@ -105,7 +95,33 @@
 
          </div>
     </div>
-
+    <div id="add_load_money" class="modal fade">
+        <div class="modal-dialog">
+         <div class="modal-content">
+          <div class="modal-header">
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+           <h4 class="modal-title">Cập nhật sàn</h4>
+          </div>
+          <div class="modal-body">
+            <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
+            <form method="post" id="insert_account_form">
+                <label>Tên khách hàng (<font style="color: red">*</font>)</label>
+                <input type="text" name="account_username" id="username" class="form-control" />
+                <small id="erusername" class="text-danger"></small>
+                <br />
+                <label>Số tiền nạp (VND) (<font style="color: red">*</font>)</label>
+                <input type="number" name="account_username" id="username" class="form-control" />
+                <small id="erusername" class="text-danger"></small>
+                <br />
+                <input type="submit" name="insert" id="insert_account" value="Thêm" class="btn btn-success" />
+               </form>
+          </div>
+          <div class="modal-footer">
+           <button type="button" id="close_modol_insert" class="btn btn-default" data-dismiss="modal">Đóng</button>
+          </div>
+         </div>
+        </div>
+       </div>
 
     </body>
     <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>

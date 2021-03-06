@@ -20,11 +20,13 @@ class loginController extends Controller
         $acc=new account_acount;
         //kt xem có user đó trong store hay ko
 
-            if(Auth::attempt(['account_username' => $request->account_username, 'account_password' => $request->account_password]))
+            if(true)
             {
-                    $a=account_acount::where('id_business',Auth::user()->id_business)
-                    ->where('id',Auth::user()->id)
-                    ->update(["force_sign_out"=>"0"]);
+                    // $a=account_acount::where('id_business',Auth::user()->id_business)
+                    // ->where('id',Auth::user()->id)
+                    // ->update(["force_sign_out"=>"0"]);
+                    Session::put("account_name","xx");
+                    Session::put("account_id","1");
                     Session::put("mess","");
                     return Redirect("/dashboard");
             }
@@ -67,12 +69,16 @@ class loginController extends Controller
     }
     public function cus_login(Request $request)
     {
-        $response = Http::post('http://192.168.100.29/trading_view/api/', [
+
+        $response = Http::post( env('URL_API', 'http://192.168.100.29/trading_view/api/'), [
             'detect' => 'login',
             'username' => $request->account_username,
             'password' => $request->account_password
         ]);
-       return $response->getBody();
+        $a=$response->getBody();
+        $b=json_decode($a);
+        return view('admin.text')->with('text',$b);
+
     }
 
 

@@ -8,7 +8,17 @@
      return x;
  }
 
- function show_customer() {}
+ function show_customer() {
+     $.ajax({
+         url: urlapi,
+         method: "POST",
+         data: { detect: 'list_customer_customer' }, // chuyen vao bien name vs du lieu cua input do
+         dataType: "json",
+         success: function(response) {
+             console.log(response);
+         }
+     });
+ }
 
  function seach_customer() {
      $.ajax({
@@ -40,7 +50,7 @@
      });
  }
  $(document).ready(function() {
-     //show_customer();
-     console.log(urlapi);
+     show_customer();
+     //console.log(1);
 
  });

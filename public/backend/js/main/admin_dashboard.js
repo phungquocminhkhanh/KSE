@@ -103,21 +103,20 @@ io.on('forced_sign_out', data => {
 })
 
 $(document).ready(function() {
-    idbu = String($('#id_bu').val())
-    const data = { id_business: idbu };
-    io.emit('join-store', data);
-    $.ajax({
-        type: "post",
-        url: "../admin/account-account-detail", // nho them public vao khi up
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token-force-sign"]').attr('content')
-        },
-        data: { id_account: $('#id_ac').val() },
-        dataType: "json",
-        success: function(response) {
-            arrayper = response.data.detail;
-        }
-    });
+    // idbu = String($('#id_bu').val())
+    // io.emit('join-store', data);
+    // $.ajax({
+    //     type: "post",
+    //     url: "../admin/account-account-detail", // nho them public vao khi up
+    //     headers: {
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token-force-sign"]').attr('content')
+    //     },
+    //     data: { id_account: $('#id_ac').val() },
+    //     dataType: "json",
+    //     success: function(response) {
+    //         arrayper = response.data.detail;
+    //     }
+    // });
 
 
 
