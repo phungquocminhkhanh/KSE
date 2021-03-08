@@ -1,4 +1,4 @@
-//window.io = io(urlsocket, { transport: ['websocket'] });
+window.io = io(urlsocket, { transport: ['websocket'] });
 am4core.ready(function() {
 
     // Themes begin
@@ -23,15 +23,15 @@ am4core.ready(function() {
     var len = 3000; // t là độ dài của chart
     var time = new Date().getTime();
 
-    visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-    data.push({ date2: new Date(time), date3: new Date(time + 7000), value1: visits, value2: g, value3: g, value4: -20 }); //1:line,2:duongG,3:focus,4:ket qua
-
-
-    visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-    data.push({ date2: new Date(time + 21000), date3: new Date(time + 7000), value1: visits, value2: g, value3: g, value4: 20 }); //1:line,2:duongG,3:focus,4:ket qua
 
 
 
+    // visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
+    // data.push({ date2: new Date(time), date3: new Date(time + 7000), value1: visits, value2: g, value3: g, value4: -20 }); //1:line,2:duongG,3:focus,4:ket qua
+
+
+    // visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
+    // data.push({ date2: new Date(time + 21000), date3: new Date(time + 7000), value1: visits, value2: g, value3: g, value4: 20 }); //1:line,2:duongG,3:focus,4:ket qua
 
 
     // window.addEventListener('online', () => {
@@ -43,30 +43,34 @@ am4core.ready(function() {
             data: { detect: 'get_coordinate' },
             dataType: "json",
             success: function(response) {
-                // if (response.success == 'false') {
-                data.push({ date1: new Date().setSeconds(0), date2: new Date().setSeconds(0), value1: 0, value2: 0, value3: 0 });
-                // } else {
-                //     arr = JSON.parse(response.data[response.data.length - 1].coordinate_xy);
-                //     gg = JSON.parse(response.data[response.data.length - 1].coordinate_g);
-                //     g = gg.y;
-                //     console.log(gg);
-                //     for (let i = 0; i < arr.length; i++) {
-                //         datex = new Date(arr[i].x * 1000);
-                //         data.push({ date1: datex, date2: datex, value1: arr[i].y, value2: g, value3: arr[i].y });
-                //     }
-                // }
-                //chart.data = data;
-
-
+                console.log(response);
+                if (response.success == 'false') {
+                    //data.push({ date1: new Date().setSeconds(0), date2: new Date().setSeconds(0), value1: 0, value2: 0, value3: 0 });
+                } else {
+                    phien = response.data[31];
+                    arr = JSON.parse(phien.coordinate_xy);
+                    gg = JSON.parse(phien.coordinate_g);
+                    g = 9.385 //gg.y;
+                    data.push({ date2: new Date(phien.time_open * 1000), date3: new Date(phien.time_close * 1000), value2: g, value3: g, value4: g - 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
+                    data.push({ date2: new Date(phien.time_close * 1000), date3: new Date(phien.time_close * 1000), value2: g, value3: g, value4: g + 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
+                    for (let i = 0; i < arr.length; i++) {
+                        //data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
+                    }
+                }
+                //  chart.data = data;
             }
+        });
+        series.events.on("validated", function() {
+            bullet.moveTo(series.dataItems.last.point);
+            bullet.validatePosition();
         });
         start_socket();
     }
+
     chart.data = data;
     console.log(chart.data);
     chart.background.fill = 'rgb(0,0,0)'
     chart.background.opacity = 0.5
-    console.log(chart.width)
 
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
@@ -141,52 +145,99 @@ am4core.ready(function() {
     // add data
     var interval;
     var flag_update = 0;
-    interval = setInterval(function() {
-        x = 6;
-        var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-        g = lastdataItem.valueY;
-        // var datefinal = new Date().setSeconds(10);
-        for (let i = 0; i < 2; i++) {
-            series2.dataItems.getIndex(i).valueY = lastdataItem.valueY;
-        }
-        let d2 = new Date(new Date().getTime() + 21000);
-        let d3 = new Date(new Date().getTime() + 7000);
-        let val_ser4 = series.dataItem.lastdataItem
-        series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
+    // interval = setInterval(function() {
+    //     x = 6;
+    //     var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+    //     g = lastdataItem.valueY;
+    //     // var datefinal = new Date().setSeconds(10);
+    //     for (let i = 0; i < 2; i++) {
+    //         series2.dataItems.getIndex(i).valueY = lastdataItem.valueY;
+    //     }
+    //     let d2 = new Date(new Date().getTime() + 21000);
+    //     let d3 = new Date(new Date().getTime() + 7000);
+    //     let val_ser4 = series.dataItem.lastdataItem
+    //     series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
 
-        series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
+    //     series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
 
-        series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
-        series4.dataItems.getIndex(1).dateX = d3
-        series4.dataItems.getIndex(0).valueY = lastdataItem.valueY - 15
-        series4.dataItems.getIndex(1).valueY = lastdataItem.valueY + 15
+    //     series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
+    //     series4.dataItems.getIndex(1).dateX = d3
+    //     series4.dataItems.getIndex(0).valueY = lastdataItem.valueY - 15
+    //     series4.dataItems.getIndex(1).valueY = lastdataItem.valueY + 15
 
-    }, 7000); // ham ay de reset lai dien G, diem G la diem de xem biet win hay thua
+    // }, 7000); // ham ay de reset lai dien G, diem G la diem de xem biet win hay thua
 
-    function startInterval() {
-        interval = setInterval(function() {
-            var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-            //if (flag_update == 3) {
-            visits = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-            chart.addData({ date1: new Date(new Date().getTime() + 1000), value1: visits },
+    // function startInterval() {
+    //     interval = setInterval(function() {
+    //         var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+    //         //if (flag_update == 3) {
+    //         visits = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
+    //         chart.addData({ date1: new Date(new Date().getTime() + 1000), value1: visits },
+    //             0
+    //         );
+    //         var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
+    //         label_final.label.text = x--;
+    //         label_final.label.fontSize = 20;
+    //         label_final.label.background.fill = am4core.color("#eee");
+
+    //         for (let i = 0; i < 2; i++) {
+    //             series3.dataItems.getIndex(i).valueY = visits;
+    //         }
+    //         if (visits < g)
+    //             series3.stroke = am4core.color("#EC5565"); //red
+    //         else
+    //             series3.stroke = am4core.color("#2C6E49"); //green
+
+    //         flag_update = 0;
+    //         // } else {
+    //         //     lastdataItem.valueY = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
+    //         //     flag_update++;
+    //         //     for (let i = 0; i < 2; i++) {
+    //         //         series3.dataItems.getIndex(i).valueY = lastdataItem.valueY;
+    //         //     }
+    //         //     if (lastdataItem.valueY < g)
+    //         //         series3.stroke = am4core.color("#EC5565"); //red
+    //         //     else
+    //         //         series3.stroke = am4core.color("#2C6E49"); //blue
+    //         // }
+
+    //     }, 1000);
+    // }
+    //startInterval();
+
+    io.on('block-trading', async function(res) {
+
+    });
+    io.on('unlock-trading', async function(res) {
+
+    });
+
+    function start_socket() {
+        io.on('coordinates_real', async function(res) {
+            data = JSON.parse(res);
+            console.log(new Date(data.x * 1000));
+            //var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+            // if (flag_update == 3) {
+
+            chart.addData({ date1: new Date(data.x * 1000), value1: data.y },
                 0
             );
-            var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
-            label_final.label.text = x--;
-            label_final.label.fontSize = 20;
-            label_final.label.background.fill = am4core.color("#eee");
+            // var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
+            // label_final.label.text = x--;
+            // label_final.label.fontSize = 20;
+            // label_final.label.background.fill = am4core.color("#eee");
 
-            for (let i = 0; i < 2; i++) {
-                series3.dataItems.getIndex(i).valueY = visits;
-            }
-            if (visits < g)
-                series3.stroke = am4core.color("#EC5565"); //red
-            else
-                series3.stroke = am4core.color("#2C6E49"); //green
+            // for (let i = 0; i < 2; i++) {
+            //     series3.dataItems.getIndex(i).valueY = data.y;
+            // }
+            // if (data.y < data.g)
+            //     series3.stroke = am4core.color("#EC5565"); //red
+            // else
+            //     series3.stroke = am4core.color("#2C6E49"); //green
 
             flag_update = 0;
             // } else {
-            //     lastdataItem.valueY = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
+            //     lastdataItem.valueY = data.y;
             //     flag_update++;
             //     for (let i = 0; i < 2; i++) {
             //         series3.dataItems.getIndex(i).valueY = lastdataItem.valueY;
@@ -196,41 +247,9 @@ am4core.ready(function() {
             //     else
             //         series3.stroke = am4core.color("#2C6E49"); //blue
             // }
-
-        }, 1000);
-    }
-    startInterval();
-
-
-    function start_socket() {
-        io.on('toa-do', async function(res) {
-            data = JSON.parse(res);
-            var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-            console.log(data.x)
-            if (flag_update == 3) {
-                chart.addData({ date1: new Date(data.x * 1000), date2: new Date((data.x * 1000) + 10000), value1: data.y, value2: g, value3: data.y }, 0);
-                for (let i = 0; i < series3.dataItems.length; i++) {
-                    series3.dataItems.getIndex(i).valueY = data.y;
-                }
-                if (data.y < g)
-                    series3.stroke = am4core.color("#EC5565"); //red
-                else
-                    series3.stroke = am4core.color("#2C6E49"); //green
-                flag_update = 0;
-            } else {
-                lastdataItem.valueY = data.y;
-                flag_update++;
-                for (let i = 0; i < series3.dataItems.length; i++) {
-                    series3.dataItems.getIndex(i).valueY = data.y;
-                }
-                if (lastdataItem.valueY < g)
-                    series3.stroke = am4core.color("#EC5565"); //red
-                else
-                    series3.stroke = am4core.color("#2C6E49"); //blue
-            }
         })
     }
-    //get_data();
+    get_data();
 
 
 
@@ -280,11 +299,7 @@ am4core.ready(function() {
     bullet.fillOpacity = 1;
     bullet.fill = chart.colors.getIndex(0);
     bullet.isMeasured = false;
-    series.events.on("validated", function() {
-        bullet.moveTo(series.dataItems.last.point);
-        bullet.validatePosition();
 
-    });
 
 
 

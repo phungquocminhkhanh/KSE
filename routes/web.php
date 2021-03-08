@@ -30,7 +30,7 @@ Route::get('/chart-mobile-ks',function() {
     return view('customer.chart_mobile_ks');
 });
 Route::get('/chart2',function() {
-    return view('admin.chart');
+    return view('admin.chart2');
 });
 Route::get('/dashboard_chart',function() {
     return view('admin.dashboard_chart');

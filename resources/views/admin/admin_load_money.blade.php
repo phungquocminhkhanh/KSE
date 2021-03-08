@@ -1,8 +1,7 @@
 @extends('admin.dashboard')
 @section('admin_content')
    <body>
-    {{-- <?php $idbussin = Auth::user()->id_business;
-    ?> --}}
+    
     <div style="clear: both; height: 61px;"></div>
     <div class="wrapper wrapper-content animated fadeInRight">
 

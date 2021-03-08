@@ -10,11 +10,29 @@
 
 {{-- <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> --}}
 {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> --}}
-    <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
-    <script src="{{ asset('backend/js/main/admin_chart.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
+<script src="{{ asset('backend/js/main/admin_chart.js') }}"></script>
+<script src="{{ asset('backend/js/main/admin_trading.js') }}"></script>
  @endsection
  @section('chart_content')
  <style>
+     .lich_su_phien tr td:nth-child(2){
+        align-content: flex-end;
+
+    }
+    .lich_su_phien{
+        border-collapse:separate;
+    border-spacing: 0 20px;
+
+    }
+    .scrollbox {
+  width: 10em;
+  height: 10em;
+  overflow: auto;
+  visibility: hidden;
+}
+
      canvas {
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -114,8 +132,6 @@ button {
 }
  </style>
 <body>
-    {{-- <?php $idbussin = Auth::user()->id_business;
-    ?> --}}
     <div style="clear: both; height: 61px;"></div>
     <div class="wrapper wrapper-content animated fadeInRight" >
 
@@ -129,52 +145,73 @@ button {
                 <div class="inqbox " style="background-color: #2A2B30;height:500px;">
                    <div class="inqbox-content" style="background-color: #2A2B30;">
                      <div class="tab-content" style="background-color: #">
-                        <table style="background-color:#2A2B30;width: 100%;
-                                         height: 60px;border-radius: 4%;
-                                         color: cornsilk">
-                            <tr>
-                                 <td>Số tiền</td>
-                                 <td>+</td>
-                            </tr>
-                            <tr>
-                                 <td>đ 152000</td>
-                                 <td>-</td>
-                          </tr>
-                        </table>
+                        <button type="button" class="btn btn-secondary">Lịch sử phiên</button>
+                        <br />
                         <br />
                         <table style="background-color:#2A2B30;width: 100%;
-                                         height: 60px;border-radius: 4%;
-                                         color: cornsilk"">
+                                         height: 60px;border-radius: 4%;">
                             <tr>
-                                 <td>Số tiền</td>
-                                 <td>+</td>
+                                 <td>Số tiền cược</td>
                             </tr>
                             <tr>
-                                 <td>đ 152000</td>
-                                 <td>-</td>
+                                 <td><input type="number" style="height: 40px ; width: 100%;" placeholder="0,000 VND"></td>
                           </tr>
                         </table>
                       </div>
                       <br />
                       <div class="tab-content" id="detail-account">
-                         <button type="button" id="updatec" onclick="trade('top')" style="height: 60px ; width: 100%;" class="btn btn-success">Lên</button>
+                         <button type="button" id="tradetop" onclick="trade('top')" style="height: 50px ; width: 100%;" class="btn btn-success">Lên</button>
                          <br />
-                         <button type="button" onclick="trade('bot')" style="height: 60px ; width: 100%;" class="btn btn-danger">Xuống</button>
+                         <br />
+                        <button style="background-color: slategrey; float: inherit;"><img height="20px" width="20px" src="{{ asset('images/clock.png') }}" alt=""></button>
+                         <br />
+                         <button type="button" id="tradebot" onclick="trade('bot')" style="height: 50px ; width: 100%;" class="btn btn-danger">Xuống</button>
                       </div>
 
                    </div>
+                   <div id="lsphien_thaotacphien">
+                    <h3>Lịch sử phiên</h3>
+                    <div style="width: 100%;height: 250px;overflow-y: scroll;">
+
+                        <table class="lich_su_phien"  cellspacing= "10">
+                            <tr>
+                                <td>15/02/2020 - 20:07</td>
+                                <td><img src="{{ asset('images/len.png') }}" width="30px" height="30px" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td>15/02/2020 - 20:07</td>
+                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td>15/02/2020 - 20:07</td>
+                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td>15/02/2020 - 20:07</td>
+                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td>15/02/2020 - 20:07</td>
+                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td>15/02/2020 - 20:07</td>
+                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td>15/02/2020 - 20:07</td>
+                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
+                            </tr>
+
+                        </table>
+                       </div>
+                   </div>
+
+
                 </div>
              </div>
          </div>
 
-    </div>
-    <input type="checkbox" id="check"> <label class="chat-btn" for="check"> <i class="fa fa-commenting-o comment"></i> <i class="fa fa-close close"></i> </label>
-    <div class="x">
-        <div class="y">
-            <h6>Tổng đài hổ trợ</h6>
-        </div>
-        <div class="text-center p-2"> <span>Điền nội dung cần hổ trợ</span> </div>
-        <div class="chat-form"> <input type="text" class="form-control" placeholder="Name"> <input type="text" class="form-control" placeholder="Email"> <textarea class="form-control" placeholder="Your Text Message"></textarea> <button class="btn btn-success btn-block">Submit</button> </div>
     </div>
 
 

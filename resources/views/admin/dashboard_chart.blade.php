@@ -120,6 +120,120 @@
                 </div>
                </div>
 
+               <div id="rut_tien_modal" class="modal fade">
+                <div class="modal-dialog">
+                 <div class="modal-content">
+                  <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                   <h4 class="modal-title">Rút tiền</h4>
+                  </div>
+                  <div class="modal-body">
+
+                    <form id="rut_tien_form">
+                    <meta name="csrf-token-change-password-dashboard" content="{{ csrf_token() }}" />
+                    <div class="inqbox-content">
+                        <h4>Ví tài khoản : 345,000,000 VND</h4>
+                        <label>Số tiền rút</label>
+                            <div class="input-group" id="show_hide_password">
+                            <input class="form-control" type="password" name="money" id="money">
+                            <small id="ermoney" class="text-danger"></small><br /><br />
+                    <input type="submit" name="edit" id="btn_rut_tien" value="Rút tiền" class="btn btn-success" />
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                   <button type="button" id="close_modol_rut_tien" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                  </div>
+                 </div>
+                </div>
+               </div>
+
+               <div id="nap_tien_modal" class="modal fade">
+                <div class="modal-dialog">
+                 <div class="modal-content">
+                  <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                   <h4 class="modal-title">Nạp tiền</h4>
+                  </div>
+                  <div class="modal-body">
+
+                    <form id="nap_tien_form">
+                    <meta name="csrf-token-change-password-dashboard" content="{{ csrf_token() }}" />
+                    <div class="inqbox-content">
+                        <h4>Tên  : Phùng Quốc Minh Khánh</h4>
+                        <h4>Số điện thoại : 0336819000</h4>
+                        <h4>Cứu pháp : NTXXXXXXXX</h4>
+                    <div><img src="{{ asset('/images/momo.png') }}" alt=""> sử dụng MoMo trên mobile để nạp tiền</div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                   <button type="button" id="close_modol_nap_tien" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                  </div>
+                 </div>
+                </div>
+               </div>
+            <div id="phuong_thuc_thanh_toan_modal" class="modal fade">
+            <div class="modal-dialog">
+             <div class="modal-content">
+              <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Phương thức thanh toán</h4>
+              </div>
+              <div class="modal-body">
+                <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
+               <form method="post" id="thanh_toan_form">
+                <label>Tên ngân hàng (<font style="color: red">*</font>)</label>
+                <select id="type_account" name="id_bank">
+
+                </select>
+                <br />
+                <br />
+                <label>Số tài khoản (<font style="color: red">*</font>)</label>
+                <input type="text" name="customer_account_no" id="customer_account_no" class="form-control" />
+                <small id="erusername" class="text-danger"></small>
+                <br />
+                <br />
+                <label>Tên chủ thẻ(<font style="color: red">*</font>)</label>
+                <input type="text" name="customer_account_holder" id="customer_account_holder" class="form-control" />
+                <small id="erusername" class="text-danger"></small>
+                <br />
+                <br />
+                <label><label>Hình thẻ ngân hàng mặt trước (<font style="color: red">*</font>)</label>
+                <input type="file" id="customer_account_img" onChange="return fileValidation()" name="customer_account_img" class="form-control" multiple="multiple"  placeholder="Hình ảnh">
+                </label>
+                <small  class="text-danger"></small>
+                <br />
+                <br />s
+                <input type="submit" name="insert" id="insert_payment" value="Tạo mới" class="btn btn-success" />
+               </form>
+              </div>
+              <div class="modal-footer">
+               <button type="button" id="close_modol_payment" class="btn btn-default" data-dismiss="modal">Đóng</button>
+              </div>
+             </div>
+            </div>
+           </div>
+
+           <div id="profile_modal" class="modal fade">
+            <div class="modal-dialog">
+             <div class="modal-content">
+              <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Thông tin tài khoản</h4>
+              </div>
+              <div class="modal-body">
+                <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
+               <form method="post" id="profile_form">
+
+                <br />
+                <input type="submit" name="insert" id="btn_profile" value="Tạo mới" class="btn btn-success" />
+               </form>
+              </div>
+              <div class="modal-footer">
+               <button type="button" id="close_modol_payment" class="btn btn-default" data-dismiss="modal">Đóng</button>
+              </div>
+             </div>
+            </div>
+           </div>
 
 
             <div class="modal" id="alert_change_pass_dashboard" tabindex="-1" role="dialog">
@@ -214,32 +328,50 @@
                             <button id="khanhkhanh"> <img src="{{ asset('images/kse.png') }}" width="150px" height="70px" alt=""></button>
                         </div>
                         <ul class="nav navbar-top-links navbar-right">
-                            <li class="dropdown hidden-xs">
-                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                   <small style="color: white">Ví demo : 550,000,253 VND</small>
-                                </a>
 
-                            </li>
-                            <li class="dropdown hidden-xs">
-                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                    <button onclick="ff()" type="button" class="btn btn-warning">Nạp tiền</button>
-                                </a>
-
-                            </li>
-                            <li class="dropdown pull-right">
+                            <li class="dropdown pull-left">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt="">
-
+                                    <span class="pl15"><small style="color: white">Ví demo : 550,000,253 VND</small>
                                     </span>
                                     <span class="caret caret-tp"></span>
                                     {{-- <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">
                                     <input type="hidden" id="id_ac" value="{{ Auth::user()->id }}"> --}}
                                 </a>
-                                <ul class="dropdown-menu animated m-t-xs">
+                                <ul class="dropdown-menu animated m-t-xs" style="background-color:#2A2B30;color: white">
+                                    <li style="text-align: center"><h4>Ví tài khoản</h4>
+                                        <small style="text-align: center">550,000,253 VND</small>
+                                    </li>
+                                    <br />
+                                    <li style="text-align: center"><h4>Ví rút tiền</h4>
+                                        <small style="text-align: center">550,000,253 VND</small>
+                                    </li>
+                                    <br />
+                                    <li style="text-align: center"><button onclick="ff()" style="width: 80%;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#rut_tien_modal">Rút tiền</button></li>
+
+                                </ul>
+                            </li>
+                            <li class="dropdown hidden-xs">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <button onclick="ff()" type="button" class="btn btn-warning" data-toggle="modal" data-target="#nap_tien_modal">Nạp tiền</button>
+                                </a>
+
+                            </li>
+                            <li class="dropdown pull-right" >
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt="">
+                                    </span>
+                                    <span class="caret caret-tp"></span>
+                                    {{-- <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">
+                                    <input type="hidden" id="id_ac" value="{{ Auth::user()->id }}"> --}}
+                                </a>
+                                <ul class="dropdown-menu animated m-t-xs" style="background-color:#2A2B30;color: white">
                                     <li><a  class="animated animated-short fadeInUp" onclick="clear_data_pass()" data-toggle="modal" data-target="#change_password_dashboard_account_Modal">Đổi mật khẩu</a></li>
                                     <li class="divider"></li>
+                                    <li><a  class="animated animated-short fadeInUp" onclick="clear_data_pass()" data-toggle="modal" data-target="#profile_modal">Thông tin cá nhân</a></li>
+                                    <li class="divider"></li>
+                                    <li><a  class="animated animated-short fadeInUp" onclick="clear_data_insert_payment()" data-toggle="modal" data-target="#phuong_thuc_thanh_toan_modal">Phương thức thanh toán</a></li>
+                                    <li class="divider"></li>
                                     <li><a href="#" class="animated animated-short fadeInUp" data-toggle="modal" data-target="#logout-dasboard"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
-
 
                                 </ul>
                             </li>
@@ -254,7 +386,7 @@
             <script src="{{ asset('backend/js/laravel_echo.js') }}"></script>
 
 
-            <script src="{{ asset('backend/js/jquery-2.1.1.js')}}"></script>
+
             <script src="{{ asset('backend/js/bootstrap.min.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>

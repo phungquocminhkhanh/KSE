@@ -81,12 +81,19 @@
 
                                                 @elseif ($v->permission=="module_force")
 
-                                                @elseif ($v->permission=="module_request")
+                                                @elseif ($v->permission=="module_request_payment")
                                                 <li class="nav-parent">
-                                                    <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý giao dịch</span></a>
+                                                    <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu rút tiền</span></a>
+                                                    <ul class="children nav">
+
+                                                        <li><a href="{{ URL::to('admin/manage-admin-sent-money') }}">Yêu cầu rút tiền</a></li>
+                                                    </ul>
+                                                </li>
+                                                @elseif ($v->permission=="module_confirm_deposit")
+                                                <li class="nav-parent">
+                                                    <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu nạp tiền</span></a>
                                                     <ul class="children nav">
                                                         <li><a href="{{ URL::to('admin/manage-admin-load-money') }}">Yêu cầu nạp tiền</a></li>
-                                                        <li><a href="{{ URL::to('admin/manage-admin-sent-money') }}">Yêu cầu rút tiền</a></li>
                                                     </ul>
                                                 </li>
                                                 @else()
@@ -100,13 +107,12 @@
 
                                          @endforeach
 
-                                    @elseif($type[0]->type_account=='sale')
+                                    @elseif($type[0]->type_account=='sales')
 
                                         <li class="nav-parent">
                                             <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Khách hàng</span></a>
                                             <ul class="children nav">
                                                 <li><a href="{{ URL::to('admin/manage-sale-customer') }}">Danh sách khách hàng</a></li>
-
                                             </ul>
                                         </li>
 

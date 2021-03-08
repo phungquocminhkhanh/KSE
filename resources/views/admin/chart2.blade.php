@@ -10,6 +10,13 @@
  <link href="{{ asset('backend/css/animate.css')}}" rel="stylesheet">
  <link href="{{ asset('backend/css/style.css')}}" rel="stylesheet">
  <link href="{{ asset('backend/css/forms/kforms.css')}}" rel="stylesheet">
+ <style>
+     canvas {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+ </style>
 <body>
 
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -30,7 +37,7 @@
                                  <div id="tab-account" class="tab-pane active" >
 
                                        <div class="table-responsive">
-                                        <div id="chartContainer" style="width:100%; height:500px;"></div>
+                                        <canvas id="canvas"></canvas>
                                        </div>
 
                                  </div>
@@ -88,12 +95,11 @@
 
 
   <script src="{{ asset('backend/js/socket.js') }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> --}}
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
   <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-{{-- <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> --}}
+ <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script>
 <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
 <script src="{{ asset('backend/js/main/admin_chart2.js') }}"></script>
 
