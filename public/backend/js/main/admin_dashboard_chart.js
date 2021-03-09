@@ -91,6 +91,8 @@ function show_cus() {
         success: function(response) {
             if (response.success == 'true') {
 
+                $("#customer_wallet").html("Ví demo : " + response.data[0].customer_wallet_bet);
+                $("#customer_wallet2").html(response.data[0].customer_wallet_bet);
             } else {
 
             }
@@ -98,6 +100,5 @@ function show_cus() {
     });
 }
 $(document).ready(function() {
-    console.log($('#id_customer').val());
     show_cus();
 });

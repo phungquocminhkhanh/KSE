@@ -332,7 +332,7 @@
 
                             <li class="dropdown pull-left">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <span class="pl15"><small style="color: white">Ví demo : 550,000,253 VND</small>
+                                    <span class="pl15"><small style="color: white" id="customer_wallet"></small>
                                     </span>
                                     <span class="caret caret-tp"></span>
                                     {{-- <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">
@@ -340,11 +340,11 @@
                                 </a>
                                 <ul class="dropdown-menu animated m-t-xs" style="background-color:#2A2B30;color: white">
                                     <li style="text-align: center"><h4>Ví tài khoản</h4>
-                                        <small style="text-align: center">550,000,253 VND</small>
+                                        <small style="text-align: center" id="customer_wallet2">550,000,253 VND</small>
                                     </li>
                                     <br />
                                     <li style="text-align: center"><h4>Ví rút tiền</h4>
-                                        <small style="text-align: center">550,000,253 VND</small>
+                                        <small style="text-align: center" id="customer_wallet_payment">0</small>
                                     </li>
                                     <br />
                                     <li style="text-align: center"><button onclick="ff()" style="width: 80%;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#rut_tien_modal">Rút tiền</button></li>
