@@ -12,7 +12,7 @@
 {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> --}}
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
-<script src="{{ asset('backend/js/main/admin_chart.js') }}"></script>
+<script src="{{ asset('backend/js/main/admin_chart_tam.js') }}"></script>
 <script src="{{ asset('backend/js/main/admin_trading.js') }}"></script>
  @endsection
  @section('chart_content')
@@ -132,6 +132,8 @@ button {
 }
  </style>
 <body>
+     <?php $cus=Session::get('data_customer') ?>
+    <input type="hidden" id="id_customer" value="{{ $cus->id }}">
     <div style="clear: both; height: 61px;"></div>
     <div class="wrapper wrapper-content animated fadeInRight" >
 
@@ -145,7 +147,7 @@ button {
                 <div class="inqbox " style="background-color: #2A2B30;height:500px;">
                    <div class="inqbox-content" style="background-color: #2A2B30;">
                      <div class="tab-content" style="background-color: #">
-                        <button type="button" class="btn btn-secondary">Lịch sử phiên</button>
+                        <button type="button" onclick="history_period()" class="btn btn-secondary">Lịch sử phiên</button>
                         <br />
                         <br />
                         <table style="background-color:#2A2B30;width: 100%;
@@ -160,12 +162,12 @@ button {
                       </div>
                       <br />
                       <div class="tab-content" id="detail-account">
-                         <button type="button" id="tradetop" onclick="trade('top')" style="height: 50px ; width: 100%;" class="btn btn-success">Lên</button>
+                         <button type="button" id="tradetop" onclick="trade('up')" style="height: 50px ; width: 100%;" class="btn btn-success">Lên</button>
                          <br />
                          <br />
-                        <button style="background-color: slategrey; float: inherit;"><img height="20px" width="20px" src="{{ asset('images/clock.png') }}" alt=""></button>
+                        <button onclick="thao_tac_period()" style="background-color: slategrey; float: inherit;"><img height="20px" width="20px" src="{{ asset('images/clock.png') }}" alt=""></button>
                          <br />
-                         <button type="button" id="tradebot" onclick="trade('bot')" style="height: 50px ; width: 100%;" class="btn btn-danger">Xuống</button>
+                         <button type="button" id="tradebot" onclick="trade('down')" style="height: 50px ; width: 100%;" class="btn btn-danger">Xuống</button>
                       </div>
 
                    </div>
@@ -173,7 +175,7 @@ button {
                     <h3>Lịch sử phiên</h3>
                     <div style="width: 100%;height: 250px;overflow-y: scroll;">
 
-                        <table class="lich_su_phien"  cellspacing= "10">
+                        <table class="content_period"  cellspacing= "10">
                             <tr>
                                 <td>15/02/2020 - 20:07</td>
                                 <td><img src="{{ asset('images/len.png') }}" width="30px" height="30px" alt=""></td>

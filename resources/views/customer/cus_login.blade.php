@@ -79,7 +79,7 @@
             {{ csrf_field() }}
 
             <label>Nhập số điện thoại</label>
-            <input type="text" name="category_title" id="category_title" class="form-control" />
+            <input type="text"  id="phone_tam" class="form-control" />
             <small id="ercategory_title" class="text-danger"></small>
             <br/>
             <br/>
@@ -127,11 +127,11 @@
            <h4 class="modal-title">Đăng ký tài khoản</h4>
           </div>
           <div class="modal-body">
-           <form id="insert_category_form" enctype="multipart/form-data">
-            {{ csrf_field() }}
-
+           <form id="insert_customer_form" enctype="multipart/form-data">
+            <input type="hidden" value="register" name="detect">
+            <input type="hidden" value="" id="customer_phone" name="customer_phone">
             <label>Mã giới thiệu</label>
-            <input type="text" name="magioithieu" id="magioithieu" class="form-control" />
+            <input type="text" name="customer_introduce" id="customer_introduce" class="form-control" />
             <small  class="text-danger"></small>
             <br/>
             <label>Họ và tên (<font style="color: red">*</font>)</label>
@@ -139,7 +139,7 @@
             <small  class="text-danger"></small>
             <br/>
             <label>Mật khẩu (<font style="color: red">*</font>)</label>
-            <input type="text" name="password" id="password" class="form-control" />
+            <input type="text" name="customer_password" id="password" class="form-control" />
             <small  class="text-danger"></small>
             <br/>
             <label>Nhập lại mật khẩu (<font style="color: red">*</font>)</label>
@@ -147,12 +147,11 @@
             <small  class="text-danger"></small>
             <br/>
             <label>Nhập số CMND(<font style="color: red">*</font>)</label>
-            <input type="text" name="cmnd" id="cmnd" class="form-control" />
+            <input type="text" name="customer_cert_no" id="cmnd" class="form-control" />
             <small id="ercategory_title" class="text-danger"></small>
             <br/>
             <label><label>Hình CMND mặt trước (<font style="color: red">*</font>)</label>
-                <input type="file" id="cmnd_icon" onChange="return fileValidation()" name="select_file" class="form-control" multiple="multiple"  placeholder="Hình ảnh">
-
+                <input type="file" id="cmnd_icon" name="customer_cert_img" class="form-control" placeholder="Hình ảnh">
             </label>
             <small  class="text-danger"></small>
             <br/>

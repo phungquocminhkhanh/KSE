@@ -23,6 +23,7 @@
         }
     </style>
     <body>
+        <?php $customer=Session::get('data_customer') ?>
         <div id="wrapper">
             <nav   class="navbar-default navbar-static-side fixed-menu" role="navigation" style="background-color: #2A2B30">
                 <div class="sidebar-collapse" style="background-color: #2A2B30">
@@ -132,7 +133,7 @@
                     <form id="rut_tien_form">
                     <meta name="csrf-token-change-password-dashboard" content="{{ csrf_token() }}" />
                     <div class="inqbox-content">
-                        <h4>Ví tài khoản : 345,000,000 VND</h4>
+                        <h4 id="">Ví tài khoản : 345,000,000 VND</h4>
                         <label>Số tiền rút</label>
                             <div class="input-group" id="show_hide_password">
                             <input class="form-control" type="password" name="money" id="money">
@@ -358,7 +359,7 @@
                             </li>
                             <li class="dropdown pull-right" >
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt="">
+                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt="">{{$customer->customer_name}}
                                     </span>
                                     <span class="caret caret-tp"></span>
                                     {{-- <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">

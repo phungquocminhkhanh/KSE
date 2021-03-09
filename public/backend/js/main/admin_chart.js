@@ -1,4 +1,4 @@
-window.io = io(urlsocket, { transport: ['websocket'] });
+//window.io = io(urlsocket, { transport: ['websocket'] });
 am4core.ready(function() {
 
     // Themes begin

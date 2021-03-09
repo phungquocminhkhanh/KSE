@@ -156,6 +156,10 @@
                 <input type="file" name="customer_account_img" id="ecustomer_account_img" class="form-control" />
                 <small id="eercustomer_account_img" class="text-danger"></small>
                 <br />
+                <label>Hạn mức giao dịch</label>
+                <input type="text" name="customer_account_litmit" id="customer_account_litmit" class="form-control" />
+                <small id="eercustomer_account_litmit" class="text-danger"></small>
+                <br />
                 <br />
                 <input type="submit" name="insert" id="update_customer" value="Thêm" class="btn btn-success" />
                </form>
@@ -217,6 +221,10 @@
                 <label>Hỉnh ảnh thẻ ATM mắt trước: </label>
                 <input type="file" name="customer_account_img" id="customer_account_img" class="form-control" />
                 <small id="ercustomer_account_img" class="text-danger"></small>
+                <br />
+                <label>Hạn mức giao dịch</label>
+                <input type="text" name="customer_account_litmit" id="customer_account_litmit" class="form-control" />
+                <small id="ercustomer_account_litmit" class="text-danger"></small>
                 <br />
                 <br />
                 <input type="submit" name="insert" id="insert_customer" value="Thêm" class="btn btn-success" />
