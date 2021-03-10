@@ -44,87 +44,89 @@
                                         <li class="active">
                                             <a href="{{ URL::to('/dashboard') }}"><i class="fa fa-home"></i> <span class="nav-label">Trang chủ</span></a>
                                         </li>
-                                    @if($type[0]->type_account=='admin')
-                                                @foreach ($permission as $k=>$v)
+                                        <?php $data_admin =Session::get('data_admin');  ?>
+                                        <input type="hidden" id="id_account" value="{{ $data_admin->id }}">
+                                        @if($data_admin->type_account=='admin')
+                                                    @foreach ($data_admin->role_permission as $k=>$v)
 
-                                                @if($v->permission=="module_account")
-                                                <li class="nav-parent">
+                                                    @if($v->permission=="module_account")
+                                                    <li class="nav-parent">
 
-                                                    <a href="#"><img src="{{asset('/images/2.png')}}" width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý Tài Khoản</span></a>
-                                                    <ul class="children nav">
-                                                        <li><a href="{{ URL::to('admin/manage-account') }}">Danh sách Tài khoản</a></li>
-                                                        <li><a href="{{ URL::to('admin/manage-permission-type') }}">Quyền hạn và loại tài khoản</a></li>
+                                                        <a href="#"><img src="{{asset('/images/2.png')}}" width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý Tài Khoản</span></a>
+                                                        <ul class="children nav">
+                                                            <li><a href="{{ URL::to('admin/manage-account') }}">Danh sách Tài khoản</a></li>
+                                                            <li><a href="{{ URL::to('admin/manage-permission-type') }}">Quyền hạn và loại tài khoản</a></li>
 
-                                                    </ul>
-                                                </li>
-                                                @elseif ($v->permission=="module_exchange")
-                                                <li class="nav-parent">
+                                                        </ul>
+                                                    </li>
+                                                    @elseif ($v->permission=="module_exchange")
+                                                    <li class="nav-parent">
 
-                                                    <a href="#"><img src="{{asset('images/5.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý sàn</span></a>
-                                                    <ul class="children nav">
-                                                        <li><a href="{{ URL::to('admin/manage-admin-deal') }}">Sàn giao dịch</a></li>
-
-
-                                                    </ul>
-                                                </li>
-                                                @elseif ($v->permission=="module_report")
-                                                <li class="nav-parent">
-
-                                                    <a href="#"><img src="{{asset('images/5.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Thống kê, báo cáo</span></a>
-                                                    <ul class="children nav">
-                                                        <li><a href="{{ URL::to('admin/manage-product-category') }}">.....</a></li>
-
-                                                    </ul>
-                                                </li>
+                                                        <a href="#"><img src="{{asset('images/5.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý sàn</span></a>
+                                                        <ul class="children nav">
+                                                            <li><a href="{{ URL::to('admin/manage-admin-deal') }}">Sàn giao dịch</a></li>
 
 
+                                                        </ul>
+                                                    </li>
+                                                    @elseif ($v->permission=="module_report")
+                                                    <li class="nav-parent">
 
-                                                @elseif ($v->permission=="module_force")
+                                                        <a href="#"><img src="{{asset('images/5.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Thống kê, báo cáo</span></a>
+                                                        <ul class="children nav">
+                                                            <li><a href="{{ URL::to('admin/manage-product-category') }}">.....</a></li>
 
-                                                @elseif ($v->permission=="module_request_payment")
-                                                <li class="nav-parent">
-                                                    <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu rút tiền</span></a>
-                                                    <ul class="children nav">
+                                                        </ul>
+                                                    </li>
 
-                                                        <li><a href="{{ URL::to('admin/manage-admin-sent-money') }}">Yêu cầu rút tiền</a></li>
-                                                    </ul>
-                                                </li>
-                                                @elseif ($v->permission=="module_confirm_deposit")
-                                                <li class="nav-parent">
-                                                    <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu nạp tiền</span></a>
-                                                    <ul class="children nav">
-                                                        <li><a href="{{ URL::to('admin/manage-admin-load-money') }}">Yêu cầu nạp tiền</a></li>
-                                                    </ul>
-                                                </li>
-                                                @else()
-                                                <li class="nav-parent">
-                                                    <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý khách hàng</span></a>
-                                                    <ul class="children nav">
-                                                        <li><a href="{{ URL::to('admin/manage-admin-customer') }}">Danh sách khách hàng</a></li>
-                                                    </ul>
-                                                </li>
-                                                @endif
 
-                                         @endforeach
 
-                                    @elseif($type[0]->type_account=='sales')
+                                                    @elseif ($v->permission=="module_force")
 
-                                        <li class="nav-parent">
-                                            <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Khách hàng</span></a>
-                                            <ul class="children nav">
-                                                <li><a href="{{ URL::to('admin/manage-sale-customer') }}">Danh sách khách hàng</a></li>
-                                            </ul>
-                                        </li>
+                                                    @elseif ($v->permission=="module_request_payment")
+                                                    <li class="nav-parent">
+                                                        <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu rút tiền</span></a>
+                                                        <ul class="children nav">
 
-                                    @else
-                                        <li class="nav-parent">
-                                            <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý hổ trợ</span></a>
-                                            <ul class="children nav">
-                                                <li><a href="{{ URL::to('admin/manage-help-deal') }}">Yêu cầu giao dịch</a></li>
-                                                <li><a href="{{ URL::to('admin/manage-help-chat') }}">Yêu cầu hổ trợ</a></li>
-                                            </ul>
-                                        </li>
-                                    @endif
+                                                            <li><a href="{{ URL::to('admin/manage-admin-sent-money') }}">Yêu cầu rút tiền</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    @elseif ($v->permission=="module_confirm_deposit")
+                                                    <li class="nav-parent">
+                                                        <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu nạp tiền</span></a>
+                                                        <ul class="children nav">
+                                                            <li><a href="{{ URL::to('admin/manage-admin-load-money') }}">Yêu cầu nạp tiền</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    @else()
+                                                    <li class="nav-parent">
+                                                        <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý khách hàng</span></a>
+                                                        <ul class="children nav">
+                                                            <li><a href="{{ URL::to('admin/manage-admin-customer') }}">Danh sách khách hàng</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    @endif
+
+                                             @endforeach
+
+                                        @elseif($data_admin->type_account=='sales')
+
+                                            <li class="nav-parent">
+                                                <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Khách hàng</span></a>
+                                                <ul class="children nav">
+                                                    <li><a href="{{ URL::to('admin/manage-sale-customer') }}">Danh sách khách hàng</a></li>
+                                                </ul>
+                                            </li>
+
+                                        @else
+                                            <li class="nav-parent">
+                                                <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Quản lý hổ trợ</span></a>
+                                                <ul class="children nav">
+                                                    <li><a href="{{ URL::to('admin/manage-help-deal') }}">Yêu cầu giao dịch</a></li>
+                                                    <li><a href="{{ URL::to('admin/manage-help-chat') }}">Yêu cầu hổ trợ</a></li>
+                                                </ul>
+                                            </li>
+                                        @endif
 
 
                                     </ul>
@@ -331,16 +333,15 @@
                             </li>
                             <li class="dropdown pull-right">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt=""><?php $ten =Session::get('account_name'); echo $ten ?></span>
+                                    <span class="pl15"><img src="{{ asset('images/iconuser.png') }}" height="20px" width="30px" alt=""><?php echo $data_admin->account_username ?></span>
                                     <span class="caret caret-tp"></span>
-                                    {{-- <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">
-                                    <input type="hidden" id="id_ac" value="{{ Auth::user()->id }}"> --}}
+                                    <input type="hidden" id="id_ac" value="{{ $data_admin->id }}">
                                 </a>
                                 <ul class="dropdown-menu animated m-t-xs">
                                     <li><a  class="animated animated-short fadeInUp" onclick="clear_data_pass()" data-toggle="modal" data-target="#change_password_dashboard_account_Modal">Đổi mật khẩu</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#" class="animated animated-short fadeInUp" data-toggle="modal" data-target="#logout-dasboard"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
-                                    @foreach ($permission as $k=>$v)
+                                    @foreach ($data_admin->role_permission as $k=>$v)
                                     @if($v->permission=="module_force")
                                         <input type="hidden" id="xxxxx" value="xx11xx">
                                         <li><a href="#" class="animated animated-short fadeInUp" data-toggle="modal" data-target="#force-sign-out-dasboard"><i class="fa fa-sign-out"></i>Cưỡng chế đăng xuất</a></li>
@@ -383,6 +384,7 @@
             <script src="{{ asset('backend/js/bootstrap.min.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+            <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
             <script src="{{ asset('backend/js/main/admin_dashboard.js') }}"></script>
             <!-- Morris -->
 

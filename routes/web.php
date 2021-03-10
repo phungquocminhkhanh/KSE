@@ -35,12 +35,14 @@ Route::get('/chart2',function() {
 Route::get('/dashboard_chart',function() {
     return view('admin.dashboard_chart');
 });
+
 Route::get('/',function() {
     return view('customer.cus_login');
 });
 
 Route::group(['prefix' => 'customer'], function () {
     Route::post('cus-login','loginController@cus_login');
+    Route::post('cus-logout','loginController@cus_logout');
 
     Route::get('/chart',function() {
         return view('admin.chart');
@@ -97,129 +99,50 @@ Route::group(['prefix' => 'admin'], function () {
         // $a=$response->getBody();
         // $b=json_decode($a);
         // return view('admin.text')->with('text',$b);
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',1)
-                ->get();
-                $type=DB::table('tbl_account_type')
-                ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-                ->where('tbl_account_account.id',1)
-                ->get();
-        return view('admin.account')->with("permission",$r)->with("type",$type);
+
+        return view('admin.account');
     });
 
 
     Route::get('manage-permission-type',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
-                ->get();
-        $type=DB::table('tbl_account_type')
-                ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-                ->where('tbl_account_account.id',Auth::user()->id)
-                ->get();
-        return view('admin.account_permission_type')->with("permission",$r)->with("type",$type);
+
+        return view('admin.account_permission_type');
     });
 
     Route::get('manage-admin-deal',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',1)
-                ->get();
-        $type=DB::table('tbl_account_type')
-        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',1)
-        ->get();
-        return view('admin.admin_deal')->with("permission",$r)->with("type",$type);
+        return view('admin.admin_deal');
     });
 
     Route::get('manage-admin-load-money',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',1)
-                ->get();
-        $type=DB::table('tbl_account_type')
-        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',1)
-        ->get();
-        return view('admin.admin_load_money')->with("permission",$r)->with("type",$type);
+        return view('admin.admin_load_money');
     });
     Route::get('manage-admin-sent-money',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',1)
-                ->get();
-        $type=DB::table('tbl_account_type')
-        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',1)
-        ->get();
-        return view('admin.admin_sent_money')->with("permission",$r)->with("type",$type);
+
+        return view('admin.admin_sent_money');
     });
     Route::get('manage-admin-customer',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',1)
-                ->get();
-                $type=DB::table('tbl_account_type')
-                ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-                ->where('tbl_account_account.id',1)
-                ->get();
-        return view('admin.admin_customer')->with("permission",$r)->with("type",$type);
+
+        return view('admin.admin_customer');
     });
 
 
 
 
     Route::get('manage-sale-customer',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
-                ->get();
-        $type=DB::table('tbl_account_type')
-        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',Auth::user()->id)
-        ->get();
-        return view('admin.sale_customer')->with("permission",$r)->with("type",$type);
+
+        return view('admin.sale_customer');
     });
 
 
 
 
     Route::get('manage-help-deal',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
-                ->get();
-        $type=DB::table('tbl_account_type')
-        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',Auth::user()->id)
-        ->get();
-        return view('admin.help_deal')->with("permission",$r)->with("type",$type);
+        return view('admin.help_deal');
     });
     Route::get('manage-help-chat',function () {
-        $r=DB::table('tbl_account_authorize')
-                ->join('tbl_account_permission','tbl_account_permission.id','=','tbl_account_authorize.grant_permission')
-                ->select('tbl_account_permission.permission')
-                ->where('tbl_account_authorize.id_admin',Auth::user()->id)
-                ->where('tbl_account_authorize.id_business',Auth::user()->id_business)
-                ->get();
-        $type=DB::table('tbl_account_type')
-        ->join('tbl_account_account','tbl_account_account.id_type','=','tbl_account_type.id')
-        ->where('tbl_account_account.id',Auth::user()->id)
-        ->get();
-        return view('admin.help_chat')->with("permission",$r)->with("type",$type);
+        return view('admin.help_chat');
     });
+
 
 
 

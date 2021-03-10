@@ -96,7 +96,8 @@ function chart_line() {
 
 
     chart.scrollbarX = new am4core.Scrollbar();
-
+    chart.scrollbarX.startGrip.icon.stroke = am4core.color("#8A5658");
+    chart.scrollbarX.endGrip.icon.stroke = am4core.color("#8A5658");
 
     // 0
 
@@ -332,6 +333,31 @@ function change_chart() {
 
     }, 1000);
 }
+
+// function check_exchange_open() {
+//     $.ajax({
+//         url: urlapi,
+//         method: "POST",
+//         data: {
+//             detect: "check_exchange_open",
+//             id_customer: $('#id_cus').val(),
+//         },
+//         dataType: "json",
+//         success: function(response) {
+//             if (response.success == 'false') {
+//                 $("#chartdiv").html('<h1>Sàn đã đóng</h1>')
+//                 $('#tradeup').prop('disabled', true);
+//                 $('#tradedown').prop('disabled', true);
+//             } else {
+//                 chart_line();
+//             }
+
+//         }
+//     });
+// }
+
+
 $(document).ready(function() {
-    //change_chart();
+    //check_exchange_open();
+    chart_line();
 });

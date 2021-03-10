@@ -16,19 +16,16 @@ function clear_data() { //clear form insert
 function show_detail_account(id) {
     var output = "";
     $.ajax({
-        url: "../admin/account-account-detail",
+        url: urlapi,
         method: "post",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token-detail"]').attr('content')
-        },
-        data: { id_account: id },
+        data: { detect: "account_manager", type_manager: "list_account", id_account: id },
         success: function(data) {
-            if (data.success == 200) {
-                output = `<div id="contact-1" class="tab-pane active">
+
+            output = `<div id="contact-1" class="tab-pane active">
                                  <div class="row m-b-lg">
                                     <div class="col-lg-8">
                                        <strong>
-                                      ${data.data.detail[0].account_fullname}
+                                      ${data.data[0].full_name}
                                        </strong>
 
                                     </div>
@@ -38,40 +35,40 @@ function show_detail_account(id) {
                                        <strong>Thông tin</strong>
                                        <ul class="list-group clear-list">
                                           <li class="list-group-item">Username:
-                                             <span class="pull-right">${data.data.detail[0].account_username}</span>
+                                             <span class="pull-right">${data.data[0].username}</span>
 
                                           </li>
                                           <li class="list-group-item">Email:
-                                             <span class="pull-right">${data.data.detail[0].account_email}</span>
+                                             <span class="pull-right">${data.data[0].email}</span>
                                           </li>
                                           <li class="list-group-item">Số điện thoại:
-                                             <span class="pull-right">${data.data.detail[0].account_phone}</span>
+                                             <span class="pull-right">${data.data[0].phone_number}</span>
 
                                           </li>
                                        </ul>
                                        <strong>Quyền</strong>
                                        <ul class="list-group clear-list">`;
-                $.each(data.data.permission, function(k, v) {
-                    output += `<li class="list-group-item">${v.description}</li>`;
-                });
-                output += ` </ul>
+            $.each(data.data[0].role_permission, function(k, v) {
+                output += `<li class="list-group-item">${v.description}</li>`;
+            });
+            output += ` </ul>
                                             <hr/>
                                             <strong id="btn-disable-account">`;
 
-                if (data.data.detail[0].account_status == 'Y')
-                    output += `<button type="button" onclick="disable_account(${data.data.detail[0].id},'N')" class="btn btn-danger">Vô hiệu hóa</button></strong>`;
-                else
-                    output += `<button type="button" onclick="disable_account(${data.data.detail[0].id},'Y')" class="btn btn-secondary">Mở lại tài khoản</button></strong>`;
+            if (data.data[0].status_employee == 'Y')
+                output += `<button type="button" onclick="disable_account(${data.data[0].id},'N')" class="btn btn-danger">Vô hiệu hóa</button></strong>`;
+            else
+                output += `<button type="button" onclick="disable_account(${data.data[0].id},'Y')" class="btn btn-secondary">Mở lại tài khoản</button></strong>`;
 
 
-                output += `<button type="button" onclick="change_password(${data.data.detail[0].id})" class="btn btn-light" data-toggle="modal" data-target="#change_password_account_Modal">Đặt lại mật khẩu</button></strong>`
-                output += `    </div>
+            output += `<button type="button" onclick="change_password(${data.data[0].id})" class="btn btn-light" data-toggle="modal" data-target="#change_password_account_Modal">Đặt lại mật khẩu</button></strong>`
+            output += `    </div>
 
                                         </div>
                                 </div>`
 
-                $('#detail-account').html(output)
-            }
+            $('#detail-account').html(output)
+
 
 
         }
@@ -109,71 +106,92 @@ function disable_account(id, status) {
     }
 }
 
-function author_account(id) {
+async function author_account(id) {
     $(':checkbox').attr('checked', false);
     $('#id_author_account').val(id);
-    $.ajax({
-        url: "../admin/account-account-get-permission",
+    let array_per = [];
+    await $.ajax({
+        url: urlapi,
         method: "post",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token-get-permission"]').attr('content')
-        },
-        data: { id_account: id },
+        data: { detect: "account_type_manager", type_manager: "check_role", id_user: id },
         success: function(data) {
+            if (data.success == "true") {
+                array_per = data.data[0].role_permission;
 
-            output3 = "";
-            $.each(data.list_per, function(k, v) {
-                var tam = `<tr>
-                <th>${v.description}</th>
-                <th><div class="checkbox checkbox-danger">
-                    <input value="${v.id}" name="list_permission[]" type="checkbox">
-                     </div>
-                </th>
-            </tr>`;
-                $.each(data.account_per, function(j, acc) {
-                    if (v.id == acc.id) {
-                        tam = `
-                        <tr>
-                            <th>${v.description}</th>
-                            <th><div class="checkbox checkbox-danger">
-                                <input value="${v.id}" name="list_permission[]" checked type="checkbox">
-                                 </div>
-                            </th>
-                        </tr>
-                        `;
-                    }
+            }
+        }
+    });
+    $.ajax({
+        url: urlapi,
+        method: "post",
+        data: { detect: "account_type_manager", type_manager: "list_module" },
+        success: function(data) {
+            if (data.success == "true") {
+                output3 = "";
+                $.each(data.data, function(k, v) {
+
+                    var tam = `<tr>
+                    <th>${v.description}</th>
+                    <th><div class="checkbox checkbox-danger">
+                        <input value="${v.id}" name="list_permission[]" type="checkbox">
+                         </div>
+                    </th>
+                </tr>`;
+                    $.each(array_per, function(j, acc) {
+                        if (v.id == acc.id) {
+                            tam = `
+                            <tr>
+                                <th>${v.description}</th>
+                                <th><div class="checkbox checkbox-danger">
+                                    <input value="${v.id}" name="list_permission[]" checked type="checkbox">
+                                     </div>
+                                </th>
+                            </tr>
+                            `;
+                        }
+                    });
+                    output3 += tam;
+
                 });
-                output3 += tam;
+                $("#account_permission").html(output3);
+            }
 
-            });
-            $("#account_permission").html(output3);
 
         }
     });
 }
 
 function edit_account(id) {
+    console.log($("#id_account").val());
     $.ajax({
-        url: "../admin/account-account/" + id,
-        method: "GET",
+        url: urlapi,
+        method: "POST",
+        data: {
+            detect: "account_manager",
+            type_manager: "list_account",
+            id_account: id,
+        },
         success: function(data) {
-            if (data.success == 200) {
+            if (data.success == "true") {
                 $.each(data.data, function(k, v) {
-                    $('#eusername').val(v.account_username);
-                    $('#efullname').val(v.account_fullname);
-                    $('#eemail').val(v.account_email);
-                    $('#ephone').val(v.account_phone);
+                    $('#eusername').val(v.username);
+                    $('#efullname').val(v.full_name);
+                    $('#eemail').val(v.email);
+                    $('#ephone').val(v.phone_number);
                     $("#id_edit_account").val(v.id);
-
                     $('#eerusername').html('');
                     $('#eerfullname').html('');
                 });
                 output = "";
-                $.each(data.type, function(k, v) {
-                    if (v.id == data.data[0].id_type)
-                        output += ` <option selected value="${v.id}">${v.type_account}</option>`;
+                let arr_type = [{ id: 1, type_description: "Quản lý" },
+                    { id: 2, type_description: "Chăm sóc khách hàng" },
+                    { id: 3, type_description: "Kinh doanh" }
+                ]
+                $.each(arr_type, function(k, v) {
+                    if (data.data[0].id_type == v.id)
+                        output += ` <option selected value="${v.id}">${v.type_description}</option>`;
                     else
-                        output += ` <option value="${v.id}">${v.type_account}</option>`;
+                        output += ` <option value="${v.id}">${v.type_description}</option>`;
                 });
                 $('#etype_account').html(output)
             }
@@ -187,33 +205,31 @@ function edit_account(id) {
 function show_account() {
     let output = "";
     $.ajax({
-        type: "get",
-        url: "../admin/account-account",
-        data: "data",
+        type: "post",
+        url: urlapi,
+        data: { detect: "account_manager", type_manager: "list_account" },
         dataType: "json",
         success: function(response) {
-            $.each(response, function(k, v) {
+            $.each(response.data, function(k, v) {
                 output += `
                 <tr onclick="show_detail_account(${v.id})">
-                <td><a data-toggle="tab" href="#contact-1" class="client-link">${v.account_fullname}</a></td>
+                <td><a data-toggle="tab" href="#contact-1" class="client-link">${v.full_name}</a></td>
                 <td>${v.type_account}</td>
                 <td>`
-                if (v.account_phone != null)
-                    output += v.account_phone
+                if (v.phone_number != null)
+                    output += v.phone_number
 
                 output += `</td>
                 <td>`;
-                if (v.account_status == 'Y')
+                if (v.status_employee == 'Y')
                     output += 'Đang hoạt động'
                 else
                     output += 'Không hoạt động';
 
                 output += `</td>
                 <td class="client-status"><button onclick="edit_account(${v.id})" class="label label-primary" data-toggle="modal" data-target="#edit_account_Modal" >Sửa</button></td>`;
-                if (v.type_account == "admin")
-                    output += `<td class="client-status"><button onclick="author_account(${v.id})" class="label label-primary" data-toggle="modal" data-target="#author_account_Modal" >Phân quyền</button></td>`
-                else
-                    output += `<td class="client-status"><button class="label label-primary">Phân quyền</button></td>`
+
+                output += `<td class="client-status"><button onclick="author_account(${v.id})" class="label label-primary" data-toggle="modal" data-target="#author_account_Modal" >Phân quyền</button></td>`
                 output += `</tr>
                 `;
 
@@ -439,38 +455,18 @@ function KT_esodienthoai(sdt) {
 
 $(document).ready(function() {
     show_account();
-    $.ajax({
-        type: "get",
-        url: "../admin/list-account-type",
-        data: "data",
-        dataType: "json",
-        success: function(response) {
-            output2 = "";
-            $.each(response, function(k, v) {
-                output2 += `
-                    <option value="${v.id}">${v.type_account}</option>
-                `;
-            });
-            $("#type_account").html(output2);
-            //$("#etype_account").html(output2);
-
-        }
-    });
-
     $('#insert_account_form').on("submit", function(event) {
         event.preventDefault();
         if (check_input() == false) {
 
         } else {
             $.ajax({
-                url: "../admin/account-account",
+                url: urlapi,
                 method: "post",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token-insert"]').attr('content')
-                },
                 data: $('#insert_account_form').serialize(),
                 success: function(data) {
-                    if (data.success == 200) {
+
+                    if (data.success == 'true') {
                         alert(data.message);
                         show_account();
                         $('#close_modol_insert').click();
@@ -490,14 +486,11 @@ $(document).ready(function() {
 
         } else {
             $.ajax({
-                url: "../admin/account-account/" + id,
-                method: "put",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token-edit"]').attr('content')
-                },
+                url: urlapi,
+                method: "post",
                 data: $('#edit_account_form').serialize(),
                 success: function(data) {
-                    if (data.success == 200) {
+                    if (data.success == "true") {
                         alert(data.message);
                         show_account();
                         $('#close_modol_edit').click();
@@ -513,24 +506,22 @@ $(document).ready(function() {
     });
     $('#author_account_form').on("submit", function(event) {
         event.preventDefault();
-        let permission = [];
+        let permission = "";
         var idacc = $('#id_author_account').val();
         $(':checkbox:checked').each(function(i) {
-            permission.push($(this).val());
+            permission += $(this).val() + ","
         });
-
         $.ajax({
-            url: "../admin/account-account-permission",
+            url: urlapi,
             method: "post",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token-author"]').attr('content')
-            },
-            data: { id_account: $('#id_author_account').val(), list_permission: permission },
+            data: { detect: "account_manager", type_manager: "update_account", id_user: $('#id_author_account').val(), role_permission: permission },
             success: function(data) {
-                if (data.success == 200) {
+                if (data.success == "true") {
                     alert("Phân quyền thành công");
                     $('#close_modol_author').click();
                     show_detail_account(idacc);
+                } else {
+                    alert("Phân quyền không thành công");
                 }
             }
         });

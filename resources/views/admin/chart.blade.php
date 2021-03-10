@@ -12,7 +12,7 @@
 {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> --}}
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
-<script src="{{ asset('backend/js/main/admin_chart_tam.js') }}"></script>
+<script src="{{ asset('backend/js/main/admin_chart.js') }}"></script>
 <script src="{{ asset('backend/js/main/admin_trading.js') }}"></script>
  @endsection
  @section('chart_content')
@@ -140,8 +140,8 @@ button {
          <div class="row" style="background-color: #2A2B30">
 
             <div class="col-sm-10">
-                <div id="chartdiv" style="width: 100%;height: 570px;"></div>
-                <div id="selectordiv"></div>
+                <div id="chartdiv" style="width: 100%;height: 570px;text-align: center"></div>
+
             </div>
             <div class="col-sm-2">
                 <div class="inqbox " style="background-color: #2A2B30;height:500px;">
@@ -156,56 +156,25 @@ button {
                                  <td>Số tiền cược</td>
                             </tr>
                             <tr>
-                                 <td><input type="number" style="height: 40px ; width: 100%;" placeholder="0,000 VND"></td>
+                                 <td><input type="number" id="money_trade" style="height: 40px ; width: 100%;" placeholder="0,000 VND"></td>
                           </tr>
                         </table>
                       </div>
                       <br />
                       <div class="tab-content" id="detail-account">
-                         <button type="button" id="tradetop" onclick="trade('up')" style="height: 50px ; width: 100%;" class="btn btn-success">Lên</button>
+                         <button type="button" id="tradeup" onclick="trade('up')" style="height: 50px ; width: 100%;" class="btn btn-success">Lên</button>
                          <br />
                          <br />
                         <button onclick="thao_tac_period()" style="background-color: slategrey; float: inherit;"><img height="20px" width="20px" src="{{ asset('images/clock.png') }}" alt=""></button>
                          <br />
-                         <button type="button" id="tradebot" onclick="trade('down')" style="height: 50px ; width: 100%;" class="btn btn-danger">Xuống</button>
+                         <button type="button" id="tradedown" onclick="trade('down')" style="height: 50px ; width: 100%;" class="btn btn-danger">Xuống</button>
                       </div>
 
                    </div>
                    <div id="lsphien_thaotacphien">
                     <h3>Lịch sử phiên</h3>
                     <div style="width: 100%;height: 250px;overflow-y: scroll;">
-
                         <table class="content_period"  cellspacing= "10">
-                            <tr>
-                                <td>15/02/2020 - 20:07</td>
-                                <td><img src="{{ asset('images/len.png') }}" width="30px" height="30px" alt=""></td>
-                            </tr>
-                            <tr>
-                                <td>15/02/2020 - 20:07</td>
-                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
-                            </tr>
-                            <tr>
-                                <td>15/02/2020 - 20:07</td>
-                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
-                            </tr>
-                            <tr>
-                                <td>15/02/2020 - 20:07</td>
-                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
-                            </tr>
-                            <tr>
-                                <td>15/02/2020 - 20:07</td>
-                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
-                            </tr>
-                            <tr>
-                                <td>15/02/2020 - 20:07</td>
-                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
-                            </tr>
-                            <tr>
-                                <td>15/02/2020 - 20:07</td>
-                                <td><img src="{{ asset('images/xuong1.png') }}" width="30px" height="30px" alt=""></td>
-                            </tr>
-
-                        </table>
                        </div>
                    </div>
 

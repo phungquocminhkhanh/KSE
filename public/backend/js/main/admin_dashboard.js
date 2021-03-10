@@ -128,22 +128,28 @@ $(document).ready(function() {
 
     $('#change_password_dashboard_account_form').on("submit", function(event) {
         event.preventDefault();
+        console.log($("#id_ac").val());
         if (check_pass_dashboard() == false) {} else {
             $.ajax({
-                url: "../admin/account-account-change-password-dashboard",
+                url: urlapi,
                 method: "post",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token-change-password-dashboard"]').attr('content')
+                data: {
+                    detect: "change_pass",
+                    type_account: "employee",
+                    id_account: $("#id_ac").val(),
+                    new_pass: $('#dashpassword_change').val(),
+                    old_pass: $("#old_password").val()
                 },
-                data: { account_password: $('#dashpassword_change').val(), old_password: $("#old_password").val() },
                 success: function(data) {
-                    if (data.success == 200) {
-                        $('#content_alert_das').html('<h3>' + data.message + '</h3>');
-                        $('#alert_change_pass_dashboard').modal('show');
-                        $('#close_modol_changge_password_dashboard').click();
-                    } else {
-                        $('#erold_password').html('Mật khẩu cũ không đúng');
-                    }
+                    console.log(data);
+                    // if (data.success == "true") {
+                    //     // $('#content_alert_das').html('<h3>' + data.message + '</h3>');
+                    //     // $('#alert_change_pass_dashboard').modal('show');
+                    //     // $('#close_modol_changge_password_dashboard').click();
+
+                    // } else {
+                    //     $('#erold_password').html('Mật khẩu cũ không đúng');
+                    // }
                 }
             });
         }

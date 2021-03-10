@@ -3,7 +3,6 @@
    <body>
     <div style="clear: both; height: 61px;"></div>
     <div class="wrapper wrapper-content animated fadeInRight">
-
          <div class="row">
             <div class="col-sm-8">
                <div class="inqbox">
@@ -68,15 +67,18 @@
               <div class="modal-body">
                 <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
                <form method="post" id="insert_account_form">
+
+                <input type="hidden" name="detect" value="account_manager">
+                <input type="hidden" name="type_manager" value="create_account">
                 <label>Username (<font style="color: red">*</font>)</label>
-                <input type="text" name="account_username" id="username" class="form-control" />
+                <input type="text" name="username" id="username" class="form-control" />
                 <small id="erusername" class="text-danger"></small>
                 <br />
                 <br />
                 <label>Password (<font style="color: red">*</font>)</label>
 
                 <div class="input-group" id="show_hide_password_insert">
-                    <input class="form-control" type="password" name="account_password" id="password" onkeyup="passwordChanged()">
+                    <input class="form-control" type="password" name="password" id="password" onkeyup="passwordChanged()">
 
                     <div class="input-group-addon">
                         <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
@@ -86,22 +88,24 @@
                 <br />
                 <br />
                 <label>Họ và tên đầy đủ (<font style="color: red">*</font>)</label>
-                <input type="text" name="account_fullname" id="fullname" class="form-control" />
+                <input type="text" name="full_name" id="fullname" class="form-control" />
                 <small id="erfullname" class="text-danger"></small>
                 <br />
                 <br />
                 <label>Email</label>
-                <input type="text" name="account_email" id="email" class="form-control" />
+                <input type="text" name="email" id="email" class="form-control" />
                 <small id="eremail" class="text-danger"></small>
                 <br />
                 <br />
                 <label>Số điện thoại</label>
-                <input type="tel" id="phone" name="account_phone" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onkeyup="KT_sodienthoai(this.value)" maxlength="10" class="form-control">
+                <input type="tel" id="phone" name="phone_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onkeyup="KT_sodienthoai(this.value)" maxlength="10" class="form-control">
                 <small id="ersdt" class="text-danger"></small>
                 <br />
                 <label>Loại nhân viên (<font style="color: red">*</font>)</label>
-                <select id="type_account" name="id_type">
-
+                <select id="id_type" name="id_type">
+                    <option value="1">Quản lý</option>
+                    <option value="2">Chăm sóc khách hàng</option>
+                    <option value="3">Kinh doanh</option>
                 </select>
                 <br />
                 <input type="submit" name="insert" id="insert_account" value="Thêm" class="btn btn-success" />
@@ -125,22 +129,26 @@
               <div class="modal-body">
                 <meta name="csrf-token-edit" content="{{ csrf_token() }}" />
                <form id="edit_account_form">
+                <input type="hidden" name="detect" value="account_manager">
+                <input type="hidden" name="type_manager" value="update_account">
+                <input type="hidden"  name="id_user" id="id_edit_account" value="" >
+
                 <label>Username (<font style="color: red">*</font>)</label>
-                <input type="text" name="account_username" id="eusername" readonly class="form-control" />
+                <input type="text" name="username" id="eusername" readonly class="form-control" />
                 <small id="eerusername" class="text-danger"></small>
                 <br />
                 <br />
                 <label>Họ và tên đầy đủ (<font style="color: red">*</font>)</label>
-                <input type="text" name="account_fullname" id="efullname" class="form-control" />
+                <input type="text" name="full_name" id="efullname" class="form-control" />
                 <small id="eerfullname" class="text-danger"></small>
                 <br />
                 <br />
 
                 <label>Email</label>
-                <input type="text" name="account_email" id="eemail" class="form-control" />
+                <input type="text" name="email" id="eemail" class="form-control" />
                 <br />
                 <label>Số điện thoại</label>
-                <input type="tel" id="ephone" name="account_phone" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onkeyup="KT_esodienthoai(this.value)" maxlength="10" class="form-control">
+                <input type="tel" id="ephone" name="phone_number" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onkeyup="KT_esodienthoai(this.value)" maxlength="10" class="form-control">
                 <small id="eersdt" class="text-danger"></small>
                 <br />
                 <br />
@@ -150,7 +158,7 @@
 
                 </select>
                 <br />
-                <input id="id_edit_account" value="" type="hidden">
+
                 <input type="submit" name="edit" id="edit_account" value="Cập nhật" class="btn btn-success" />
                </form>
               </div>
@@ -185,6 +193,7 @@
                        </tbody>
                     </table>
                  </div>
+
                  <input id="id_author_account" value="" type="hidden">
                 <br />
                 <input type="submit" name="edit" id="btn_author_account" value="Cập nhật" class="btn btn-success" />
@@ -260,6 +269,7 @@
           </div>
 
     </body>
+    <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
     <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>
     <script src="{{ asset('backend/js/main/admin_account.js') }}"></script>
 @endsection

@@ -64,7 +64,7 @@
                     </ul>
                 </div>
             </nav>
-
+            <input type="hidden" id="id_cus" value="{{ $customer->id }}">
             <meta name="csrf-token-force-sign" content="{{ csrf_token() }}" />
             <meta name="csrf-token-force-sign2" content="{{ csrf_token() }}" />
             <div id="change_password_dashboard_account_Modal" class="modal fade">
@@ -131,12 +131,13 @@
                   <div class="modal-body">
 
                     <form id="rut_tien_form">
-                    <meta name="csrf-token-change-password-dashboard" content="{{ csrf_token() }}" />
+                        <input type="hidden" name="detect" value="customer_request_payment">
+                        <input type="hidden" name="id_customer" value="34">
                     <div class="inqbox-content">
                         <h4 id="">Ví tài khoản : 345,000,000 VND</h4>
                         <label>Số tiền rút</label>
                             <div class="input-group" id="show_hide_password">
-                            <input class="form-control" type="password" name="money" id="money">
+                            <input class="form-control" type="text" name="request_value" id="request_value">
                             <small id="ermoney" class="text-danger"></small><br /><br />
                     <input type="submit" name="edit" id="btn_rut_tien" value="Rút tiền" class="btn btn-success" />
                     </form>
@@ -160,10 +161,10 @@
                     <form id="nap_tien_form">
                     <meta name="csrf-token-change-password-dashboard" content="{{ csrf_token() }}" />
                     <div class="inqbox-content">
-                        <h4>Tên  : Phùng Quốc Minh Khánh</h4>
-                        <h4>Số điện thoại : 0336819000</h4>
-                        <h4>Cứu pháp : NTXXXXXXXX</h4>
+                        <div id="info_payment"></div>
+
                     <div><img src="{{ asset('/images/momo.png') }}" alt=""> sử dụng MoMo trên mobile để nạp tiền</div>
+                    </div>
                     </form>
                   </div>
                   <div class="modal-footer">
@@ -181,9 +182,11 @@
               </div>
               <div class="modal-body">
                 <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
-               <form method="post" id="thanh_toan_form">
+               <form method="post" id="form_phuong_thuc_thanh_toan">
+                <input type="hidden" name="detect" value="customer_method_payment">
+                <input type="hidden"  name="id_customer" id="id_edit_account" value="{{$customer->id}}" >
                 <label>Tên ngân hàng (<font style="color: red">*</font>)</label>
-                <select id="type_account" name="id_bank">
+                <select id="id_bank" name="id_bank">
 
                 </select>
                 <br />
@@ -202,13 +205,15 @@
                 <input type="file" id="customer_account_img" onChange="return fileValidation()" name="customer_account_img" class="form-control" multiple="multiple"  placeholder="Hình ảnh">
                 </label>
                 <small  class="text-danger"></small>
+                <br/>
+                <span id="upload_ed_image"></span>
+                 <br/>
                 <br />
-                <br />s
-                <input type="submit" name="insert" id="insert_payment" value="Tạo mới" class="btn btn-success" />
+                <input type="submit" name="insert" id="insert_payment" value="Cập nhật" class="btn btn-success" />
                </form>
               </div>
               <div class="modal-footer">
-               <button type="button" id="close_modol_payment" class="btn btn-default" data-dismiss="modal">Đóng</button>
+               <button type="button" id="close_modol_funciton_payment" class="btn btn-default" data-dismiss="modal">Đóng</button>
               </div>
              </div>
             </div>
@@ -222,12 +227,29 @@
                <h4 class="modal-title">Thông tin tài khoản</h4>
               </div>
               <div class="modal-body">
-                <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
-               <form method="post" id="profile_form">
 
-                <br />
-                <input type="submit" name="insert" id="btn_profile" value="Tạo mới" class="btn btn-success" />
-               </form>
+
+
+                <label>Mã giới thiệu</label>
+                <input type="text" name="customer_introduce" id="customer_introduce" readonly class="form-control" />
+
+                <br/>
+                <label>Họ và tên </label>
+                <input type="text" name="name" id="customer_names" readonly class="form-control" />
+
+                <br/>
+                <label>Số điện thoại </label>
+                <input type="text" name="name" id="customer_phone" readonly class="form-control" />
+
+                <br/>
+                <label>Số CMND</label>
+                <input type="text" name="customer_cert_no" id="customer_cert_no" readonly class="form-control" />
+
+                <br/>
+                <label>Hình CMND mặt trước</label>
+                    <div id="cmnd_mattruoc" style="width: 100%;height: 150px;text-align: center"></div>
+                </label>
+
               </div>
               <div class="modal-footer">
                <button type="button" id="close_modol_payment" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -235,7 +257,6 @@
              </div>
             </div>
            </div>
-
 
             <div class="modal" id="alert_change_pass_dashboard" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document" style="background-color: #87CEEB">
@@ -259,7 +280,7 @@
                        <h3> Bạn có muốn đăng xuất không</h3>
                     </div>
                     <div class="modal-footer">
-                        <form action="{{ URL::to('/page/logout') }}" method="get">
+                        <form action="{{ URL::to('/customer/cus-logout') }}" method="get">
                             <button type="submid" class="btn btn-secondary">Yes</button>
                             <button type="button"class="btn btn-secondary" data-dismiss="modal">No</button>
                         </form>
@@ -347,13 +368,13 @@
                                         <small style="text-align: center" id="customer_wallet_payment">0</small>
                                     </li>
                                     <br />
-                                    <li style="text-align: center"><button onclick="ff()" style="width: 80%;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#rut_tien_modal">Rút tiền</button></li>
+                                    <li style="text-align: center"><button  style="width: 80%;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#rut_tien_modal">Rút tiền</button></li>
 
                                 </ul>
                             </li>
                             <li class="dropdown hidden-xs">
                                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                    <button onclick="ff()" type="button" class="btn btn-warning" data-toggle="modal" data-target="#nap_tien_modal">Nạp tiền</button>
+                                    <button  type="button" class="btn btn-warning" data-toggle="modal" data-target="#nap_tien_modal">Nạp tiền</button>
                                 </a>
 
                             </li>
@@ -365,15 +386,15 @@
                                     {{-- <input type="hidden" id="id_bu" value="{{ Auth::user()->id_business }}">
                                     <input type="hidden" id="id_ac" value="{{ Auth::user()->id }}"> --}}
                                 </a>
+
                                 <ul class="dropdown-menu animated m-t-xs" style="background-color:#2A2B30;color: white">
                                     <li><a  class="animated animated-short fadeInUp" onclick="clear_data_pass()" data-toggle="modal" data-target="#change_password_dashboard_account_Modal">Đổi mật khẩu</a></li>
                                     <li class="divider"></li>
-                                    <li><a  class="animated animated-short fadeInUp" onclick="clear_data_pass()" data-toggle="modal" data-target="#profile_modal">Thông tin cá nhân</a></li>
+                                    <li><a  class="animated animated-short fadeInUp" data-toggle="modal" data-target="#profile_modal">Thông tin cá nhân</a></li>
                                     <li class="divider"></li>
-                                    <li><a  class="animated animated-short fadeInUp" onclick="clear_data_insert_payment()" data-toggle="modal" data-target="#phuong_thuc_thanh_toan_modal">Phương thức thanh toán</a></li>
+                                    <li><a  class="animated animated-short fadeInUp"  data-toggle="modal" data-target="#phuong_thuc_thanh_toan_modal">Phương thức thanh toán</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#" class="animated animated-short fadeInUp" data-toggle="modal" data-target="#logout-dasboard"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
-
                                 </ul>
                             </li>
                         </ul>

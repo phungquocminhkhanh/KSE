@@ -1,7 +1,6 @@
-//window.io = io(urlsocket, { transport: ['websocket'] });
-am4core.ready(function() {
+window.io = io(urlsocket, { transport: ['websocket'] });
 
-    // Themes begin
+function chart_line() {
     am4core.useTheme(am4themes_animated);
     // Themes end
 
@@ -13,7 +12,6 @@ am4core.ready(function() {
     chart.zoomOutButton.enabled = true;
 
     var data = [];
-    var data2 = [];
     var visits = 10;
     var g = 10;
     var i = 0;
@@ -22,8 +20,7 @@ am4core.ready(function() {
     var flagpop = 0;
     var len = 3000; // t là độ dài của chart
     var time = new Date().getTime();
-
-
+    var x = 0;
 
 
     // visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
@@ -43,32 +40,37 @@ am4core.ready(function() {
             data: { detect: 'get_coordinate' },
             dataType: "json",
             success: function(response) {
-                console.log(response);
                 if (response.success == 'false') {
-                    //data.push({ date1: new Date().setSeconds(0), date2: new Date().setSeconds(0), value1: 0, value2: 0, value3: 0 });
+
                 } else {
-                    phien = response.data[31];
+                    phien = response.data[response.data.length - 1];
+                    console.log(phien);
+                    x = 120 - Number(phien.time_duration);
                     arr = JSON.parse(phien.coordinate_xy);
                     gg = JSON.parse(phien.coordinate_g);
-                    g = 9.385 //gg.y;
-                    data.push({ date2: new Date(phien.time_open * 1000), date3: new Date(phien.time_close * 1000), value2: g, value3: g, value4: g - 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
-                    data.push({ date2: new Date(phien.time_close * 1000), date3: new Date(phien.time_close * 1000), value2: g, value3: g, value4: g + 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
+                    let g = 9.385; //gg.y;
+
+                    data.push({ date2: new Date(phien.period_open * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y - 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
+                    data.push({ date2: new Date(phien.period_close * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y + 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
                     for (let i = 0; i < arr.length; i++) {
-                        //data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
+                        data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
                     }
+                    chart.data = data;
+                    // console.log(data);
                 }
-                //  chart.data = data;
             }
         });
+
         series.events.on("validated", function() {
             bullet.moveTo(series.dataItems.last.point);
             bullet.validatePosition();
         });
         start_socket();
+
     }
+    //chart.data = data;
 
     chart.data = data;
-    console.log(chart.data);
     chart.background.fill = 'rgb(0,0,0)'
     chart.background.opacity = 0.5
 
@@ -125,7 +127,8 @@ am4core.ready(function() {
     series4.strokeWidth = 0.5;
     series4.stroke = series.stroke;
     series4.stroke = am4core.color("#EC5565");
-    var x = 6;
+
+
 
 
 
@@ -145,65 +148,7 @@ am4core.ready(function() {
     // add data
     var interval;
     var flag_update = 0;
-    // interval = setInterval(function() {
-    //     x = 6;
-    //     var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-    //     g = lastdataItem.valueY;
-    //     // var datefinal = new Date().setSeconds(10);
-    //     for (let i = 0; i < 2; i++) {
-    //         series2.dataItems.getIndex(i).valueY = lastdataItem.valueY;
-    //     }
-    //     let d2 = new Date(new Date().getTime() + 21000);
-    //     let d3 = new Date(new Date().getTime() + 7000);
-    //     let val_ser4 = series.dataItem.lastdataItem
-    //     series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
 
-    //     series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
-
-    //     series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
-    //     series4.dataItems.getIndex(1).dateX = d3
-    //     series4.dataItems.getIndex(0).valueY = lastdataItem.valueY - 15
-    //     series4.dataItems.getIndex(1).valueY = lastdataItem.valueY + 15
-
-    // }, 7000); // ham ay de reset lai dien G, diem G la diem de xem biet win hay thua
-
-    // function startInterval() {
-    //     interval = setInterval(function() {
-    //         var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-    //         //if (flag_update == 3) {
-    //         visits = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-    //         chart.addData({ date1: new Date(new Date().getTime() + 1000), value1: visits },
-    //             0
-    //         );
-    //         var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
-    //         label_final.label.text = x--;
-    //         label_final.label.fontSize = 20;
-    //         label_final.label.background.fill = am4core.color("#eee");
-
-    //         for (let i = 0; i < 2; i++) {
-    //             series3.dataItems.getIndex(i).valueY = visits;
-    //         }
-    //         if (visits < g)
-    //             series3.stroke = am4core.color("#EC5565"); //red
-    //         else
-    //             series3.stroke = am4core.color("#2C6E49"); //green
-
-    //         flag_update = 0;
-    //         // } else {
-    //         //     lastdataItem.valueY = visits + Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
-    //         //     flag_update++;
-    //         //     for (let i = 0; i < 2; i++) {
-    //         //         series3.dataItems.getIndex(i).valueY = lastdataItem.valueY;
-    //         //     }
-    //         //     if (lastdataItem.valueY < g)
-    //         //         series3.stroke = am4core.color("#EC5565"); //red
-    //         //     else
-    //         //         series3.stroke = am4core.color("#2C6E49"); //blue
-    //         // }
-
-    //     }, 1000);
-    // }
-    //startInterval();
 
     io.on('block-trading', async function(res) {
 
@@ -211,31 +156,53 @@ am4core.ready(function() {
     io.on('unlock-trading', async function(res) {
 
     });
+    io.on('diem-g', async function(res) {
+        x = 120;
+        data = JSON.parse(res);
+        var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+        // var datefinal = new Date().setSeconds(10);
+        for (let i = 0; i < 2; i++) {
+            series2.dataItems.getIndex(i).valueY = data.y;
+        }
+        let d2 = new Date(new Date().getTime() + 120000);
+        let d3 = new Date(new Date().getTime() + 120000);
+        let val_ser4 = series.dataItem.lastdataItem
+        series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
+
+        series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
+
+        series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
+        series4.dataItems.getIndex(1).dateX = d3
+        series4.dataItems.getIndex(0).valueY = data.y - 0.5
+        series4.dataItems.getIndex(1).valueY = data.y + 0.5
+    });
 
     function start_socket() {
         io.on('coordinates_real', async function(res) {
+
+
             data = JSON.parse(res);
-            console.log(new Date(data.x * 1000));
-            //var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+            var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
             // if (flag_update == 3) {
 
             chart.addData({ date1: new Date(data.x * 1000), value1: data.y },
                 0
             );
-            // var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
-            // label_final.label.text = x--;
-            // label_final.label.fontSize = 20;
-            // label_final.label.background.fill = am4core.color("#eee");
+            var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
+            label_final.label.text = x;
+            x = x - 1;
+            label_final.label.fontSize = 20;
+            label_final.label.background.fill = am4core.color("#eee");
 
-            // for (let i = 0; i < 2; i++) {
-            //     series3.dataItems.getIndex(i).valueY = data.y;
-            // }
-            // if (data.y < data.g)
-            //     series3.stroke = am4core.color("#EC5565"); //red
-            // else
-            //     series3.stroke = am4core.color("#2C6E49"); //green
+            for (let i = 0; i < 2; i++) {
+                series3.dataItems.getIndex(i).valueY = data.y;
+            }
+            if (data.y < data.g)
+                series3.stroke = am4core.color("#EC5565"); //red
+            else
+                series3.stroke = am4core.color("#2C6E49"); //green
 
-            flag_update = 0;
+            //flag_update = 0;
             // } else {
             //     lastdataItem.valueY = data.y;
             //     flag_update++;
@@ -293,7 +260,7 @@ am4core.ready(function() {
     function dateAxisChanged(ev) {
         //console.log("DateAxis zoomed!");
     }
-    // bullet at the front of the line
+    //bullet at the front of the line
     var bullet = series.createChild(am4charts.CircleBullet);
     bullet.circle.radius = 5;
     bullet.fillOpacity = 1;
@@ -314,5 +281,31 @@ am4core.ready(function() {
     chart.cursor.lineX.strokeOpacity = 0.2;
     chart.cursor.lineX.strokeDasharray = "";
 
+}
 
+function check_exchange_open() {
+    $.ajax({
+        url: urlapi,
+        method: "POST",
+        data: {
+            detect: "check_exchange_open",
+            id_customer: $('#id_cus').val(),
+        },
+        dataType: "json",
+        success: function(response) {
+            if (response.success == 'false') {
+                $("#chartdiv").html('<h1>Sàn đã đóng</h1>')
+                $('#tradeup').prop('disabled', true);
+                $('#tradedown').prop('disabled', true);
+            } else {
+                chart_line();
+            }
+
+        }
+    });
+}
+
+
+$(document).ready(function() {
+    check_exchange_open();
 });

@@ -12,8 +12,6 @@
     }
 </style>
    <body>
-    {{-- <?php $idbussin = Auth::user()->id_business;
-    ?> --}}
     <div style="clear: both; height: 61px;"></div>
     <div class="wrapper wrapper-content animated fadeInRight">
          <div class="row">
@@ -39,7 +37,7 @@
                                                 <th style="width:2%;"></th>
                                                 <th>Tên Khách hàng</th>
                                                 <th>Số điện thoại</th>
-                                                <th>Số tài khoản ATM</th>
+                                                <th>Số CMND</th>
 
                                                 <th style="width:18%;">Hành động</th>
 
@@ -157,7 +155,7 @@
                 <small id="eercustomer_account_img" class="text-danger"></small>
                 <br />
                 <label>Hạn mức giao dịch</label>
-                <input type="text" name="customer_account_litmit" id="customer_account_litmit" class="form-control" />
+                <input type="text" name="customer_account_litmit" id="ecustomer_account_litmit" class="form-control" />
                 <small id="eercustomer_account_litmit" class="text-danger"></small>
                 <br />
                 <br />
@@ -183,31 +181,39 @@
               <div class="modal-body">
 
                <form id="insert_customer_form">
-                {{ csrf_field() }}
+                <input type="hidden" name="detect" value="customer_manager">
+                <input type="hidden" name="type_manager" value="create">
                 <label>Tên khách hàng (<font style="color: red">*</font>)</label>
                 <input type="text" name="customer_name" id="customer_name" class="form-control" />
                 <small id="ercustomer_name" class="text-danger"></small>
                 <br />
                 <label>Số điện thoại: </label>
-                <input type="text" id="customer_phone" name="customer_phone" class="form-control" />
+                <input type="text" id="customer_phone" name="customer_phone" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onkeyup="KT_sodienthoai(this.value)" maxlength="10" class="form-control" />
                 <small id="ercustomer_phone" class="text-danger"></small>
                 <br />
                 <label>Số CMND: </label>
                 <input type="text" id="customer_cert_no" name="customer_cert_no" class="form-control" />
                 <br/>
                 <label>Mã giới thiệu: </label>
-                <input type="tel" id="customer_introduce" name="customer_introduce" onkeypress='return event.charCode >= 48 && event.charCode <= 57' onkeyup="KT_sodienthoai(this.value)" maxlength="10" class="form-control">
+                <input type="tel" id="customer_introduce" name="customer_introduce"  class="form-control">
                 <small id="ercustomer_introduce" class="text-danger"></small>
                 <br/>
                 <label>Hình CMND mặt trước: </label>
-                <input type="file" name="customer_cert_img" id="customer_cert_img" class="form-control" />
-                <small id="ercustomer_cert_img" class="text-danger"></small>
+                <input type="file" id="customer_cert_img" onChange="return fileValidation()" name="customer_cert_img" class="form-control" multiple="multiple"  placeholder="Hình ảnh">
+
+                </label>
+                <small  class="text-danger"></small>
+                <br/>
+                    <span id="cert_img"></span>
+                 <br/>
 
                 <hr/>
                 <center><h2 style="color:black"><strong>Phương thức thanh toán</strong></h2></center>
                 <br />
-                <label>Tên ngân hàng: </label> <input type="button" class="btn btn-success btn-sm" value="Chọn">
-                <input type="text" name="id_bank" id="id_bank" class="form-control" />
+                <label>Tên ngân hàng: </label>
+                <select name="id_bank" id="id_bank">
+
+                </select>
                 <small id="erid_bank" class="text-danger"></small>
                 <br />
                 <label>Số tài khoản:</label>
@@ -219,8 +225,13 @@
                 <small id="ercustomer_account_holder" class="text-danger"></small>
                 <br />
                 <label>Hỉnh ảnh thẻ ATM mắt trước: </label>
-                <input type="file" name="customer_account_img" id="customer_account_img" class="form-control" />
-                <small id="ercustomer_account_img" class="text-danger"></small>
+                <input type="file" id="customer_account_img" onChange="return fileValidation2()" name="customer_account_img" class="form-control" multiple="multiple"  placeholder="Hình ảnh">
+                </label>
+                <small  class="text-danger"></small>
+                <br/>
+
+                    <span id="payment_img"></span>
+                 <br/>
                 <br />
                 <label>Hạn mức giao dịch</label>
                 <input type="text" name="customer_account_litmit" id="customer_account_litmit" class="form-control" />
@@ -242,7 +253,7 @@
 
 
     </body>
-    <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>
     <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
+    <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>
     <script src="{{ asset('backend/js/main/admin_customer.js') }}"></script>
 @endsection

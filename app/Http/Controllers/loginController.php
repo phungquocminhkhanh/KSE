@@ -17,17 +17,17 @@ class loginController extends Controller
 {
     public function login(Request $request)
     {
-        $acc=new account_acount;
-        //kt xem có user đó trong store hay ko
+        $response = Http::post('http://192.168.100.10/kse_trade/api/',[
+            'detect' => 'login',
+            'username' => $request->account_username,
+            'password' => $request->account_password
+        ]);
+         $a=$response->getBody();
 
-            if(true)
+        $b=json_decode($a);
+            if($b->success=="true")
             {
-                    // $a=account_acount::where('id_business',Auth::user()->id_business)
-                    // ->where('id',Auth::user()->id)
-                    // ->update(["force_sign_out"=>"0"]);
-                    Session::put("account_name","xx");
-                    Session::put("account_id","1");
-                    Session::put("mess","");
+                    Session::put("data_admin",$b->data[0]);
                     return Redirect("/dashboard");
             }
             else
@@ -37,10 +37,7 @@ class loginController extends Controller
             }
     }
     public function logout()
-    {   $a=account_acount::where('id_business',Auth::user()->id_business)
-        ->where('id',Auth::user()->id)
-        ->update(["force_sign_out"=>"1"]);
-        Auth::logout();
+    {
         return Redirect("/admin");
 
     }
@@ -86,6 +83,26 @@ class loginController extends Controller
         {
             return Redirect("/");
         }
+    }
+    public function cus_logout(Request $request)
+    {
+
+        // $response = Http::post(env('URL_API', 'http://192.168.100.10/kse_trade/api/'), [
+        //     'detect' => 'login',
+        //     'username' => $request->account_username,
+        //     'password' => $request->account_password
+        // ]);
+        // $a=$response->getBody();
+        // $b=json_decode($a);
+        // if($b->success=="true")
+        // {
+        //     Session::put("data_customer",$b->data[0]);
+        //     return Redirect("/customer/chart");
+        // }
+        // else
+        // {
+        //     return Redirect("/");
+        // }
 
 
     }
