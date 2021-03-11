@@ -1,7 +1,7 @@
 
  @extends('admin.dashboard_chart')
  @section('js')
-    <script src="{{ asset('backend/js/socket.js') }}"></script>
+
     <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
@@ -156,26 +156,35 @@ button {
                                  <td>Số tiền cược</td>
                             </tr>
                             <tr>
-                                 <td><input type="number" id="money_trade" style="height: 40px ; width: 100%;" placeholder="0,000 VND"></td>
+                                 <td><input type="number" id="money_trade" min="10000" style="height: 40px ; width: 100%;" placeholder="0,000 VND"></td>
                           </tr>
                         </table>
                       </div>
                       <br />
                       <div class="tab-content" id="detail-account">
-                         <button type="button" id="tradeup" onclick="trade('up')" style="height: 50px ; width: 100%;" class="btn btn-success">Lên</button>
+                         <button type="button" id="tradeup" onclick="trade('up')" style="height: 50px ; width: 100%;" class="btn btn-success">
+                            <small id="money_up" style="width: 90%;text-align: left">0</small>
+                            <small style="width: 10%;text-align: right;margin-right: 0px"><img src="{{ asset('images/len.png') }}" style="margin-right: 0px" width="20px"  alt=""></small>
+
+                        </button>
                          <br />
+                         <button type="button" id="tradedown" onclick="trade('down')" style="height: 50px ; width: 100%;" class="btn btn-danger">
+                            <small id="money_down" style="width: 90%;text-align: left">0</small>
+                            <small style="width: 10%;text-align: right;margin-right: 0px"><img src="{{ asset('images/xuong1.png') }}" style="margin-right: 0px" width="20px"  alt=""></small>
+                        </button>
                          <br />
                         <button onclick="thao_tac_period()" style="background-color: slategrey; float: inherit;"><img height="20px" width="20px" src="{{ asset('images/clock.png') }}" alt=""></button>
                          <br />
-                         <button type="button" id="tradedown" onclick="trade('down')" style="height: 50px ; width: 100%;" class="btn btn-danger">Xuống</button>
                       </div>
 
                    </div>
                    <div id="lsphien_thaotacphien">
                     <h3>Lịch sử phiên</h3>
                     <div style="width: 100%;height: 250px;overflow-y: scroll;">
-                        <table class="content_period"  cellspacing= "10">
-                       </div>
+                        <table class="content_period" id="content_period"  cellspacing= "10">
+                        </table>
+
+                    </div>
                    </div>
 
 
@@ -191,7 +200,7 @@ button {
 
 
 
-  {{-- <script src="{{ asset('backend/js/socket.js') }}"></script> --}}
+  {{--  --}}
   {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
   <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script> --}}

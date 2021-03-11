@@ -15,12 +15,82 @@
         <link href="{{ asset('backend/css/animate.css')}}" rel="stylesheet">
         <link href="{{ asset('backend/css/style.css')}}" rel="stylesheet">
         <link href="{{ asset('backend/css/forms/kforms.css')}}" rel="stylesheet">
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     </head>
     <style>
         #nav{
             background-color: #2A2B30;
         }
+        .modal.left .modal-dialog,
+	.modal.right .modal-dialog {
+		position: fixed;
+		margin: auto;
+		width: 220px;
+		height: 100%;
+		-webkit-transform: translate3d(0%, 0, 0);
+		    -ms-transform: translate3d(0%, 0, 0);
+		     -o-transform: translate3d(0%, 0, 0);
+		        transform: translate3d(0%, 0, 0);
+	}
+
+	.modal.left .modal-content,
+	.modal.right .modal-content {
+		height: 100%;
+	}
+
+	.modal.left .modal-body,
+	.modal.right .modal-body {
+		padding: 15px 15px 80px;
+	}
+
+/*Left*/
+	.modal.left.fade .modal-dialog{
+		left: -320px;
+		-webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+		   -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+		     -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+		        transition: opacity 0.3s linear, left 0.3s ease-out;
+	}
+
+	.modal.left.fade.in .modal-dialog{
+		left: 0;
+	}
+
+/*Right*/
+	.modal.right.fade .modal-dialog {
+		right: -320px;
+		-webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+		   -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+		     -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+		        transition: opacity 0.3s linear, right 0.3s ease-out;
+	}
+
+	.modal.right.fade.in .modal-dialog {
+		right: 0;
+	}
+
+/* ----- MODAL STYLE ----- */
+	.modal-content {
+		border-radius: 0;
+		border: none;
+        background-color: #2A2B30;
+	}
+
+
+
+/* ----- v CAN BE DELETED v ----- */
+body {
+	background-color: #78909C;
+}
+
+.demo {
+	padding-top: 60px;
+	padding-bottom: 110px;
+}
+
+
+
+
     </style>
     <body>
         <?php $customer=Session::get('data_customer') ?>
@@ -67,6 +137,75 @@
             <input type="hidden" id="id_cus" value="{{ $customer->id }}">
             <meta name="csrf-token-force-sign" content="{{ csrf_token() }}" />
             <meta name="csrf-token-force-sign2" content="{{ csrf_token() }}" />
+
+
+
+            <div class="modal left fade" id="myModal-left" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h3 class="modal-title" id="myModalLabel" style="text-align: center">Lịch sử giao dịch</h3>
+
+                            <br />
+                            <div style="width: 100%;text-align: center">
+                                <a onclick="back_history()" style="width: 10%;color: white;font-size: 15px"><<</a>
+                                <button  style="width: 40%;" onclick="history_payment(1)" type="button" class="btn btn-warning">Rút tiền</button>
+                                <button  style="width: 40%;" onclick="history_deposit(1)" type="button" class="btn btn-secondary">Nạp tiền</button>
+                            </div>
+
+                        </div>
+
+                        <style>
+                            .history-deal{
+                                color: white;
+                            }
+                            .history-deal td
+                            {
+                                width: 100%;
+                            }
+                            .page-link{
+                                width: 20px;
+                                height: 25px;
+                                font-size: 13px;
+                                text-align: center;
+                                font-weight: bold;
+                            }
+                            .detail_his td:nth-child(2){
+                                text-align:right;
+                                font-size: 10px;
+
+                            }
+                            .detail_his td:nth-child(1){
+                                text-align:left;
+                                font-size: 14px;
+
+                            }
+                            a:hover {
+                                color: red;
+                            }
+                        </style>
+
+                        <div class="modal-body">
+                            <input class="form-control" style="width: 50%;height: 30px;" id="d_start" onchange="seach_his()" type="date" id="example-datetime-local-input">
+                            <input class="form-control" style="width: 50%;height: 30px;" id="d_end" onchange="seach_his()" type="date" id="example-datetime-local-input">
+                            <table class="history-deal" id="history-deal">
+
+                            </table>
+                            <hr>
+                            <ul class="pagination" s id="phantrang">
+
+                              </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <div id="change_password_dashboard_account_Modal" class="modal fade">
                 <div class="modal-dialog">
                  <div class="modal-content">
@@ -132,18 +271,18 @@
 
                     <form id="rut_tien_form">
                         <input type="hidden" name="detect" value="customer_request_payment">
-                        <input type="hidden" name="id_customer" value="34">
+                        <input type="hidden" name="id_customer" value="{{ $customer->id }}">
                     <div class="inqbox-content">
-                        <h4 id="">Ví tài khoản : 345,000,000 VND</h4>
+                        <h4 id="vitaikhoan"></h4>
                         <label>Số tiền rút</label>
                             <div class="input-group" id="show_hide_password">
                             <input class="form-control" type="text" name="request_value" id="request_value">
                             <small id="ermoney" class="text-danger"></small><br /><br />
-                    <input type="submit" name="edit" id="btn_rut_tien" value="Rút tiền" class="btn btn-success" />
+                    <input type="submit" name="edit" id="btn_rut_tien"  value="Rút tiền" class="btn btn-success" />
                     </form>
                   </div>
                   <div class="modal-footer">
-                   <button type="button" id="close_modol_rut_tien" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                   <button type="button" id="close_modol_rut_tien"  class="btn btn-default" data-dismiss="modal">Đóng</button>
                   </div>
                  </div>
                 </div>
@@ -361,11 +500,11 @@
                                 </a>
                                 <ul class="dropdown-menu animated m-t-xs" style="background-color:#2A2B30;color: white">
                                     <li style="text-align: center"><h4>Ví tài khoản</h4>
-                                        <small style="text-align: center" id="customer_wallet2">550,000,253 VND</small>
+                                        <small style="text-align: center" id="customer_wallet2"></small>
                                     </li>
                                     <br />
                                     <li style="text-align: center"><h4>Ví rút tiền</h4>
-                                        <small style="text-align: center" id="customer_wallet_payment">0</small>
+                                        <small style="text-align: center" id="customer_wallet_payment"></small>
                                     </li>
                                     <br />
                                     <li style="text-align: center"><button  style="width: 80%;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#rut_tien_modal">Rút tiền</button></li>
@@ -394,6 +533,8 @@
                                     <li class="divider"></li>
                                     <li><a  class="animated animated-short fadeInUp"  data-toggle="modal" data-target="#phuong_thuc_thanh_toan_modal">Phương thức thanh toán</a></li>
                                     <li class="divider"></li>
+                                    <li><a  class="animated animated-short fadeInUp" onclick="history_payment(1)"  data-toggle="modal" data-target="#myModal-left">Lịch sử giao dịch</a></li>
+                                    <li class="divider"></li>
                                     <li><a href="#" class="animated animated-short fadeInUp" data-toggle="modal" data-target="#logout-dasboard"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
                                 </ul>
                             </li>
@@ -403,12 +544,11 @@
                 @yield('chart_content')
             </div>
             <!-- Mainly scripts -->
+            <script src="{{ asset('backend/js/socket.js') }}"></script>
+
             @yield('js')
             <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
             <script src="{{ asset('backend/js/laravel_echo.js') }}"></script>
-
-
-
             <script src="{{ asset('backend/js/bootstrap.min.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>

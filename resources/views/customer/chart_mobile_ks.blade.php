@@ -1,4 +1,4 @@
-<div id="chartdiv" style="width: 100%;height: 500px;background-color:#2A2B30"></div>
+<div id="chartdiv" style="width: 100%;height: 100%;background-color:#2A2B30"></div>
 <script src="{{ asset('backend/js/socket.js') }}"></script>
   {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>

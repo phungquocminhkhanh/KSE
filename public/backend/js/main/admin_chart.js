@@ -1,5 +1,3 @@
-window.io = io(urlsocket, { transport: ['websocket'] });
-
 function chart_line() {
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -21,7 +19,7 @@ function chart_line() {
     var len = 3000; // t là độ dài của chart
     var time = new Date().getTime();
     var x = 0;
-
+    var time_phien = 0;
 
     // visits -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 5);
     // data.push({ date2: new Date(time), date3: new Date(time + 7000), value1: visits, value2: g, value3: g, value4: -20 }); //1:line,2:duongG,3:focus,4:ket qua
@@ -40,24 +38,34 @@ function chart_line() {
             data: { detect: 'get_coordinate' },
             dataType: "json",
             success: function(response) {
+                console.log(response);
                 if (response.success == 'false') {
 
                 } else {
                     phien = response.data[response.data.length - 1];
-                    console.log(phien);
                     x = 120 - Number(phien.time_duration);
+                    time_phien = phien.time_period * 1000;
                     arr = JSON.parse(phien.coordinate_xy);
                     gg = JSON.parse(phien.coordinate_g);
-                    let g = 9.385; //gg.y;
+                    let g = gg.y; //gg.y;
 
                     data.push({ date2: new Date(phien.period_open * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y - 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
                     data.push({ date2: new Date(phien.period_close * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y + 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
-                    for (let i = 0; i < arr.length; i++) {
-                        data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
+                    if (arr.length <= 30) {
+                        for (let i = 0; i < arr.length; i++) {
+                            data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
+                        }
+                    } else {
+                        let tt = arr.length - 30;
+                        for (let i = tt; i < arr.length; i++) {
+                            data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
+                        }
                     }
+
                     chart.data = data;
                     // console.log(data);
                 }
+
             }
         });
 
@@ -74,6 +82,17 @@ function chart_line() {
     chart.background.fill = 'rgb(0,0,0)'
     chart.background.opacity = 0.5
 
+    chart.events.on("datavalidated", function() {
+        dateAxis.zoom({ start: 1 / 15, end: 1.2 }, false, true);
+    });
+    // chart.events.on("ready", function() {
+    //     dateAxis.zoomToDates(
+    //         new Date(new Date().getTime() - 20000),
+    //         new Date(new Date().getTime() + 20000),
+    //         false,
+    //         true // this makes zoom instant
+    //     );
+    // });
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.grid.template.location = 0;
@@ -151,53 +170,76 @@ function chart_line() {
 
 
     io.on('block-trading', async function(res) {
-
+        if (res.notification == "block_trading") {
+            console.log("block");
+            $('#tradeup').prop('disabled', true);
+            $('#tradedown').prop('disabled', true);
+        } else {
+            console.log("unlock");
+            $('#tradeup').prop('disabled', false);
+            $('#tradedown').prop('disabled', false);
+        }
     });
-    io.on('unlock-trading', async function(res) {
 
-    });
     io.on('diem-g', async function(res) {
         x = 120;
+
+        // console.log(res);
         data = JSON.parse(res);
-        var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-        // var datefinal = new Date().setSeconds(10);
-        for (let i = 0; i < 2; i++) {
-            series2.dataItems.getIndex(i).valueY = data.y;
+        if (g == data.y) {
+
+        } else {
+
+            g = data.y;
+            var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+            // var datefinal = new Date().setSeconds(10);
+            for (let i = 0; i < 2; i++) {
+                series2.dataItems.getIndex(i).valueY = data.y;
+            }
+            let d2 = new Date(new Date().getTime() + time_phien);
+            let d3 = new Date(new Date().getTime() + time_phien);
+            let val_ser4 = series.dataItem.lastdataItem
+            series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
+
+            series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
+
+            series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
+            series4.dataItems.getIndex(1).dateX = d3
+            series4.dataItems.getIndex(0).valueY = data.y - 0.5
+            series4.dataItems.getIndex(1).valueY = data.y + 0.5
         }
-        let d2 = new Date(new Date().getTime() + 120000);
-        let d3 = new Date(new Date().getTime() + 120000);
-        let val_ser4 = series.dataItem.lastdataItem
-        series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
 
-        series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
-
-        series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
-        series4.dataItems.getIndex(1).dateX = d3
-        series4.dataItems.getIndex(0).valueY = data.y - 0.5
-        series4.dataItems.getIndex(1).valueY = data.y + 0.5
     });
+    var flag_remove = 0;
 
     function start_socket() {
         io.on('coordinates_real', async function(res) {
 
-
             data = JSON.parse(res);
             var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
             // if (flag_update == 3) {
+            if (series.dataItems.length > 30) {
+                flag_remove = 1;
+            }
+            if (flag == 1) {
+                chart.addData({ date1: new Date(data.x * 1000), value1: data.y }, 0);
+                series.dataItems.remove(2);
+            } else {
+                chart.addData({ date1: new Date(data.x * 1000), value1: data.y },
+                    0
+                );
+            }
 
-            chart.addData({ date1: new Date(data.x * 1000), value1: data.y },
-                0
-            );
             var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
-            label_final.label.text = x;
-            x = x - 1;
-            label_final.label.fontSize = 20;
-            label_final.label.background.fill = am4core.color("#eee");
+            // label_final.label.text = x;
+            // x = x - 1;
+            // label_final.label.fontSize = 20;
+            // label_final.label.background.fill = am4core.color("#eee");
 
             for (let i = 0; i < 2; i++) {
                 series3.dataItems.getIndex(i).valueY = data.y;
             }
-            if (data.y < data.g)
+            if (data.y < g)
                 series3.stroke = am4core.color("#EC5565"); //red
             else
                 series3.stroke = am4core.color("#2C6E49"); //green
@@ -218,7 +260,15 @@ function chart_line() {
     }
     get_data();
 
+    // setInterval(function() {
+    //     dateAxis.zoomToDates(
+    //         new Date(new Date().getTime() - 20000),
+    //         new Date(new Date().getTime() + 20000),
+    //         false,
+    //         true // this makes zoom instant
+    //     );
 
+    // }, 5000);
 
     // all the below is optional, makes some fancy effects
     // gradient fill of the series
@@ -293,6 +343,7 @@ function check_exchange_open() {
         },
         dataType: "json",
         success: function(response) {
+            console.log(response);
             if (response.success == 'false') {
                 $("#chartdiv").html('<h1>Sàn đã đóng</h1>')
                 $('#tradeup').prop('disabled', true);

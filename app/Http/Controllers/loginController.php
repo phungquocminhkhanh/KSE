@@ -17,7 +17,7 @@ class loginController extends Controller
 {
     public function login(Request $request)
     {
-        $response = Http::post('http://192.168.100.10/kse_trade/api/',[
+        $response = Http::post('http://diendengiadung.com/api/',[
             'detect' => 'login',
             'username' => $request->account_username,
             'password' => $request->account_password
@@ -67,7 +67,7 @@ class loginController extends Controller
     public function cus_login(Request $request)
     {
 
-        $response = Http::post(env('URL_API', 'http://192.168.100.10/kse_trade/api/'), [
+        $response = Http::post(env('URL_API', 'http://diendengiadung.com/api/'), [
             'detect' => 'login',
             'username' => $request->account_username,
             'password' => $request->account_password

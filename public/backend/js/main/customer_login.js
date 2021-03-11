@@ -1,5 +1,5 @@
 function fileValidation() {
-    var fileInput = document.getElementById('category_icon');
+    var fileInput = document.getElementById('cmnd_icon');
     var filePath = fileInput.value; //lấy giá trị input theo id
     var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i; //các tập tin cho phép
     //Kiểm tra định dạng
@@ -47,8 +47,8 @@ $(document).ready(function() {
             success: function(data) {
                 if (data.success == "true") {
                     alert(data.message);
-                    //show_account();
-                    //$('#close_modol_insert').click();
+
+                    $('#close_modol_insert').click();
                 } else {
                     alert(data.message);
                 }

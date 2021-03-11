@@ -1,4 +1,4 @@
-const urlapi = "http://192.168.100.10/kse_trade/api/";
-const urlserver = "http://192.168.100.10/kse_trade/";
+const urlapi = "http://diendengiadung.com/api/";
+const urlserver = "http://diendengiadung.com/";
 const urlsocket = "http://192.168.100.30:3000/";
 // window.io = io(urlsocket, { transport: ['websocket'] });

@@ -135,7 +135,7 @@
             <small  class="text-danger"></small>
             <br/>
             <label>Họ và tên (<font style="color: red">*</font>)</label>
-            <input type="text" name="name" id="name" class="form-control" />
+            <input type="text" name="customer_name" id="customer_name" class="form-control" />
             <small  class="text-danger"></small>
             <br/>
             <label>Mật khẩu (<font style="color: red">*</font>)</label>
@@ -151,7 +151,7 @@
             <small id="ercategory_title" class="text-danger"></small>
             <br/>
             <label><label>Hình CMND mặt trước (<font style="color: red">*</font>)</label>
-                <input type="file" id="cmnd_icon" name="customer_cert_img" class="form-control" placeholder="Hình ảnh">
+                <input type="file" id="cmnd_icon" onChange="return fileValidation()" name="customer_cert_img" class="form-control" placeholder="Hình ảnh">
             </label>
             <small  class="text-danger"></small>
             <br/>
