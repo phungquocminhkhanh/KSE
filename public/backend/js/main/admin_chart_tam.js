@@ -1,5 +1,4 @@
 var list_bank = [];
-window.io = io(urlsocket, { transport: ['websocket'] });
 
 function chart_line() {
     am4core.useTheme(am4themes_animated);

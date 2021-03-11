@@ -12,4 +12,4 @@
 {{-- <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script> --}}
 {{-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> --}}
 <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
-<script src="{{ asset('backend/js/main/admin_chart_tam.js') }}"></script>
+<script src="{{ asset('backend/js/main/admin_chart_tam2.js') }}"></script>
