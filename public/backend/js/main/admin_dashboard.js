@@ -1,5 +1,5 @@
 //window.io = io('https://socket.muabannhanh.xyz/'); // mở ra và thay đổi serve socket đúng là chạy
-window.io = io('http://muaban-pos.herokuapp.com/', { transport: ['websocket'] });
+window.io = io(urlsocket, { transport: ['websocket'] });
 
 function passwordChanged3() {
     // var strength = document.getElementById('dasherpassword');

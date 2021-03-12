@@ -1,5 +1,5 @@
 var list_bank = [];
-window.io = io(urlsocket, { transport: ['websocket'] });
+window.io = io('https://kse-trading.herokuapp.com/', { transport: ['websocket'] });
 var money_tam = 0;
 io.on('check-result', function(data) {
     console.log(data);
@@ -60,7 +60,10 @@ function history_period() {
                         output_history += `
                                         <tr>
                                             <td>${v.period_open}-${v.period_close}</td>
-                                            <td><img src="../images/xuong1.png" width="30px" height="30px" alt=""></td>
+                                            <td class="mui_ten_len"><img src="../images/xuong1.png" width="30px" height="25px" alt=""><br /><br /></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">---</td>
                                         </tr>
                                         `;
                     } else {
@@ -68,7 +71,10 @@ function history_period() {
                         output_history += `
                                         <tr>
                                         <td>${v.period_open}-${v.period_close}</td>
-                                            <td><img src="../images/len.png" width="30px" height="30px" alt=""></td>
+                                            <td class="mui_ten_xuong"><img src="../images/len.png" width="30px" height="25px" alt=""><br /><br /></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">---</td>
                                         </tr>`;
                     }
                 });
@@ -83,6 +89,9 @@ function history_period() {
 }
 
 
+function history_trade(page) {
+
+}
 
 function thao_tac_period() {
     $.ajax({
@@ -163,15 +172,18 @@ function profile_customer() {
 
         }
     });
+
     $.ajax({
         url: urlapi,
         method: "POST",
         data: {
             detect: "customer_request_deposit",
             id_customer: $("#id_cus").val(),
+            type_customer: "customer" // demo thì thay bằng demo
         }, // chuyen vao bien name vs du lieu cua input do
         dataType: "json",
         success: function(response) {
+            console.log(response);
             output_info = `<h4>Tên : ${response.data[0].customer_name} </h4>
                             <h4>Số điện thoại : ${response.data[0].customer_phone}</h4>
                             <h4>Cứu pháp : ${response.data[0].request_syntax}</h4>`
@@ -204,10 +216,16 @@ function payment_money() { // ru
 }
 var flag_back = 0;
 var page_his = 0;
+var flag_date = 0;
 
 function back_history() {
     if (flag_back == 0) {
-        history_payment(page_his);
+        if (flag_date == 0) {
+            history_payment(page_his);
+        } else {
+            seach_his(page_his);
+        }
+
     } else {
         history_deposit(page_his);
     }
@@ -284,13 +302,127 @@ function detail_payment(id) {
                                     <td colspan="2" style="text-align: center;color:red;">${response.data[0].request_comment}</td>
                                 </tr>`
                 }
-
                 $('#history-deal').html(detail_his);
                 $('#phantrang').html("");
             }
 
         }
     });
+}
+
+function seach_his(page) {
+    ngaybatdau = $('#d_start').val();
+    ngayketthuc = $('#d_end').val();
+    if (ngaybatdau && ngayketthuc) {
+        if (flag_back == 0) //rút tiền
+        {
+            console.log("seach_rut")
+            $.ajax({
+                url: urlapi,
+                method: "POST",
+                data: {
+                    detect: "list_request_payment",
+                    id_customer: $('#id_customer').val(),
+                    type_manager: "customer",
+                    date_begin: ngaybatdau,
+                    date_end: ngayketthuc,
+                    limit: 4,
+                    page: page
+                }, // chuen vao bien name vs du lieu cua input do
+                dataType: "json",
+                success: function(response) {
+                    page_his = page;
+                    console.log(response);
+                    if (response.success == "true") {
+                        flag_date = 1; // lưu cái nút back, nếu bật flag_date thì khi detail quay về là resul của seach_his
+                        var output_his = "";
+                        var output_phantrang = "";
+                        console.log("rút tiền")
+                        $.each(response.data, function(k, v) {
+                            output_his += `<tr>
+                            <td>
+                            <a  onclick="detail_payment(${v.id_request})">
+                            <small>Mã : ${v.request_code} </small><br />
+                            <small>Rút tiền : -${v.request_value} VND</small><br />
+                            <small>${v.request_created}</small></a>`;
+                            if (v.request_status == 4)
+                                output_his += ` <h4 style = "color: red" > Hủy lệnh </h4>`;
+                            if (v.request_status == 3)
+                                output_his += ` <h4 style = "color: green" > Hoàn tất </h4>`;
+                            if (v.request_status == 2)
+                                output_his += ` <h4> Chờ xác nhận </h4>`;
+                            if (v.request_status == 1)
+                                output_his += ` <h4> Tạo lệnh </h4>`;
+
+                            output_his += `</td> </tr>`;
+                        });
+
+
+                        for (let i = 0; i < response.total_page; i++) {
+                            output_phantrang += `<li class="page-item"><a onclick="seach_his(${i+1})" class="page-link" href="#">${i+1}</a></li>`
+                        }
+
+                    } else {
+                        output_his = "";
+                        output_phantrang = "";
+                    }
+                    $('#phantrang').html(output_phantrang)
+                    $('#history-deal').html(output_his);
+
+                }
+            });
+        } else { // Nạp tiền
+            console.log("seach_nạp")
+            $.ajax({
+                url: urlapi,
+                method: "POST",
+                data: {
+                    detect: "list_request_deposit",
+                    id_customer: $('#id_customer').val(),
+                    type_manager: "customer",
+                    date_begin: ngaybatdau,
+                    date_end: ngayketthuc,
+                    limit: 4,
+                    page: page
+                }, // chuen vao bien name vs du lieu cua input do
+                dataType: "json",
+                success: function(response) {
+                    page_his = page;
+                    console.log("nạp tiền")
+                    if (response.success == "true") {
+                        flag_date = 1; // lưu cái nút back, nếu bật flag_date thì khi detail quay về là resul của seach_his
+                        var output_his = "";
+                        var output_phantrang = "";
+
+                        $.each(response.data, function(k, v) {
+                            output_his += `<tr>
+                                             <td>
+                                                <a>
+                                                <small>Mã : ${v.request_code} </small><br />
+                                                <small>Nạp tiền : ${money(v.request_value)} VND</small><br />
+                                                <small>${v.request_created}</small></a><br /><br />
+                                             </td>
+                                            </tr>`;
+                        });
+
+
+                        for (let i = 0; i < response.total_page; i++) {
+                            output_phantrang += `<li class="page-item"><a onclick="seach_his(${i+1})" class="page-link" href="#">${i+1}</a></li>`
+                        }
+
+
+                    } else {
+                        output_his = "";
+                        output_phantrang = "";
+                    }
+                    $('#phantrang').html(output_phantrang)
+                    $('#history-deal').html(output_his);
+
+                }
+            });
+        }
+
+    }
 }
 
 function history_payment(page) {
@@ -355,16 +487,20 @@ function history_deposit(page) {
         dataType: "json",
         success: function(response) {
             page_his = page;
+            flag_back = 1;
             if (response.success == "true") {
                 var output_his = "";
                 var output_phantrang = "";
 
                 $.each(response.data, function(k, v) {
                     output_his += `<tr>
-                    <td>
-                    <small>Mã : ${v.request_code} </small><br />
-                    <small>Nạp tiền : -${v.request_value} VND</small><br />
-                    <small>${v.request_created}</small></td> </tr>`;
+                                     <td>
+                                        <a>
+                                        <small>Mã : ${v.request_code} </small><br />
+                                        <small>Nạp tiền : ${money(v.request_value)} VND</small><br />
+                                        <small>${v.request_created}</small></a><br /><br />
+                                     </td>
+                                    </tr>`;
                 });
                 $('#history-deal').html(output_his);
 
@@ -377,6 +513,7 @@ function history_deposit(page) {
         }
     });
 }
+
 
 function trade(type) {
     $.ajax({

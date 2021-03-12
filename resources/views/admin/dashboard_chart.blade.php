@@ -146,7 +146,7 @@ body {
 
                         <div class="modal-header">
 
-                            <h3 class="modal-title" id="myModalLabel" style="text-align: center">Lịch sử giao dịch</h3>
+                            <h3 class="modal-title" id="myModalLabel" style="text-align: center;font-weight: bold">Lịch sử giao dịch</h3>
 
                             <br />
                             <div style="width: 100%;text-align: center">
@@ -185,11 +185,13 @@ body {
                             a:hover {
                                 color: red;
                             }
+                            a{
+                                text-align: center
+                            }
                         </style>
-
                         <div class="modal-body">
-                            <input class="form-control" style="width: 50%;height: 30px;" id="d_start" onchange="seach_his()" type="date" id="example-datetime-local-input">
-                            <input class="form-control" style="width: 50%;height: 30px;" id="d_end" onchange="seach_his()" type="date" id="example-datetime-local-input">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="d_start" onchange="seach_his(1)" type="date" id="example-datetime-local-input">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9"" id="d_end" onchange="seach_his(1)" type="date" id="example-datetime-local-input">
                             <table class="history-deal" id="history-deal">
 
                             </table>
@@ -203,6 +205,63 @@ body {
                 </div>
             </div>
 
+            <div class="modal left fade" id="history-trade-left" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+
+                            <h2 class="modal-title" id="myModalLabel" style="text-align: center;font-weight: bold">Lịch sử đầu tư</h2>
+                            <br />
+                        </div>
+
+                        <style>
+                            .history-deal{
+                                color: white;
+                            }
+                            .history-deal td
+                            {
+                                width: 100%;
+                            }
+                            .page-link{
+                                width: 20px;
+                                height: 25px;
+                                font-size: 13px;
+                                text-align: center;
+                                font-weight: bold;
+                            }
+                            .detail_his td:nth-child(2){
+                                text-align:right;
+                                font-size: 10px;
+
+                            }
+                            .detail_his td:nth-child(1){
+                                text-align:left;
+                                font-size: 14px;
+
+                            }
+                            a:hover {
+                                color: red;
+                            }
+                            a{
+                                text-align: center
+                            }
+                        </style>
+                        <div class="modal-body">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="d_start" onchange="seach_his(1)" type="date" id="example-datetime-local-input">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9"" id="d_end" onchange="seach_his(1)" type="date" id="example-datetime-local-input">
+                            <table class="history-deal" id="history-deal">
+
+                            </table>
+                            <hr>
+                            <ul class="pagination" s id="phantrang">
+
+                              </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -302,7 +361,7 @@ body {
                     <div class="inqbox-content">
                         <div id="info_payment"></div>
 
-                    <div><img src="{{ asset('/images/momo.png') }}" alt=""> sử dụng MoMo trên mobile để nạp tiền</div>
+                    <div><img src="{{ asset('/images/momo.png') }}" alt="">Nạp tiền bằng cách sử dụng MoMo trên mobile để nạp vào tài khoản trên</div>
                     </div>
                     </form>
                   </div>
@@ -534,6 +593,8 @@ body {
                                     <li><a  class="animated animated-short fadeInUp"  data-toggle="modal" data-target="#phuong_thuc_thanh_toan_modal">Phương thức thanh toán</a></li>
                                     <li class="divider"></li>
                                     <li><a  class="animated animated-short fadeInUp" onclick="history_payment(1)"  data-toggle="modal" data-target="#myModal-left">Lịch sử giao dịch</a></li>
+                                    <li class="divider"></li>
+                                    <li><a  class="animated animated-short fadeInUp" onclick="history_trade(1)"  data-toggle="modal" data-target="#history-trade-left">Lịch sử đầu tư</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#" class="animated animated-short fadeInUp" data-toggle="modal" data-target="#logout-dasboard"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
                                 </ul>

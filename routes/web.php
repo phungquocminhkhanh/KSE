@@ -29,6 +29,9 @@ use Illuminate\Support\Facades\Http;
 Route::get('/chart-mobile-ks',function() {
     return view('customer.chart_mobile_ks');
 });
+Route::get('/chart-tam',function() {
+    return view('customer.chart_tam2');
+});
 Route::get('/chart2',function() {
     return view('admin.chart2');
 });

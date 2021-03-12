@@ -1,3 +1,5 @@
+window.io = io(urlsocket, { transport: ['websocket'] });
+
 function chart_line() {
     am4core.useTheme(am4themes_animated);
     // Themes end
@@ -38,7 +40,7 @@ function chart_line() {
             data: { detect: 'get_coordinate' },
             dataType: "json",
             success: function(response) {
-                console.log(response);
+
                 if (response.success == 'false') {
 
                 } else {
@@ -48,17 +50,31 @@ function chart_line() {
                     arr = JSON.parse(phien.coordinate_xy);
                     gg = JSON.parse(phien.coordinate_g);
                     let g = gg.y; //gg.y;
-
+                    console.log(g)
                     data.push({ date2: new Date(phien.period_open * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y - 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
                     data.push({ date2: new Date(phien.period_close * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y + 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
                     if (arr.length <= 30) {
                         for (let i = 0; i < arr.length; i++) {
-                            data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
+                            data.push({
+                                date1: new Date(arr[i].x * 1000),
+                                date2: new Date(arr[i].x * 1000),
+                                date3: new Date(arr[i].x * 1000),
+                                value1: arr[i].y,
+                                value2: g,
+                                value3: arr[i].y
+                            });
                         }
                     } else {
                         let tt = arr.length - 30;
                         for (let i = tt; i < arr.length; i++) {
-                            data.push({ date1: new Date(arr[i].x * 1000), value1: arr[i].y });
+                            data.push({
+                                date1: new Date(arr[i].x * 1000),
+                                date2: new Date(arr[i].x * 1000),
+                                date3: new Date(arr[i].x * 1000),
+                                value1: arr[i].y,
+                                value2: g,
+                                value3: arr[i].y
+                            });
                         }
                     }
 
@@ -82,17 +98,8 @@ function chart_line() {
     chart.background.fill = 'rgb(0,0,0)'
     chart.background.opacity = 0.5
 
-    chart.events.on("datavalidated", function() {
-        dateAxis.zoom({ start: 1 / 15, end: 1.2 }, false, true);
-    });
-    // chart.events.on("ready", function() {
-    //     dateAxis.zoomToDates(
-    //         new Date(new Date().getTime() - 20000),
-    //         new Date(new Date().getTime() + 20000),
-    //         false,
-    //         true // this makes zoom instant
-    //     );
-    // });
+
+
 
     var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.grid.template.location = 0;
@@ -129,23 +136,23 @@ function chart_line() {
     var series2 = chart.series.push(new am4charts.LineSeries());
     series2.dataFields.valueY = "value2";
     series2.dataFields.dateX = "date2";
-    series2.strokeWidth = 0.5;
+    series2.strokeWidth = 0.7;
     series2.stroke = series.stroke;
     series2.stroke = am4core.color("#FFFFFF");
 
 
     var series3 = chart.series.push(new am4charts.LineSeries());
     series3.dataFields.valueY = "value3";
-    series3.dataFields.dateX = "date2";
-    series3.strokeWidth = 0.3;
+    series3.dataFields.dateX = "date3";
+    series3.strokeWidth = 0.7;
     series3.stroke = series.stroke;
 
-    var series4 = chart.series.push(new am4charts.LineSeries());
-    series4.dataFields.valueY = "value4";
-    series4.dataFields.dateX = "date3";
-    series4.strokeWidth = 0.5;
-    series4.stroke = series.stroke;
-    series4.stroke = am4core.color("#EC5565");
+    // var series4 = chart.series.push(new am4charts.LineSeries());
+    // series4.dataFields.valueY = "value4";
+    // series4.dataFields.dateX = "date3";
+    // series4.strokeWidth = 0.5;
+    // series4.stroke = series.stroke;
+    // series4.stroke = am4core.color("#EC5565");
 
 
 
@@ -153,7 +160,7 @@ function chart_line() {
 
 
 
-    chart.scrollbarX = new am4core.Scrollbar();
+    // chart.scrollbarX = new am4core.Scrollbar();
 
 
     // 0
@@ -182,31 +189,33 @@ function chart_line() {
     });
 
     io.on('diem-g', async function(res) {
-        x = 120;
+        //     x = 120;
 
         // console.log(res);
         data = JSON.parse(res);
         if (g == data.y) {
 
         } else {
-
+            setTimeout(function() {
+                var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+                // var datefinal = new Date().setSeconds(10);
+                for (let i = 0; i < series2.dataItems.length; i++) {
+                    series2.dataItems.getIndex(i).valueY = data.y;
+                }
+            }, 2000);
             g = data.y;
-            var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
-            // var datefinal = new Date().setSeconds(10);
-            for (let i = 0; i < 2; i++) {
-                series2.dataItems.getIndex(i).valueY = data.y;
-            }
-            let d2 = new Date(new Date().getTime() + time_phien);
-            let d3 = new Date(new Date().getTime() + time_phien);
-            let val_ser4 = series.dataItem.lastdataItem
-            series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
 
-            series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
+            // let d2 = new Date(new Date().getTime() + time_phien);
+            // let d3 = new Date(new Date().getTime() + time_phien);
+            // let val_ser4 = series.dataItem.lastdataItem
+            // series2.dataItems.getIndex(1).dateX = d2 // duong G, cho điểm cuối dài thêm 60s
 
-            series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
-            series4.dataItems.getIndex(1).dateX = d3
-            series4.dataItems.getIndex(0).valueY = data.y - 0.5
-            series4.dataItems.getIndex(1).valueY = data.y + 0.5
+            // series3.dataItems.getIndex(1).dateX = d3 // duong focus, cho điểm cuối dài thêm 60s
+
+            // series4.dataItems.getIndex(0).dateX = d3 // di dời đường final đi 60s
+            // series4.dataItems.getIndex(1).dateX = d3
+            // series4.dataItems.getIndex(0).valueY = data.y - 0.5
+            // series4.dataItems.getIndex(1).valueY = data.y + 0.5
         }
 
     });
@@ -214,35 +223,46 @@ function chart_line() {
 
     function start_socket() {
         io.on('coordinates_real', async function(res) {
-
+            console.log(g);
             data = JSON.parse(res);
             var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
+            chart.addData({
+                date1: new Date(data.x * 1000),
+                date2: new Date(data.x * 1000 + 20000),
+                date3: new Date(data.x * 1000 + 20000),
+                value1: data.y,
+                value2: g,
+                value3: data.y
+            }, 1);
+            series2.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
+            series3.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
+            for (let k = 0; k < series3.dataItems.length; k++) {
+                series3.dataItems.getIndex(k).valueY = data.y;
+            }
             // if (flag_update == 3) {
-            if (series.dataItems.length > 30) {
-                flag_remove = 1;
-            }
-            if (flag == 1) {
-                chart.addData({ date1: new Date(data.x * 1000), value1: data.y }, 0);
-                series.dataItems.remove(2);
-            } else {
-                chart.addData({ date1: new Date(data.x * 1000), value1: data.y },
-                    0
-                );
-            }
+            // if (series.dataItems.length > 30) {
+            //     flag_remove = 1;
+            // }
+            // if (flag == 1) {
+            //     chart.addData({ date1: new Date(data.x * 1000), value1: data.y }, 0);
+            //     series.dataItems.remove(2);
+            // } else {
+            //     chart.addData({ date1: new Date(data.x * 1000), value1: data.y },
+            //         0
+            //     );
+            // }
 
-            var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
+            //var label_final = series4.bullets.push(new am4charts.LabelBullet()); //value cột final
             // label_final.label.text = x;
             // x = x - 1;
             // label_final.label.fontSize = 20;
             // label_final.label.background.fill = am4core.color("#eee");
 
-            for (let i = 0; i < 2; i++) {
-                series3.dataItems.getIndex(i).valueY = data.y;
-            }
-            if (data.y < g)
-                series3.stroke = am4core.color("#EC5565"); //red
-            else
-                series3.stroke = am4core.color("#2C6E49"); //green
+
+            // if (data.y < g)
+            //     series3.stroke = am4core.color("#EC5565"); //red
+            // else
+            //     series3.stroke = am4core.color("#2C6E49"); //green
 
             //flag_update = 0;
             // } else {
@@ -260,15 +280,6 @@ function chart_line() {
     }
     get_data();
 
-    // setInterval(function() {
-    //     dateAxis.zoomToDates(
-    //         new Date(new Date().getTime() - 20000),
-    //         new Date(new Date().getTime() + 20000),
-    //         false,
-    //         true // this makes zoom instant
-    //     );
-
-    // }, 5000);
 
     // all the below is optional, makes some fancy effects
     // gradient fill of the series
@@ -345,9 +356,9 @@ function check_exchange_open() {
         success: function(response) {
             console.log(response);
             if (response.success == 'false') {
-                $("#chartdiv").html('<h1>Sàn đã đóng</h1>')
-                $('#tradeup').prop('disabled', true);
-                $('#tradedown').prop('disabled', true);
+                // $("#chartdiv").html('<h1>Sàn đã đóng</h1>')
+                // $('#tradeup').prop('disabled', true);
+                // $('#tradedown').prop('disabled', true);
             } else {
                 chart_line();
             }

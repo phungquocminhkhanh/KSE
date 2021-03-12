@@ -26,6 +26,25 @@
     border-spacing: 0 20px;
 
     }
+    .mui_ten_len{
+        background-color: green;
+        height: 31px;
+        width: 20%;
+        text-align: center;
+        border-spacing: 5em;
+    }
+    .mui_ten_xuong{
+        background-color: red;
+        height: 26;
+        width: 20%;
+        text-align: center;
+        border-spacing: 5em;
+    }
+
+    .content_period
+    {
+
+    }
     .scrollbox {
   width: 10em;
   height: 10em;
@@ -147,7 +166,7 @@ button {
                 <div class="inqbox " style="background-color: #2A2B30;height:500px;">
                    <div class="inqbox-content" style="background-color: #2A2B30;">
                      <div class="tab-content" style="background-color: #">
-                        <button type="button" onclick="history_period()" class="btn btn-secondary">Lịch sử phiên</button>
+                        <button type="button" onclick="history_period()" class="btn btn-secondary" style="background-color: grey;color: white">Lịch sử phiên</button>
                         <br />
                         <br />
                         <table style="background-color:#2A2B30;width: 100%;
@@ -168,10 +187,12 @@ button {
 
                         </button>
                          <br />
+                         <br />
                          <button type="button" id="tradedown" onclick="trade('down')" style="height: 50px ; width: 100%;" class="btn btn-danger">
                             <small id="money_down" style="width: 90%;text-align: left">0</small>
                             <small style="width: 10%;text-align: right;margin-right: 0px"><img src="{{ asset('images/xuong1.png') }}" style="margin-right: 0px" width="20px"  alt=""></small>
                         </button>
+                         <br />
                          <br />
                         <button onclick="thao_tac_period()" style="background-color: slategrey; float: inherit;"><img height="20px" width="20px" src="{{ asset('images/clock.png') }}" alt=""></button>
                          <br />
