@@ -88,9 +88,72 @@ function history_period() {
 
 }
 
-
+function seach_his_trade(page)
+{
+    var start=$("#trade_start").val();
+    var end=$("#trade_end").val();
+    var type=$('input[name=inlineRadioOptions]:checked').val()
+}
 function history_trade(page) {
+    console.log(1);
+    // $.ajax({
+    //     url: urlapi,
+    //     method: "POST",
+    //     data: {
+    //         detect: "list_customer_history",
+    //         id_customer: $('#id_customer').val(),
+    //         type_manager: "admin",
+    //         limit: 5000,
+    //     }, // chuen vao bien name vs du lieu cua input do
+    //     dataType: "json",
+    //     success: function(response) {
+    //         page_his = page;
+    //         flag_back = 1;
+    //         if (response.success == "true") {
 
+    //             var output_his = "";
+    //             var output_phantrang = "";
+
+    //             $.each(response.data, function(k, v) {
+    //                 if(v.trading_result=="win")
+    //                 {
+    //                     output_his += `<tr>
+    //                                      <td><small>Phiên giao dịch</small>
+    //                                         <small class="date_his_trade">${v.trading_log}</small>
+    //                                         <small>+90%</small><br /><br />
+    //                                     </td>
+    //                                     <td>
+    //                                         <small><img width="25px" height="20px" src="../images/len.png"><br />                                             </small>
+    //                                         <small style="color: #40FF00">+${money(v.trading_bet)}</small><br /><br />
+    //                                     </td>
+    //                                 </tr>`;
+    //                 }
+    //                 else
+    //                 {
+    //                     output_his += `<tr>
+    //                                      <td><small>Phiên giao dịch</small>
+    //                                         <small class="date_his_trade">${v.trading_log}</small>
+    //                                         <small>&nbsp;</small><br /><br />
+    //                                     </td>
+    //                                     <td>
+    //                                         <small><img width="25px" height="20px" src="../images/xuong1.png"></small><br />
+    //                                         <small style="color: #FE2E2E">-${money(v.trading_bet)}</small>
+    //                                     </td>
+    //                                 </tr>`;
+    //                 }
+                    
+
+    //             });
+    //             $('#history-trade').html(output_his);
+
+    //             // for (let i = 0; i < response.total_page; i++) {
+    //             //     output_phantrang += `<li class="page-item"><a  onclick="history_trade(${i+1})" class="page-link" href="#">${i+1}</a></li>`
+    //             // }
+    //             // $('#phantrang_trade').html(output_phantrang)
+    //         }
+
+    //     }
+    // });
 }
 
 function thao_tac_period() {
@@ -590,6 +653,7 @@ function show_cus() {
                     Ví tài khoản: ${money(response.data[0].customer_wallet_bet)} VND `;
 
                 $("#vitaikhoan").html(v)
+                console.log(response);
             } else {
 
             }

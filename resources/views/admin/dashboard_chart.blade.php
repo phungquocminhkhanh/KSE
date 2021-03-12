@@ -94,6 +94,7 @@ body {
     </style>
     <body>
         <?php $customer=Session::get('data_customer') ?>
+        <input type="hidden" id="id_customer" value="{{ $customer->id }}">
         <div id="wrapper">
             <nav   class="navbar-default navbar-static-side fixed-menu" role="navigation" style="background-color: #2A2B30">
                 <div class="sidebar-collapse" style="background-color: #2A2B30">
@@ -215,46 +216,50 @@ body {
                             <br />
                         </div>
 
-                        <style>
-                            .history-deal{
-                                color: white;
-                            }
-                            .history-deal td
-                            {
-                                width: 100%;
-                            }
-                            .page-link{
-                                width: 20px;
-                                height: 25px;
-                                font-size: 13px;
-                                text-align: center;
-                                font-weight: bold;
-                            }
-                            .detail_his td:nth-child(2){
-                                text-align:right;
-                                font-size: 10px;
-
-                            }
-                            .detail_his td:nth-child(1){
-                                text-align:left;
-                                font-size: 14px;
-
-                            }
-                            a:hover {
-                                color: red;
-                            }
-                            a{
-                                text-align: center
-                            }
-                        </style>
+                        
                         <div class="modal-body">
-                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="d_start" onchange="seach_his(1)" type="date" id="example-datetime-local-input">
-                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9"" id="d_end" onchange="seach_his(1)" type="date" id="example-datetime-local-input">
-                            <table class="history-deal" id="history-deal">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="trade_start" onchange="seach_his_trade(1)" type="date" id="example-datetime-local-input">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="trade_end" onchange="seach_his_trade(1)" type="date" id="example-datetime-local-input">
+                            <div style="color: white">
 
+                               <input class="form-check-input" onclick="seach_his_trade(1)" checked="true" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="all">
+                              <label class="form-check-label" for="inlineRadio1">Tất cả</label> 
+
+                              <input class="form-check-input" onclick="seach_his_trade(1)" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="win">
+                              <label class="form-check-label" for="inlineRadio1">Thắng</label>
+
+                              <input class="form-check-input" onclick="seach_his_trade(1)" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="lose">
+                              <label class="form-check-label" for="inlineRadio1">Thua</label>
+                            </div>
+                            <style>
+                            .history-trade{
+                                color: white;
+                                width: 100%;
+                                text-align: center;
+                                
+                            }
+                            .history-trade td{
+                                width: 50%;
+                                
+                            }
+                            .date_his_trade{
+                                font-size: 10px;
+                            }
+                            .scroll_his_trade{
+                                width: 100%;
+                                height: 380px;
+                                overflow: auto;
+                            }
+                            
+                        </style>
+                        <div class="scroll_his_trade">
+                            <table class="history-trade" id="history-trade">
+                               
                             </table>
+                        </div>
+                            
                             <hr>
-                            <ul class="pagination" s id="phantrang">
+                            <ul class="pagination" s id="phantrang_trade">
 
                               </ul>
                         </div>

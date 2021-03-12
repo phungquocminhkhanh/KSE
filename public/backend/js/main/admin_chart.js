@@ -1,4 +1,4 @@
-window.io = io(urlsocket, { transport: ['websocket'] });
+//window.io = io(urlsocket, { transport: ['websocket'] });
 
 function chart_line() {
     am4core.useTheme(am4themes_animated);
@@ -10,7 +10,6 @@ function chart_line() {
     chart.padding(0, 0, 0, 0);
 
     chart.zoomOutButton.enabled = true;
-
     var data = [];
     var visits = 10;
     var g = 10;
@@ -84,7 +83,11 @@ function chart_line() {
 
             }
         });
-
+    var bullet = series.createChild(am4charts.CircleBullet);
+        bullet.circle.radius = 5;
+        bullet.fillOpacity = 1;
+        bullet.fill = chart.colors.getIndex(0);
+        bullet.isMeasured = false;
         series.events.on("validated", function() {
             bullet.moveTo(series.dataItems.last.point);
             bullet.validatePosition();
@@ -322,11 +325,7 @@ function chart_line() {
         //console.log("DateAxis zoomed!");
     }
     //bullet at the front of the line
-    var bullet = series.createChild(am4charts.CircleBullet);
-    bullet.circle.radius = 5;
-    bullet.fillOpacity = 1;
-    bullet.fill = chart.colors.getIndex(0);
-    bullet.isMeasured = false;
+    
 
 
 
@@ -360,7 +359,7 @@ function check_exchange_open() {
                 // $('#tradeup').prop('disabled', true);
                 // $('#tradedown').prop('disabled', true);
             } else {
-                chart_line();
+                //chart_line();
             }
 
         }
