@@ -109,23 +109,13 @@ body {
                                     <div class="tab-content" id="content-order" style="
                                          width: 100%;
                                         height: 100%;
-                                          overflow: auto;">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="100px" alt="">
-
+                                          ">
+                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="105px" alt="">
+                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="105px" alt="">
+                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="105px" alt="">
+                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="105px" alt="">
+                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="105px" alt="">
+                                        <img src="{{ asset('images/chart1.png') }}" width="100%" height="105px" alt="">
                                      </div>
 
                                 </div>
@@ -216,19 +206,19 @@ body {
                             <br />
                         </div>
 
-                        
+
                         <div class="modal-body">
-                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="trade_start" onchange="seach_his_trade(1)" type="date" id="example-datetime-local-input">
-                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="trade_end" onchange="seach_his_trade(1)" type="date" id="example-datetime-local-input">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="trade_start" onchange="seach_his_trade()" type="date" id="example-datetime-local-input">
+                            <input class="form-control" style="width: 80%;height: 30px;background-color: #A9A9A9" id="trade_end" onchange="seach_his_trade()" type="date" id="example-datetime-local-input">
                             <div style="color: white">
 
-                               <input class="form-check-input" onclick="seach_his_trade(1)" checked="true" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="all">
-                              <label class="form-check-label" for="inlineRadio1">Tất cả</label> 
+                               <input class="form-check-input" onclick="seach_his_trade()" checked="true" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="">
+                              <label class="form-check-label" for="inlineRadio1">Tất cả</label>
 
-                              <input class="form-check-input" onclick="seach_his_trade(1)" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="win">
+                              <input class="form-check-input" onclick="seach_his_trade()" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="win">
                               <label class="form-check-label" for="inlineRadio1">Thắng</label>
 
-                              <input class="form-check-input" onclick="seach_his_trade(1)" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="lose">
+                              <input class="form-check-input" onclick="seach_his_trade()" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="lose">
                               <label class="form-check-label" for="inlineRadio1">Thua</label>
                             </div>
                             <style>
@@ -236,11 +226,11 @@ body {
                                 color: white;
                                 width: 100%;
                                 text-align: center;
-                                
+
                             }
                             .history-trade td{
                                 width: 50%;
-                                
+
                             }
                             .date_his_trade{
                                 font-size: 10px;
@@ -250,14 +240,14 @@ body {
                                 height: 380px;
                                 overflow: auto;
                             }
-                            
+
                         </style>
                         <div class="scroll_his_trade">
                             <table class="history-trade" id="history-trade">
-                               
+
                             </table>
                         </div>
-                            
+
                             <hr>
                             <ul class="pagination" s id="phantrang_trade">
 
@@ -571,7 +561,7 @@ body {
                                         <small style="text-align: center" id="customer_wallet_payment"></small>
                                     </li>
                                     <br />
-                                    <li style="text-align: center"><button  style="width: 80%;" type="button" class="btn btn-warning" data-toggle="modal" data-target="#rut_tien_modal">Rút tiền</button></li>
+                                    <li style="text-align: center"><button  style="width: 80%;" type="button" class="btn btn-warning" onclick="check_phuong_thuc()" data-toggle="modal" data-target="#rut_tien_modal">Rút tiền</button></li>
 
                                 </ul>
                             </li>
@@ -599,7 +589,7 @@ body {
                                     <li class="divider"></li>
                                     <li><a  class="animated animated-short fadeInUp" onclick="history_payment(1)"  data-toggle="modal" data-target="#myModal-left">Lịch sử giao dịch</a></li>
                                     <li class="divider"></li>
-                                    <li><a  class="animated animated-short fadeInUp" onclick="history_trade(1)"  data-toggle="modal" data-target="#history-trade-left">Lịch sử đầu tư</a></li>
+                                    <li><a  class="animated animated-short fadeInUp" onclick="history_trade()"  data-toggle="modal" data-target="#history-trade-left">Lịch sử đầu tư</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#" class="animated animated-short fadeInUp" data-toggle="modal" data-target="#logout-dasboard"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
                                 </ul>
@@ -618,6 +608,11 @@ body {
             <script src="{{ asset('backend/js/bootstrap.min.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
             <script src="{{ asset('backend/js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+
+            {{-- fire-base --}}
+
+
+
             <script src="{{ asset('backend/js/main/admin_dashboard_chart.js') }}"></script>
             <!-- Morris -->
 

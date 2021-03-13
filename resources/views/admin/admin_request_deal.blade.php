@@ -19,7 +19,10 @@
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 0px;
-}
+   }
+   input[type="file"] {
+    display: none;
+   }
 </style>
    <body>
     {{-- <?php $idbussin = Auth::user()->id_business;
@@ -197,5 +200,5 @@
     </body>
     <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>
     <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
-    <script src="{{ asset('backend/js/admin_han/admin_officer_deal.js') }}"></script>
+    <script src="{{ asset('backend/js/admin_han/admin_request_payment.js') }}"></script>
 @endsection

@@ -10,6 +10,31 @@
         width: 45%  ;
         text-align: center;
     }
+    .example1 {
+        border: 2px solid green;
+        border-radius: 10px 10px 10px 10px;
+        background-color: #1F2933;
+        color: white;
+        width: 80%;
+        height: 100%;
+        padding: 17px;
+        text-align: center;
+   }
+   .example2 {
+        border: 2px solid red;
+        border-radius: 10px 10px 10px 10px;
+        background-color: #1F2933;
+        color: white;
+        width: 80%;
+        height: 100%;
+        padding: 17px;
+        text-align: center;
+   }
+   .now_session{
+        margin-left: 10%;
+        margin-right: 10%;
+       // background-color: #1F2933;
+   }
 </style>
    <body>
     {{-- <?php $idbussin = Auth::user()->id_business;
@@ -32,7 +57,7 @@
                            <div class="clients-list">
                             <ul class="nav nav-tabs tab-border-top-danger">
                                 <li class="active"><a data-toggle="tab" href="#tab-account"><i class="fa fa-user"></i>Sàn giao dịch</a></li>
-                                <li class="active"> <button type="button" onclick="clear_data()" name="x" id="x" data-toggle="modal" data-target="#add_deal_Modal" class="btn btn-warning">+</button></li>
+                            
                              </ul>
                               <div class="tab-content" >
 
@@ -41,18 +66,24 @@
                                        <div class="table-responsive">
                                           <table class="table table-striped table-hover">
                                             <tr>
-                                                <td>Thời gian bắt đầu</td>
-                                                <td>Thời gian kết thúc</td>
-                                                <td>Thời gian mỗi phiên</td>
-                                                <td>Tổng phiên</td>
+                                                <th style="width:20px"></th>
+                                                <th>Thời gian bắt đầu</th>
+                                                <th>Thời gian kết thúc</th>
+                                                <th>Thời gian 1 phiên</th>
+                                                <th>Tổng phiên</th>
+                                                <th>Bảo trì</th>
+                                             
+                                                 
                                             </tr>
-                                             <tbody id="content-customer">
-                                                <tr>
+                                             <tbody id="content_session">
+                                                {{--  <tr>
+                                                    <th style="width:20px"></th>
                                                     <td>4/05/2021</td>
                                                     <td>24/05/2021</td>
                                                     <td>4/05/2021</td>
-                                                    <td>100</td>
-                                                </tr>
+                                                    <td>12312</td>
+                                                    <th style="width:20px"></th>
+                                                </tr>  --}}
                                              </tbody>
                                           </table>
                                        </div>
@@ -63,105 +94,60 @@
                   </div>
                </div>
             </div>
+            <input type="text" hidden value="1" id="id_account">
             <div class="col-sm-4">
                 <div class="inqbox ">
                    <div class="inqbox-content"><div id='content_detail_customer'>
                     <div id="contact-1" class="tab-pane active">
-                        <h4>Nguyễn Van a</h4>
-                        <h5>Số điện thoại: 0336819000</h5>
-                        <h5>Giao dịch gần nhất: 05/02/2021</h5>
-                        <hr>
-                        <h4>Danh sách giao dịch</h4>
-                              <table class="detail_cus">
-                                <tr>
-                                    <td>Tổng giao dịch</br>80</td>
-                                    <td></td>
-                                    <td>Tỉ lệ %</br>78</td>
-                                </tr>
-                            </table>
-                            <h4></h4>
-                            <input type="date" style="height :30px ;width:45% ;" id="ngaybatdau" onchange="seach_order()"> >>
-                            <input type="date" style="height :30px ;width:45% ;" id="ngayketthuc" onchange="seach_order()">
-                            <hr>
+                    
+                    <label>Thời gian bắt đầu (<font style="color: red">*</font>)</label>
+                    <input type="text" id="myDate1" class="form-control" readonly style="width:50%">
+                    <input type="time" onchange="check_text()" id="start_time" style="width:50%" class="form-control">
+                    <small id="message_start" class="text-danger"></small>
+                    <br />
+                    <label>Thời gian kết thúc (<font style="color: red">*</font>)</label>
+                    <input type="text" id="myDate2" class="form-control" readonly style="width:50%">
+                    <input type="time" onchange="check_text()" id="finish_time" style="width:50%" class="form-control">
+                    <small id="message_finish" class="text-danger"></small>
+                    <br />
+                    <label>Thời gian 1 phiên (phút) (<font style="color: red">*</font>)</label>
+                    <input type="number" onchange="check_text()" id="session_time" style="width:20%" class="form-control" min="2">
+                    <small id="message_session" class="text-danger"></small>
+                    <br />
+                    <label>Tổng phiên:</label>
+                    <div  id="total_session" style="width:20%" class="form-control"></div>
+                    <small id="message_session" class="text-danger"></small>
+                    <br />
+                    <div><button type="button" onclick="update_stock()" value="Cập nhật"  class="btn btn-danger btn-sm btn-block"  />Cập nhật</button></div>
+                    <hr>
                    </div>
-                    <div class="tab-content" id="content-order" style="width: 100%;height: 400px;overflow: auto;">
-                        <table>
-                            <tr>
-                                <td>15/03/2001 20:21</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Số tiền</td>
-                                <td>+450,000,000</td>
-                            </tr>
+                    <div class="tab-content" id="content-order" style="width: 100%;height: 300px;overflow: auto; ">
+                        <center><h3><label>Xem phiên hiện tại</label></h3></center>
+                      <table class="now_session" style="width:100%">
+                        <tbody >
+                        <tr>
+                            <td><p class="example1"> 20 &nbsp&nbsp<img src="{{asset ('backend/icon_trading/up.svg')}}" height="18px"></p></td> 
+                            <td><p class="example1">600.000.00 </p></td>
+                        </tr>
+                        <tr>
+                            <td><p class="example2"> 30 &nbsp&nbsp<img src="{{asset ('backend/icon_trading/down.svg')}}" height="18px"></p></td> 
+                            <td><p class="example2">600.000.00 </p></td>
+                        </tr>
+                        </tbody>
                         </table>
-                        <hr>
-                        <table>
-                            <tr>
-                                <td>15/03/2001 20:21</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Số tiền</td>
-                                <td>+450,000,000</td>
-                            </tr>
-                        </table>
-                      </div>
+                     </div>
+                     
                    </div>
                 </div>
              </div>
           </div>
-
-
     </div>
-
-    <div id="add_deal_Modal" class="modal fade">
-        <div class="modal-dialog">
-         <div class="modal-content">
-          <div class="modal-header">
-           <button type="button" class="close" data-dismiss="modal">&times;</button>
-           <h4 class="modal-title">Cập nhật sàn</h4>
-          </div>
-          <div class="modal-body">
-            <meta name="csrf-token-insert" content="{{ csrf_token() }}" />
-           <form method="post" id="insert_account_form">
-
-            <label>Thời gian bắt đầu (<font style="color: red">*</font>)</label>
-            <input type="datetime-local" id="exchange_open" class="form-control">
-            <small id="erusername" class="text-danger"></small>
-            <br />
-            <br />
-            <label>Thời gian kết thúc (<font style="color: red">*</font>)</label>
-            <input type="datetime-local" id="exchange_close" class="form-control">
-            <small id="erusername" class="text-danger"></small>
-            <br />
-            <br />
-            <label>Thời gian mỗi phiên (<font style="color: red">*</font>)</label>
-            <input type="number" id="exchange_period" min="5">phút
-            <br />
-            <br />
-            <label>Tổng phiên</label>
-            <input type="number" id="total_period">phút
-            <br />
-            <br />
-            <input type="submit" name="insert" id="insert_account" value="Thêm" class="btn btn-success" />
-           </form>
-          </div>
-          <div class="modal-footer">
-           <button type="button" id="close_modol_insert" class="btn btn-default" data-dismiss="modal">Đóng</button>
-          </div>
-         </div>
-        </div>
-       </div>
-
-
-
-
-
-
+    
+    
+    </div>
     </body>
 
     <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>
     <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
-    <script src="{{ asset('backend/js/main/admin_customer.js') }}"></script>
+    <script src="{{ asset('backend/js/admin_han/admin_exchange_management.js') }}"></script>
 @endsection

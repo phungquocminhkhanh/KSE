@@ -46,8 +46,7 @@ $(document).ready(function() {
             processData: false,
             success: function(data) {
                 if (data.success == "true") {
-                    alert(data.message);
-
+                    alert("Đăng ký thành công");
                     $('#close_modol_insert').click();
                 } else {
                     alert(data.message);
@@ -57,4 +56,6 @@ $(document).ready(function() {
 
 
     });
+
+
 });

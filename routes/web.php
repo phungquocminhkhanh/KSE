@@ -29,6 +29,9 @@ use Illuminate\Support\Facades\Http;
 Route::get('/chart-mobile-ks',function() {
     return view('customer.chart_mobile_ks');
 });
+Route::get('/chart-mobile-ks-demo',function() {
+    return view('customer.chart_mobile_ks_demo');
+});
 Route::get('/chart-tam',function() {
     return view('customer.chart_tam2');
 });
@@ -45,7 +48,7 @@ Route::get('/',function() {
 
 Route::group(['prefix' => 'customer'], function () {
     Route::post('cus-login','loginController@cus_login');
-    Route::post('cus-logout','loginController@cus_logout');
+    Route::get('cus-logout','loginController@cus_logout');
 
     Route::get('/chart',function() {
         return view('admin.chart');
@@ -116,13 +119,14 @@ Route::group(['prefix' => 'admin'], function () {
         return view('admin.admin_deal');
     });
 
-    Route::get('manage-admin-load-money',function () {
-        return view('admin.admin_load_money');
+    Route::get('manage-help-deposit',function () { // yêu cầu nạp tiền
+        return view('admin.admin_request_deposit');
     });
-    Route::get('manage-admin-sent-money',function () {
+    Route::get('manage-admin-request-deal',function () { // yêu cầu
 
-        return view('admin.admin_sent_money');
+        return view('admin.admin_request_deal');
     });
+
     Route::get('manage-admin-customer',function () {
 
         return view('admin.admin_customer');

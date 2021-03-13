@@ -88,14 +88,14 @@
                                                         <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu rút tiền</span></a>
                                                         <ul class="children nav">
 
-                                                            <li><a href="{{ URL::to('admin/manage-admin-sent-money') }}">Yêu cầu rút tiền</a></li>
+                                                            <li><a href="{{ URL::to('admin/manage-admin-request-deal') }}">Yêu cầu rút tiền</a></li>
                                                         </ul>
                                                     </li>
                                                     @elseif ($v->permission=="module_confirm_deposit")
                                                     <li class="nav-parent">
                                                         <a href="#"><img src="{{asset('/images/3.png')}}"  width="25px" height="25px">&nbsp;&nbsp;<span class="nav-label">Yêu cầu nạp tiền</span></a>
                                                         <ul class="children nav">
-                                                            <li><a href="{{ URL::to('admin/manage-admin-load-money') }}">Yêu cầu nạp tiền</a></li>
+                                                            <li><a href="{{ URL::to('admin/manage-help-deposit') }}">Yêu cầu nạp tiền</a></li>
                                                         </ul>
                                                     </li>
                                                     @else()

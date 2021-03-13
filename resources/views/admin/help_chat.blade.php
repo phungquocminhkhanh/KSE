@@ -9,7 +9,17 @@
         background-color:#FFE4E1;
         width: 45%  ;
         text-align: center;
-    }
+    } 
+  .example1 {
+        border: 1px solid #0080FF;
+        border-radius: 20px 20px 20px 0px;
+        background-color: #3DDBE0;
+        color: black;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+   }
+  
 </style>
    <body>
     {{-- <?php $idbussin = Auth::user()->id_business;
@@ -21,97 +31,70 @@
             <div class="col-sm-8">
                <div class="inqbox">
                   <div class="inqbox-content">
-                           <span class="text-muted small pull-right"><i class="fa fa-clock-o"></i></span>
-                           <h2></h2>
-                           <div class="input-group">
-                              <input type="text" placeholder="Nhập tên, số điện thoại, email, mã khách hàng" id="key_seach" value="" class="input form-control">
-                              <span class="input-group-btn">
-                              <button type="button" class="btn btn btn-primary" onclick="seach_customer()"> <i class="fa fa-search"></i>Tìm kiếm</button>
-                              </span>
-                           </div>
-                           <div class="clients-list">
-                              <div class="tab-content" >
-
-                                 <div id="tab-account" class="tab-pane active" >
-                                    <div class="full-height-scroll">
-                                       <div class="table-responsive">
-                                          <table class="table table-striped table-hover">
-                                            <tr>
-                                                <td><a data-toggle="tab" class="client-link">Tên</a></td>
-                                                <td>Số điện thoại</td>
-                                                <td>Mã lệnh</td>
-                                                <td>Ngày giao dịch</td>
-                                            </tr>
-                                             <tbody id="content-customer">
-                                                <tr>
-                                                    <td><a data-toggle="tab" class="client-link">Nguyen Van A</a></td>
-                                                    <td>0336819000</td>
-                                                    <td>ML52503346</td>
-                                                    <td>24/05/2021</td>
-                                                </tr>
-                                             </tbody>
-                                          </table>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
+                    <span class="text-muted small pull-right"></span>
+                    <h2></h2>
+                    <div class="input-group">
+                       
+                    </div>
+                    <div class="clients-list">
+                        <div class="tab-content" >
+                            <div id="tab-account" class="tab-pane active" >
+                            <div class="full-height-scroll">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                    <tr>
+                                        <th style="width:30px;"></th>
+                                        <th style="width:42%;"><i class="fa fa-user"></i> Khách hàng</th>
+                                        <th>Nội dung</th>
+                                        <td style="width:30px;"></td>
+                                    </tr>
+                                        <tbody id="content_officer_chat">
+                                        {{--  <tr>
+                                            <td style="width:30px;"></td>
+                                            <td>Nguyễn Văn A</td>
+                                            <td>Yêu cầu chuyển tiền đi broooooooooooooo </td>
+                                        </tr>  --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div> 
                   </div>
                </div>
             </div>
             <div class="col-sm-4">
                 <div class="inqbox ">
-                   <div class="inqbox-content"><div id='content_detail_customer'>
-                    <div id="contact-1" class="tab-pane active">
-                        <h4>Nguyễn Van a</h4>
-                        <h5>Số điện thoại: 0336819000</h5>
-                        <h5>Giao dịch gần nhất: 05/02/2021</h5>
-                        <hr>
-                        <h4>Danh sách giao dịch</h4>
-                              <table class="detail_cus">
-                                <tr>
-                                    <td>Tổng giao dịch</br>80</td>
-                                    <td></td>
-                                    <td>Tỉ lệ %</br>78</td>
-                                </tr>
-                            </table>
-                            <h4></h4>
-                            <input type="date" style="height :30px ;width:45% ;" id="ngaybatdau" onchange="seach_order()"> >>
-                            <input type="date" style="height :30px ;width:45% ;" id="ngayketthuc" onchange="seach_order()">
-                            <hr>
-                   </div>
-                    <div class="tab-content" id="content-order" style="width: 100%;height: 400px;overflow: auto;">
-                        <table>
-                            <tr>
-                                <td>15/03/2001 20:21</td>
-                                <td></td>
+                   <div class="inqbox-content" id="id_chat">
+                    <div id="contact-1" class="tab-pane active" >
+                    {{--  <center><h1><i class="fa fa-user"></i></h1></center>
+                     <center><h2><strong>Nguyễn Van A </strong></h2> </center>
+                      <center><h3><strong>0123456789 </strong></h3> </center>
+                        <hr>  --}}
+                    </div>
+                    <div class="tab-content" id="content-order" style="width: 100%;height: 380px;overflow: auto;">
+                        {{--  <table>
+                            <tr >
+                                <td><p class="example1"> Tôi muốn đổi tiền brooooooooooooo Tôi muốn đổi tiền brooooooooooooo </p></td>                              
                             </tr>
-                            <tr>
-                                <td>Số tiền</td>
-                                <td>+450,000,000</td>
-                            </tr>
-                        </table>
-                        <hr>
-                        <table>
-                            <tr>
-                                <td>15/03/2001 20:21</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Số tiền</td>
-                                <td>+450,000,000</td>
-                            </tr>
-                        </table>
-                      </div>
+                        </table>  --}}
+                    </div>
+                    <div id="btn_finish">
+                    {{--  <button class="btn btn-danger btn-lg btn-block"> Kết thúc </button>  --}}
+                    </div>
                    </div>
                 </div>
-             </div>
-          </div>
+            </div>
+         </div>
 
-
+  
+    
+    
     </div>
     </body>
     <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>
     <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
-    <script src="{{ asset('backend/js/main/admin_help_deal.js') }}"></script>
+    <script src="{{ asset('backend/js/admin_han/itemModel.js') }}"></script>
+    <script src="{{ asset('backend/js/admin_han/admin_officer_chat.js') }}"></script>
 @endsection

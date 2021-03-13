@@ -10,7 +10,6 @@ function chart_line() {
     chart.padding(0, 0, 0, 0);
 
     chart.zoomOutButton.enabled = true;
-
     var data = [];
     var visits = 10;
     var g = 10;
@@ -50,9 +49,6 @@ function chart_line() {
                     arr = JSON.parse(phien.coordinate_xy);
                     gg = JSON.parse(phien.coordinate_g);
                     let g = gg.y; //gg.y;
-                    console.log(g)
-                    data.push({ date2: new Date(phien.period_open * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y - 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
-                    data.push({ date2: new Date(phien.period_close * 1000), date3: new Date(phien.period_close * 1000), value2: gg.y, value3: gg.y, value4: gg.y + 0.5 }); //1:line,2:duongG,3:focus,4:ket qua
                     if (arr.length <= 30) {
                         for (let i = 0; i < arr.length; i++) {
                             data.push({
@@ -84,7 +80,11 @@ function chart_line() {
 
             }
         });
-
+        var bullet = series.createChild(am4charts.CircleBullet);
+        bullet.circle.radius = 5;
+        bullet.fillOpacity = 0.5;
+        bullet.fill = chart.colors.getIndex(0);
+        bullet.isMeasured = false;
         series.events.on("validated", function() {
             bullet.moveTo(series.dataItems.last.point);
             bullet.validatePosition();
@@ -128,16 +128,15 @@ function chart_line() {
     series.dataFields.dateX = "date1";
     series.dataFields.valueY = "value1";
     series.interpolationDuration = 500;
-    series.strokeWidth = 2.0;
     series.defaultState.transitionDuration = 0;
     series.tensionX = 0.8;
     series.showOnInit = false;
-
+    series.strokeWidth = 2.0;
 
     var series2 = chart.series.push(new am4charts.LineSeries());
     series2.dataFields.valueY = "value2";
     series2.dataFields.dateX = "date2";
-    series2.strokeWidth = 2.0;
+    series2.strokeWidth = 4.0;
     series2.stroke = series.stroke;
     series2.stroke = am4core.color("#FFFFFF");
 
@@ -145,7 +144,7 @@ function chart_line() {
     var series3 = chart.series.push(new am4charts.LineSeries());
     series3.dataFields.valueY = "value3";
     series3.dataFields.dateX = "date3";
-    series3.strokeWidth = 2.0;
+    series3.strokeWidth = 4.0;
     series3.stroke = series.stroke;
 
     // var series4 = chart.series.push(new am4charts.LineSeries());
@@ -166,6 +165,17 @@ function chart_line() {
 
     // 0
 
+    // valueAxis.events.on("startchanged", valueAxisZoomed);
+    // valueAxis.events.on("endchanged", valueAxisZoomed);
+
+    // function valueAxisZoomed(ev) {
+    //     let start = ev.target.minZoomed;
+    //     let end = ev.target.maxZoomed;
+    //     console.log("New range: " + start + " -- " + end);
+    // }
+    // chart.events.on("ready", function() {
+    //     valueAxis.zoomToValues(1, 20);
+    // });
 
     dateAxis.interpolationDuration = 500;
     dateAxis.rangeChangeDuration = 500;
@@ -179,11 +189,11 @@ function chart_line() {
 
     io.on('block-trading', async function(res) {
         if (res.notification == "block_trading") {
-            console.log("block");
+
             $('#tradeup').prop('disabled', true);
             $('#tradedown').prop('disabled', true);
         } else {
-            console.log("unlock");
+
             $('#tradeup').prop('disabled', false);
             $('#tradedown').prop('disabled', false);
         }
@@ -197,14 +207,15 @@ function chart_line() {
         if (g == data.y) {
 
         } else {
+            g = data.y;
             setTimeout(function() {
                 var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
                 // var datefinal = new Date().setSeconds(10);
                 for (let i = 0; i < series2.dataItems.length; i++) {
                     series2.dataItems.getIndex(i).valueY = data.y;
                 }
-            }, 2000);
-            g = data.y;
+            }, 5000);
+
 
             // let d2 = new Date(new Date().getTime() + time_phien);
             // let d3 = new Date(new Date().getTime() + time_phien);
@@ -224,34 +235,42 @@ function chart_line() {
 
     function start_socket() {
         io.on('coordinates_real', async function(res) {
-            console.log(g);
+
             data = JSON.parse(res);
             var lastdataItem = series.dataItems.getIndex(series.dataItems.length - 1);
             if (series.dataItems.length <= 30) {
                 chart.addData({
                     date1: new Date(data.x * 1000),
-                    date2: new Date(data.x * 1000 + 20000),
-                    date3: new Date(data.x * 1000 + 20000),
+                    date2: new Date(data.x * 1000 + 30000),
+                    date3: new Date(data.x * 1000 + 30000),
                     value1: data.y,
                     value2: g,
                     value3: data.y
                 }, 0);
+                series2.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
+                series3.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
+                for (let k = 0; k < series3.dataItems.length; k++) {
+                    series3.dataItems.getIndex(k).valueY = data.y;
+                    series2.dataItems.getIndex(k).valueY = g;
+                }
+
             } else {
                 chart.addData({
                     date1: new Date(data.x * 1000),
-                    date2: new Date(data.x * 1000 + 20000),
-                    date3: new Date(data.x * 1000 + 20000),
+                    date2: new Date(data.x * 1000 + 30000),
+                    date3: new Date(data.x * 1000 + 30000),
                     value1: data.y,
                     value2: g,
                     value3: data.y
                 }, 1);
+                series2.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
+                series3.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
+                for (let k = 0; k < series3.dataItems.length; k++) {
+                    series3.dataItems.getIndex(k).valueY = data.y;
+                    series2.dataItems.getIndex(k).valueY = g;
+                }
             }
 
-            series2.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
-            series3.dataItems.getIndex(0).dateX = series.dataItems.getIndex(0).dateX;
-            for (let k = 0; k < series3.dataItems.length; k++) {
-                series3.dataItems.getIndex(k).valueY = data.y;
-            }
             // if (flag_update == 3) {
             // if (series.dataItems.length > 30) {
             //     flag_remove = 1;
@@ -302,20 +321,20 @@ function chart_line() {
     gradient.addColor(chart.colors.getIndex(0), 0);
     series.fill = gradient;
 
-    // this makes date axis labels to fade out
+    //this makes date axis labels to fade out
     dateAxis.renderer.labels.template.adapter.add("fillOpacity", function(fillOpacity, target) {
         var dataItem = target.dataItem;
         return dataItem.position;
     })
 
-    // need to set this, otherwise fillOpacity is not changed and not set
+    //need to set this, otherwise fillOpacity is not changed and not set
     dateAxis.events.on("validated", function() {
         am4core.iter.each(dateAxis.renderer.labels.iterator(), function(label) {
             label.fillOpacity = label.fillOpacity;
         })
     })
 
-    // this makes date axis labels which are at equal minutes to be rotated
+    //this makes date axis labels which are at equal minutes to be rotated
     dateAxis.renderer.labels.template.adapter.add("rotation", function(rotation, target) {
         var dataItem = target.dataItem;
         if (dataItem.date && dataItem.date.getTime() == am4core.time.round(new Date(dataItem.date.getTime()), "minute").getTime()) {
@@ -335,11 +354,7 @@ function chart_line() {
         //console.log("DateAxis zoomed!");
     }
     //bullet at the front of the line
-    var bullet = series.createChild(am4charts.CircleBullet);
-    bullet.circle.radius = 5;
-    bullet.fillOpacity = 1;
-    bullet.fill = chart.colors.getIndex(0);
-    bullet.isMeasured = false;
+
 
 
 
@@ -367,11 +382,11 @@ function check_exchange_open() {
         },
         dataType: "json",
         success: function(response) {
-            console.log(response);
+
             if (response.success == 'false') {
-                // $("#chartdiv").html('<h1>Sàn đã đóng</h1>')
-                // $('#tradeup').prop('disabled', true);
-                // $('#tradedown').prop('disabled', true);
+                $("#chartdiv").html('<h1>Sàn đã đóng</h1>')
+                $('#tradeup').prop('disabled', true);
+                $('#tradedown').prop('disabled', true);
             } else {
                 chart_line();
             }

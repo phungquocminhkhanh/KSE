@@ -129,33 +129,33 @@
           <div class="modal-body">
            <form id="insert_customer_form" enctype="multipart/form-data">
             <input type="hidden" value="register" name="detect">
+            <input type="hidden" value="customer" name="type_customer">
             <input type="hidden" value="" id="customer_phone" name="customer_phone">
             <label>Mã giới thiệu</label>
             <input type="text" name="customer_introduce" id="customer_introduce" class="form-control" />
             <small  class="text-danger"></small>
-            <br/>
+
             <label>Họ và tên (<font style="color: red">*</font>)</label>
             <input type="text" name="customer_name" id="customer_name" class="form-control" />
             <small  class="text-danger"></small>
-            <br/>
+
             <label>Mật khẩu (<font style="color: red">*</font>)</label>
-            <input type="text" name="customer_password" id="password" class="form-control" />
+            <input type="password" name="customer_password" id="password" class="form-control" />
             <small  class="text-danger"></small>
-            <br/>
+
             <label>Nhập lại mật khẩu (<font style="color: red">*</font>)</label>
-            <input type="text"  id="password2" class="form-control" />
+            <input type="password"  id="password2" class="form-control" />
             <small  class="text-danger"></small>
-            <br/>
+
             <label>Nhập số CMND(<font style="color: red">*</font>)</label>
             <input type="text" name="customer_cert_no" id="cmnd" class="form-control" />
             <small id="ercategory_title" class="text-danger"></small>
-            <br/>
+
             <label><label>Hình CMND mặt trước (<font style="color: red">*</font>)</label>
                 <input type="file" id="cmnd_icon" onChange="return fileValidation()" name="customer_cert_img" class="form-control" placeholder="Hình ảnh">
             </label>
             <small  class="text-danger"></small>
             <br/>
-
                 <span id="upload_ed_image"></span>
             <br/>
             <br/>
@@ -189,6 +189,10 @@
   <!-- Sparkline demo data  -->
   <script src="{{ asset('backend/js/demo/sparkline-demo.js')}}"></script>
   <script src="{{ asset('backend/js/plugins/chartJs/Chart.min.js')}}"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+
   <script src="{{ asset('backend/js/jquery-3.5.0.min.js') }}"></script>
   <script src="{{ asset('backend/js/main/admin_local.js') }}"></script>
     <script src="{{ asset('backend/js/main/customer_login.js') }}"></script>
